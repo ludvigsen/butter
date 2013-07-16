@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-handle.html" ],
-  function( Dialog, DragNDrop, LangUtils, TRACK_HANDLE_LAYOUT ) {
+define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-handle.html","ui/widget/textbox" ],
+  function( Dialog, DragNDrop, LangUtils, TRACK_HANDLE_LAYOUT, TextBoxWrapper ) {
 
   var ADD_TRACK_BUTTON_Y_ADJUSTMENT = 37;
 
@@ -102,6 +102,12 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
           trackDiv = LangUtils.domFragment( TRACK_HANDLE_LAYOUT, ".track-handle" ),
           menuDiv = trackDiv.querySelector( ".menu" ),
           deleteButton = menuDiv.querySelector( ".delete" );
+
+      	  trackNameEl = trackDiv.querySelector(".title");
+      	  trackNameEl.setAttribute("contentEditable",true);
+      	  trackNameEl.addEventListener("blur",function() {
+      		  track.name = this.innerText || this.textContent;
+      	  });
 
       deleteButton.addEventListener( "click", function() {
         var dialog = Dialog.spawn( "delete-track", {

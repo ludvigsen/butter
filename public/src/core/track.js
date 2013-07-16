@@ -133,8 +133,13 @@ define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitize
           return _order;
         },
         set: function( val ) {
+          var defaultname = NAME_PREFIX + _order;
+          var currentname = this.name;
+          if (defaultname === currentname) {
+        	  // update the default name
+        	  _name = NAME_PREFIX + val;  
+          }
           _order = val;
-          _name = NAME_PREFIX + val;
         }
       }
     });

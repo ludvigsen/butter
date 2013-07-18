@@ -471,7 +471,8 @@ window.Butter = {
           "trackeventadded",
           "trackeventremoved",
           "trackeventupdated",
-          "trackorderchanged"
+          "trackorderchanged",
+          "tracknamechanged"
         ]);
 
         var trackEvents;

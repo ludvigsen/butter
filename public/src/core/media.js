@@ -130,7 +130,8 @@
           "trackeventremoved",
           "trackeventupdated",
           "trackeventselected",
-          "trackeventdeselected"
+          "trackeventdeselected",
+          "tracknamechanged"
         ]);
         track.setPopcornWrapper( _popcornWrapper );
       }
@@ -227,7 +228,8 @@
             "trackeventremoved",
             "trackeventupdated",
             "trackeventselected",
-            "trackeventdeselected"
+            "trackeventdeselected",
+            "tracknamechanged"
           ]);
           track.setPopcornWrapper( null );
           track._media = null;

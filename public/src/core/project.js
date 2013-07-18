@@ -190,7 +190,8 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         "tracktargetchanged",
         "trackeventadded",
         "trackeventremoved",
-        "trackeventupdated"
+        "trackeventupdated",
+        "tracknamechanged"
       ].forEach( function( event ) {
         butter.listen( event, invalidate );
       });

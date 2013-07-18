@@ -101,13 +101,92 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
           trackId = track.id,
           trackDiv = LangUtils.domFragment( TRACK_HANDLE_LAYOUT, ".track-handle" ),
           menuDiv = trackDiv.querySelector( ".menu" ),
-          deleteButton = menuDiv.querySelector( ".delete" );
-
+          deleteButton = menuDiv.querySelector( ".delete" ),
       	  trackNameEl = trackDiv.querySelector(".title");
-      	  trackNameEl.setAttribute("contentEditable",true);
-      	  trackNameEl.addEventListener("blur",function() {
-      		  track.name = this.innerText || this.textContent;
-      	  });
+
+      	  // toggle the track to listening for click to the layer name or not
+          function toggleTrackNameListeners( state ) {
+              if ( state ) {
+            	  trackNameEl.addEventListener("mousedown",trackMouseDown,false);
+            	  trackNameEl.addEventListener( "click", trackNameClick, false );
+              } else {
+            	  trackNameEl.removeEventListener("mousedown",trackMouseDown,false);
+            	  trackNameEl.removeEventListener( "click", trackNameClick, false );
+              }
+            }
+          
+          function trackMouseDown(e) {
+        	  if (!e) var e = window.event;
+        		e.cancelBubble = true;
+        	if (e.stopPropagation) e.stopPropagation();
+          }
+
+          // called when the user clicks on the track name
+            function trackNameClick() {
+              var input = document.createElement( "input" );
+
+              input.type = "text";
+
+              input.value = track.name;
+              TextBoxWrapper.applyTo( input );
+              trackDiv.replaceChild( input, trackNameEl );
+              toggleTrackNameListeners( false );
+              input.focus();
+              input.addEventListener( "blur", onBlur, false );
+              input.addEventListener( "keypress", onKeyPress, false );
+              input.addEventListener("click",ignoreEvent,false);
+              input.addEventListener("dblclick",ignoreEvent,false);
+              input.addEventListener("mousedown",ignoreEvent,false);
+              
+              trackDiv.querySelector('.track-handle-icon').classList.add('butter-hidden');
+            }
+            
+            function ignoreEvent(e) {
+            	if (!e)
+            		e = window.event;
+            	
+            	//IE9 & Other Browsers
+            	if (e.stopPropagation) {
+            		e.stopPropagation();
+            	} else { //IE8 and Lower
+            		e.cancelBubble = true;
+            	}
+            	//e.preventDefault();
+            }
+            
+            function onKeyPress( e ) {
+                var node = trackDiv.querySelector( "input" );
+
+                // if this wasn't the 'enter' key, return early
+                if ( e.keyCode !== 13 ) {
+                  return;
+                }
+
+                node.blur();
+                node.removeEventListener( "keypress", onKeyPress, false );
+              }
+            
+            function onBlur(e) {
+            	var node = trackDiv.querySelector("input");
+            	node.removeEventListener("blur",onBlur,false);
+            	node.removeEventListener("keypress",onKeyPress,false);
+            	node.removeEventListener("click",ignoreEvent,false);
+            	node.removeEventListener("dblclick",ignoreEvent,false);
+            	node.removeEventListener("mousedown",ignoreEvent,false);
+            	
+            	track.name = node.value;
+
+            	trackNameEl.innerHTML = track.name;
+            	trackDiv.querySelector('.track-handle-icon').classList.remove('butter-hidden');
+            	
+            	trackDiv.replaceChild(trackNameEl,node);
+            	console.log('save');
+            }
+            
+            trackDiv.addEventListener("mouseover", function() {
+            	toggleTrackNameListeners(true);
+            });
+            toggleTrackNameListeners( false ); 
 
       deleteButton.addEventListener( "click", function() {
         var dialog = Dialog.spawn( "delete-track", {

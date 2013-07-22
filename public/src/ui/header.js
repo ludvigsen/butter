@@ -213,6 +213,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
       container: _webmakerNavBar,
       onLogin: _userData.authenticationRequired,
       onLogout: _userData.logout,
+      onProfile: _userData.profile,
       feedbackCallback: feedbackCallback
     });
 
@@ -318,7 +319,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
     butter.listen( "logout", _this.views.logout, false );
     butter.listen( "mediaready", _this.views.mediaReady );
     butter.listen( "mediacontentchanged", _this.views.mediaChanging );
-
+    
     butter.listen( "projectsaved", function() {
       // Disable "Save" button
       _this.views.clean();

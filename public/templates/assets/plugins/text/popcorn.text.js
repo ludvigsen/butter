@@ -137,7 +137,7 @@
           label: "Left",
           units: "%",
           "default": 25,
-          hidden: true
+          hidden: false
         },
         top: {
           elem: "input",
@@ -145,7 +145,7 @@
           label: "Top",
           units: "%",
           "default": 0,
-          hidden: true
+          hidden: false
         },
         width: {
           elem: "input",

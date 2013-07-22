@@ -183,10 +183,13 @@
       function callback( elementType, element, trackEvent, name ) {
         if ( elementType === "select" ) {
           _this.attachSelectChangeHandler( element, trackEvent, name );
+        } else {
+        	_this.attachInputChangeHandler( element, trackEvent, name, _this.updateTrackEventSafe);
         }
       }
 
       function attachHandlers() {
+
         _this.attachInputChangeHandler( _urlInput, trackEvent, "src", function( te, prop ) {
           var src = prop.src;
 
@@ -294,7 +297,7 @@
         trackEvent: trackEvent,
         callback: callback,
         basicContainer: container,
-        manifestKeys: [ "transition" ]
+        manifestKeys: [ "transition","top","left" ]
       });
 
       attachHandlers();

@@ -8,6 +8,7 @@
       MAX_AUDIO_TIME = 2,
       _pluginRoot = "/templates/assets/plugins/popup/",
       FILL_STYLE = "rgb(255, 255, 255)",
+      STROKE_STYLE = "#999",
       innerDivTriangles = {},
       DEFAULT_FONT = "Tangerine";
 
@@ -21,10 +22,13 @@
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(0.4, 0.3);
-    ctx.bezierCurveTo(0.4, 0.3, 17.8, 26.3, 15.1, 41.9);
-    ctx.bezierCurveTo(15.1, 41.9, 26.2, 26.3, 23.4, 0.3);
+    //ctx.bezierCurveTo(0.4, 0.3, 17.8, 26.3, 15.1, 41.9);
+    //ctx.bezierCurveTo(15.1, 41.9, 26.2, 26.3, 23.4, 0.3);
+    ctx.lineTo(0.4, 25);
+    ctx.lineTo(15, .3);
     ctx.fillStyle = FILL_STYLE;
     ctx.fill();
+    ctx.strokeStyle = STROKE_STYLE;
     ctx.lineWidth = lineWidth;
     ctx.stroke();
     ctx.restore();
@@ -44,6 +48,7 @@
     ctx.closePath();
     ctx.fillStyle = FILL_STYLE;
     ctx.fill();
+    ctx.strokeStyle = STROKE_STYLE;
     ctx.lineWidth = lineWidth;
     ctx.stroke();
 
@@ -56,6 +61,7 @@
     ctx.bezierCurveTo(15.6, 19.5, 17.5, 21.4, 17.5, 23.8);
     ctx.closePath();
     ctx.fill();
+    ctx.strokeStyle = STROKE_STYLE;
     ctx.lineWidth = lineWidth;
     ctx.stroke();
 
@@ -68,13 +74,15 @@
     ctx.bezierCurveTo(26.0, 28.5, 27.5, 30.0, 27.5, 31.8);
     ctx.closePath();
     ctx.fill();
+    ctx.strokeStyle = STROKE_STYLE;
     ctx.lineWidth = lineWidth;
     ctx.stroke();
     ctx.restore();
   }
 
-  drawSpeech( innerDivTriangles.speech, 2 );
-  drawThought( innerDivTriangles.thought, 2 );
+  //drawSpeech( innerDivTriangles.speech, 2 );
+  drawSpeech( innerDivTriangles.speech, 1 );
+  drawThought( innerDivTriangles.thought, 1 );
 
   Popcorn.plugin( "popup", {
     manifest: {
@@ -132,11 +140,11 @@
         icon: {
           elem: "select",
           options: [ "Error", "Audio", "Broken Heart", "Cone", "Earth",
-                     "Eye", "Heart", "Info", "Man", "Money", "Music", "Net",
+                     "Eye", "Heart", "Idea", "Info", "Man", "Map", "Money", "Music", "Net",
                      "Skull", "Star", "Thumbs Down", "Thumbs Up", "Time",
                      "Trophy", "Tv", "User", "Virus", "Women", "None" ],
           values: [ "error", "audio", "brokenheart", "cone", "earth",
-                     "eye", "heart", "info", "man", "money", "music", "net",
+                     "eye", "heart", "idea", "info", "man", "map", "money", "music", "net",
                      "skull", "star", "thumbsdown", "thumbsup", "time",
                      "trophy", "tv", "user", "virus", "women", "none" ],
           label: "Pop Icon",
@@ -156,7 +164,7 @@
           label: "Top",
           units: "%",
           "default": 5,
-          hidden: true
+          hidden: false
         },
         left: {
           elem: "input",
@@ -164,7 +172,7 @@
           label: "Left",
           units: "%",
           "default": 20,
-          hidden: true
+          hidden: false
         },
         width: {
           elem: "input",
@@ -186,7 +194,7 @@
           label: "Font",
           styleClass: "",
           googleFonts: true,
-          "default": "Merriweather",
+          "default": "Lato",
           group: "advanced"
         },
         // font size is deprecated
@@ -209,7 +217,7 @@
           elem: "input",
           type: "color",
           label: "Font colour",
-          "default": "#668B8B",
+          "default": "#333",
           group: "advanced"
         },
         fontDecorations: {

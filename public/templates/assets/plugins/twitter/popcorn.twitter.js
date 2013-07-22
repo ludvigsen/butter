@@ -74,7 +74,7 @@
           optional: true
         },
         left: {
-          hidden: true,
+          hidden: false,
           elem: "input",
           type: "number",
           units: "%",

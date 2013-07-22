@@ -733,7 +733,7 @@ var googleCallback;
         label: "Left",
         units: "%",
         "default": 15,
-        hidden: true
+        hidden: false
       },
       top: {
         elem: "input",
@@ -741,7 +741,7 @@ var googleCallback;
         label: "Top",
         units: "%",
         "default": 15,
-        hidden: true
+        hidden: false
       },
       width: {
         elem: "input",

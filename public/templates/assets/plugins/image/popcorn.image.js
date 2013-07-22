@@ -78,7 +78,7 @@
   }
 
   function validateDimension( value, fallback ) {
-    if ( typeof value === "number" ) {
+	if (!isNaN(parseFloat(value)) && isFinite(value)) {
       return value;
     }
     return fallback;
@@ -360,7 +360,7 @@
           label: "Top",
           "default": 10,
           "units": "%",
-          hidden: true
+          hidden: false
         },
         left: {
           elem: "input",
@@ -368,7 +368,7 @@
           label: "Left",
           "default": 10,
           "units": "%",
-          hidden: true
+          hidden: false
         },
         transition: {
           elem: "select",

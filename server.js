@@ -13,6 +13,7 @@ var express = require('express'),
     config = require( './lib/config' ),
     DB = require('./lib/models/index')(config.database),
     Project = require( './lib/project' )( DB.models.project ),
+    Account = require( './lib/account' )( DB.models.account ),
     filter = require( './lib/filter' )( DB.isDBOnline ),
     sanitizer = require( './lib/sanitizer' ),
     FileStore = require('./lib/file-store.js'),
@@ -136,7 +137,7 @@ require( 'express-persona' )( app, {
 });
 
 var routes = require('./routes');
-routes( app, Project, filter, sanitizer, stores, utils, metrics );
+routes( app, Project, Account, filter, sanitizer, stores, utils, metrics );
 
 function writeEmbedShell( embedPath, url, data, callback ) {
   if( !writeEmbedShell.templateFn ) {

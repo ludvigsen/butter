@@ -57,6 +57,19 @@ define( [ "dialog/dialog" ],
         }
       });
     };
+    
+    /*
+     * Method: Profile
+     *
+     * Allows the user the adjust their profile.
+     * @param {function} successCallback: A callback function that is fired when the user has successfully saved
+     * @param {function} errorCallback: A callback function that is fired when the user attempts to save with no project name
+     */
+    this.profile = function(callback) {
+        if ( callback && typeof callback === "function" ) {
+        	callback();
+        }
+    }
 
 
     /*

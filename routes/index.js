@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function routesCtor( app, Project, filter, sanitizer,
+module.exports = function routesCtor( app, Project, Account, filter, sanitizer,
                                       stores, utils, metrics ) {
 
   var uuid = require( "node-uuid" ),
@@ -207,6 +207,44 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
       });
     }
   });
+  
+  app.get( '/api/account',
+	filter.isLoggedIn, filter.isStorageAvailable,
+		  
+	function( req, res ) {
+	  Account.find(req.session.email, function( err, doc ) {
+		  if ( err ) {
+			  res.json( { error: err }, 500 );
+			  return;
+		  }
+		  
+		  if ( !doc ) {
+			  res.json( { error: "account not found" }, 404 );
+			  return;
+		  }
+		  var accountJSON = JSON.parse( doc.data );
+		  res.json( accountJSON );
+	  });
+  });
+  
+  app.post( '/api/account',
+	filter.isLoggedIn, filter.isStorageAvailable,
+	function (req, res) {
+	  var accountData = req.body;
+	  Account.update({email: req.session.email, language_id: accountData.language_id, organization_id: accountData.organization_id}, function(err,doc) {
+		  if (err) {
+			  res.json({error: err}, 500);
+			  metrics.increment('error.accountsave');
+			  return;
+		  }
+		  
+		  // send back the data
+		  res.json({ error: 'okay', email: req.session.email});
+		  metrics.increment('account.create');
+	  });
+    }
+  );
+  
 
   function formatDate( d ) {
     // YYYY-MM-DD

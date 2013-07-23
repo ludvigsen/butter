@@ -159,18 +159,8 @@ define( [ "util/xhr" ], function( xhr ) {
         callback( response );
       });
     }
-    
-    function saveAccountFunction (data, callback) {
-    	var url = "/api/account";
-    	
-    	xhr.post(url, data, function(response) {
-    		
-    		callback(response);
-    	});
-    }
 
     this.save = saveFunction;
-    this.saveAccount = saveAccountFunction;
     this.publish = publishFunction;
 
   };

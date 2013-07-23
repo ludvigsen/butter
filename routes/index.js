@@ -9,6 +9,8 @@ module.exports = function routesCtor( app, Project, Account, filter, sanitizer,
       api = require( "./api" )( metrics, utils, stores );
 
   app.get( '/healthcheck', api.healthcheck );
+  
+  app.get('/templates/:name/*', filter.showLogin);
 
   app.put( "/api/image", filter.isImage, api.image );
 

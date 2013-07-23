@@ -101,7 +101,6 @@ app.configure( function() {
       }
     }))
     .use( express.static( tmpDir, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) )
-    .use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) )
     .use( express.bodyParser() )
     .use( express.cookieParser() )
     .use( express.cookieSession( config.session ) )
@@ -138,6 +137,8 @@ require( 'express-persona' )( app, {
 
 var routes = require('./routes');
 routes( app, Project, Account, filter, sanitizer, stores, utils, metrics );
+
+app.use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
 
 function writeEmbedShell( embedPath, url, data, callback ) {
   if( !writeEmbedShell.templateFn ) {

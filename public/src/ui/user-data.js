@@ -59,20 +59,6 @@ define( [ "dialog/dialog" ],
     };
     
     /*
-     * Method: Profile
-     *
-     * Allows the user the adjust their profile.
-     * @param {function} successCallback: A callback function that is fired when the user has successfully saved
-     * @param {function} errorCallback: A callback function that is fired when the user attempts to save with no project name
-     */
-    this.profile = function(callback) {
-        if ( callback && typeof callback === "function" ) {
-        	callback();
-        }
-    }
-
-
-    /*
      * Method: save
      *
      * Allows the user the save their project.
@@ -100,9 +86,13 @@ define( [ "dialog/dialog" ],
     };
 
     this.logout = function( callback ) {
-      butter.cornfield.logout( function() {
+      butter.cornfield.logout( function(response) {
         if ( callback && typeof callback === "function" ) {
           callback();
+        }
+        // if the server sends back a redirection, then redirect the window
+        if (response.location && response.location.length > 0) {
+        	window.location = response.location;
         }
         butter.dispatch( "logout" );
       });

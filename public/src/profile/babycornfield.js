@@ -16,9 +16,12 @@ define( [ "util/xhr" ], function( xhr ) {
   var BabyCornField = function() {
 
     var authenticated = false,
+    	hasProfile = false,
         email = "",
         name = "",
         username = "",
+        organization_id = "",
+        language_id = "",
         self = this;
 
     this.login = function( callback ) {
@@ -40,6 +43,27 @@ define( [ "util/xhr" ], function( xhr ) {
         }
       });
     };
+    
+    this.getProfile = function(callback) {
+    	xhr.get("/api/profile", function(response) {
+    		if (response.error) {
+    			if (response.error.substring(0,3) === "404") {
+    				// user does not have a profile
+    				if (callback) {
+    					callback();
+    				}
+	    		} else {
+	    			// error occurred
+	    			if (callback) {
+	    				callback(response.error);
+	    			}
+	    		}
+    		} else {
+    			hasProfile = true;
+    			callback();
+    		}
+    	});
+    }
 
     function whoami( callback ) {
       xhr.get( "/api/whoami", function( response ) {
@@ -71,6 +95,18 @@ define( [ "util/xhr" ], function( xhr ) {
     this.authenticated = function() {
       return authenticated;
     };
+    
+    this.hasProfile = function() {
+    	return hasProfile;
+    }
+    
+    this.organization_id = function() {
+    	return organization_id;
+    }
+    
+    this.language_id = function() {
+    	return language_id;
+    }
 
     this.logout = function(callback) {
       xhr.post( "/persona/logout", function( response ) {
@@ -84,6 +120,17 @@ define( [ "util/xhr" ], function( xhr ) {
         }
       });
     };
+    
+    function saveAccountFunction (data, callback) {
+    	var url = "/api/profile";
+    	
+    	xhr.post(url, data, function(response) {
+    		
+    		callback(response);
+    	});
+    }
+
+    this.saveAccount = saveAccountFunction;
 
   };
 

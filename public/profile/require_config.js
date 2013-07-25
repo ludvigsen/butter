@@ -6,8 +6,8 @@ require.config({
 	}
 });
 
-require( ["login/login","persona"],
-	function(LoginPage) {
-		var l = new LoginPage();
+require( ["profile/profile","persona"],
+	function(ProfilePage) {
+		var l = new ProfilePage();
 	}
 );

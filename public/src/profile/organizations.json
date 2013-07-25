@@ -1,0 +1,34 @@
+{
+  "organizations": [
+    {
+      "id":		"voa",
+      "name":	"Voice of America",
+      "domain":	"voanews.com"
+    },
+    {
+      "id":		"bbg",
+      "name":	"Broadcasting Board of Governors",
+      "domain":	"bbg.gov"
+    },
+    {
+      "id":		"rferl",
+      "name":	"Radio Free Europe/Radio Free Libery",
+      "domain":	"rferl.org"
+    },
+    {
+      "id":		"ocb",
+      "name":	"Marti",
+      "domain":	"martinoticias.com"
+    },
+    {
+      "id":		"rfa",
+      "name":	"Radio Free Asia",
+      "domain":	"rfa.org"
+    },
+    {
+      "id":		"mbn",
+      "name":	"Middle East Broadcasting Network",
+      "domain":	"alhurra.com"
+    }
+  ]
+}

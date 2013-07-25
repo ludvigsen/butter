@@ -13,7 +13,7 @@ var express = require('express'),
     config = require( './lib/config' ),
     DB = require('./lib/models/index')(config.database),
     Project = require( './lib/project' )( DB.models.project ),
-    Account = require( './lib/account' )( DB.models.account ),
+    Profile = require( './lib/profile' )( DB.models.profile ),
     filter = require( './lib/filter' )( DB.isDBOnline ),
     sanitizer = require( './lib/sanitizer' ),
     FileStore = require('./lib/file-store.js'),
@@ -132,11 +132,15 @@ app.configure( function() {
 });
 
 require( 'express-persona' )( app, {
-  audience: APP_HOSTNAME
+  audience: APP_HOSTNAME,
+  logoutResponse: function(error, req, res) {
+	  // send the redirect url to the browser with the status
+	  res.json({"status": "okay", "location": "/profile"});
+  }
 });
 
 var routes = require('./routes');
-routes( app, Project, Account, filter, sanitizer, stores, utils, metrics );
+routes( app, Project, Profile, filter, sanitizer, stores, utils, metrics );
 
 app.use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
 

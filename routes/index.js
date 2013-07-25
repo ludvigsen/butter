@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function routesCtor( app, Project, Account, filter, sanitizer,
+module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
                                       stores, utils, metrics ) {
 
   var uuid = require( "node-uuid" ),
@@ -210,39 +210,38 @@ module.exports = function routesCtor( app, Project, Account, filter, sanitizer,
     }
   });
   
-  app.get( '/api/account',
+  app.get( '/api/profile',
 	filter.isLoggedIn, filter.isStorageAvailable,
 		  
 	function( req, res ) {
-	  Account.find(req.session.email, function( err, doc ) {
+	  Profile.find(req.session.email, function( err, result ) {
 		  if ( err ) {
 			  res.json( { error: err }, 500 );
 			  return;
 		  }
 		  
-		  if ( !doc ) {
-			  res.json( { error: "account not found" }, 404 );
+		  if ( !result ) {
+			  res.json( { error: "404: profile not found" }, 404 );
 			  return;
 		  }
-		  var accountJSON = JSON.parse( doc.data );
-		  res.json( accountJSON );
+		  res.json( result );
 	  });
   });
   
-  app.post( '/api/account',
+  app.post( '/api/profile',
 	filter.isLoggedIn, filter.isStorageAvailable,
 	function (req, res) {
-	  var accountData = req.body;
-	  Account.update({email: req.session.email, language_id: accountData.language_id, organization_id: accountData.organization_id}, function(err,doc) {
+	  var profileData = req.body;
+	  Profile.update({email: req.session.email, language_id: profileData.language_id, organization_id: profileData.organization_id}, function(err,doc) {
 		  if (err) {
 			  res.json({error: err}, 500);
-			  metrics.increment('error.accountsave');
+			  metrics.increment('error.profilesave');
 			  return;
 		  }
 		  
 		  // send back the data
 		  res.json({ error: 'okay', email: req.session.email});
-		  metrics.increment('account.create');
+		  metrics.increment('profile.create');
 	  });
     }
   );

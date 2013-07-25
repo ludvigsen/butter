@@ -1,0 +1,94 @@
+{
+	"bbg": [
+		{
+			"name": "Journalist",
+			"image": "",
+			"url": "/templates/journalist/",
+			"description": "Contains tools specific to journalists."
+		},
+		{
+			"name": "Basic",
+			"image": "",
+			"url": "/templates/basic/",
+			"description": "The basic Popcorn Maker default template."
+		}	
+	],
+	"voa": [
+		{
+			"name": "Journalist",
+			"image": "",
+			"url": "/templates/journalist/",
+			"description": "Contains tools specific to journalists."
+		},
+		{
+			"name": "Basic",
+			"image": "",
+			"url": "/templates/basic/",
+			"description": "The basic Popcorn Maker default template."
+		}	
+	],
+	"rferl": [
+		{
+			"name": "Journalist",
+			"image": "",
+			"url": "/templates/journalist/",
+			"description": "Contains tools specific to journalists."
+		},
+		{
+			"name": "Basic",
+			"image": "",
+			"url": "/templates/basic/",
+			"description": "The basic Popcorn Maker default template."
+		}	
+	],
+	"rfa": [
+		{
+			"name": "Journalist",
+			"image": "",
+			"url": "/templates/journalist/",
+			"description": "Contains tools specific to journalists."
+		},
+		{
+			"name": "Basic",
+			"image": "",
+			"url": "/templates/basic/",
+			"description": "The basic Popcorn Maker default template."
+		}	
+	],
+	"ocb": [
+		{
+			"name": "Journalist",
+			"image": "",
+			"url": "/templates/journalist/",
+			"description": "Contains tools specific to journalists."
+		},
+		{
+			"name": "Basic",
+			"image": "",
+			"url": "/templates/basic/",
+			"description": "The basic Popcorn Maker default template."
+		}	
+	],
+	"mbn": [
+		{
+			"name": "Journalist",
+			"image": "",
+			"url": "/templates/journalist/",
+			"description": "Contains tools specific to journalists."
+		},
+		{
+			"name": "Basic",
+			"image": "",
+			"url": "/templates/basic/",
+			"description": "The basic Popcorn Maker default template."
+		}	
+	],
+	"other": [
+		{
+			"name": "Basic",
+			"image": "",
+			"url": "/templates/basic/",
+			"description": "The basic Popcorn Maker default template."
+		}	
+	]
+}

@@ -21,7 +21,9 @@ define(["util/lang",
 		
 	    var _this = this,
 	    	_cornfield = new KettleCornField(),
+	    	_instructionsElement = document.querySelector(".instructions"),
 	        _headerElement = document.querySelector(".login-header"),
+	        _getStartedElement = _instructionsElement.querySelector(".login"),
 	        _webmakerNavBar = _headerElement.querySelector( "#webmaker-nav" ),
 	        _profileHolderElement = document.querySelector(".profile"),
 	        _templateListHolderElement = document.querySelector(".templates"),
@@ -36,6 +38,23 @@ define(["util/lang",
 	        onLogin: authenticationRequired,
 	        onLogout: logout
 	    });
+	    
+	    _getStartedElement.addEventListener("click",function(e) {
+	    	authenticationRequired();
+	    })
+	    
+	    this.views = {
+	    	login: function(username) {
+	    		_webmakerNav.views.login(username);
+	    		_instructionsElement.style.display = "none";
+	    	},
+	    	logout: function() {
+	    		_webmakerNav.views.logout();
+	    		_instructionsElement.style.display = "";
+		    	hideUserProfile();
+		    	hideTemplateList();
+	    	}
+	    }
 	    
 	    function authenticationRequired( successCallback, errorCallback ) {
 	        if ( _cornfield.authenticated() ) {
@@ -64,7 +83,7 @@ define(["util/lang",
 	    
 	    function logout ( callback ) {
 	        _cornfield.logout( function() {
-	          showUserLoggedOut();
+	          _this.views.logout();
 	          if ( callback && typeof callback === "function" ) {
 	            callback();
 	          }
@@ -73,7 +92,7 @@ define(["util/lang",
 	    
 	    /*** User Account and Template List Information ***/
 	    function showUserLoggedIn() {
-            _webmakerNav.views.login( _cornfield.username() );
+	    	_this.views.login( _cornfield.username() );
 	    	// check to see if the user has a profile in the system
 	    	_cornfield.getProfile(function(errorResponse) {
 	    		if (errorResponse) {
@@ -166,15 +185,9 @@ define(["util/lang",
 	    	_templateListHolderElement.innerHTML = '';
 	    }
 	    
-	    function showUserLoggedOut() {
-	    	_webmakerNav.views.logout();
-	    	hideUserProfile();
-	    	hideTemplateList();
-	    }
-	    
 	    // start in a logged out state.
 	    // NOTE: This will need to change in order to auto-detect.
-	    showUserLoggedOut();
+	    this.views.logout();
 	    
 	}
 	

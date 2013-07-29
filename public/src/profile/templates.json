@@ -1,84 +1,84 @@
 {
 	"bbg": [
 		{
-			"name": "Journalist",
-			"image": "",
+			"name": "BBG Journalist",
+			"image": "http://placehold.it/75",
 			"url": "/templates/journalist/",
 			"description": "Contains tools specific to journalists."
 		},
 		{
 			"name": "Basic",
-			"image": "",
+			"image": "http://placehold.it/75",
 			"url": "/templates/basic/",
 			"description": "The basic Popcorn Maker default template."
 		}	
 	],
 	"voa": [
 		{
-			"name": "Journalist",
-			"image": "",
+			"name": "VOA Journalist",
+			"image": "http://placehold.it/75",
 			"url": "/templates/journalist/",
 			"description": "Contains tools specific to journalists."
 		},
 		{
 			"name": "Basic",
-			"image": "",
+			"image": "http://placehold.it/75",
 			"url": "/templates/basic/",
 			"description": "The basic Popcorn Maker default template."
 		}	
 	],
 	"rferl": [
 		{
-			"name": "Journalist",
-			"image": "",
+			"name": "RFERL Journalist",
+			"image": "http://placehold.it/75",
 			"url": "/templates/journalist/",
 			"description": "Contains tools specific to journalists."
 		},
 		{
 			"name": "Basic",
-			"image": "",
+			"image": "http://placehold.it/75",
 			"url": "/templates/basic/",
 			"description": "The basic Popcorn Maker default template."
 		}	
 	],
 	"rfa": [
 		{
-			"name": "Journalist",
-			"image": "",
+			"name": "RFA Journalist",
+			"image": "http://placehold.it/75",
 			"url": "/templates/journalist/",
 			"description": "Contains tools specific to journalists."
 		},
 		{
 			"name": "Basic",
-			"image": "",
+			"image": "http://placehold.it/75",
 			"url": "/templates/basic/",
 			"description": "The basic Popcorn Maker default template."
 		}	
 	],
 	"ocb": [
 		{
-			"name": "Journalist",
-			"image": "",
+			"name": "OCB Journalist",
+			"image": "http://placehold.it/75",
 			"url": "/templates/journalist/",
 			"description": "Contains tools specific to journalists."
 		},
 		{
 			"name": "Basic",
-			"image": "",
+			"image": "http://placehold.it/75",
 			"url": "/templates/basic/",
 			"description": "The basic Popcorn Maker default template."
 		}	
 	],
 	"mbn": [
 		{
-			"name": "Journalist",
-			"image": "",
+			"name": "MBN Journalist",
+			"image": "http://placehold.it/75",
 			"url": "/templates/journalist/",
 			"description": "Contains tools specific to journalists."
 		},
 		{
 			"name": "Basic",
-			"image": "",
+			"image": "http://placehold.it/75",
 			"url": "/templates/basic/",
 			"description": "The basic Popcorn Maker default template."
 		}	
@@ -86,7 +86,7 @@
 	"other": [
 		{
 			"name": "Basic",
-			"image": "",
+			"image": "http://placehold.it/75",
 			"url": "/templates/basic/",
 			"description": "The basic Popcorn Maker default template."
 		}	

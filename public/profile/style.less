@@ -4,6 +4,10 @@
    Author: @k88hudson
    ========================================================================== */
 
+body {
+	overflow: auto;
+}
+
 .wrapper {
   @media @small {
     width: @small-w-px;
@@ -86,4 +90,79 @@ body.editor-minimized .body-wrapper {
   }
 }
 
+.instructions, .profile, .templates {
+	padding: 5px 20px;
+	
+	.login-join {
+		width: 40%;
+	}
+}
 
+.profile, .templates {
+	.instructions {
+		padding: 0px;
+		font-size: small;
+		color: gray;
+	}
+	
+	fieldset {
+		background-color: @baseLight;
+		
+		>label {
+			background-color: @darkGrey;
+			color: white;
+			font-weight: bold;
+		}
+	}
+	
+	ul {
+		list-style-type: none;
+		
+		li {
+			padding-left: 5px;
+		}
+	}
+}
+
+.templates {
+	
+	ul {
+		list-style-type: none;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		
+		li {
+			padding: 10px;
+			overflow: auto;
+			
+			a {
+				text-decoration: none;
+				color: @baseText;
+			}
+
+			h3 {
+				font: bold 20px/1.5;
+				padding: 0;
+				margin: 0;
+			}
+			
+			img {
+				float: left;
+				margin: 0 15px 0 0;
+				padding: 0;
+			}
+			
+			p {
+				font: 200 12px/1.5;
+				padding: 0;
+				margin: 0;
+			}
+		}
+		
+		li:hover {
+			background: @midGrey;
+			cursor: pointer;
+		}	
+	}
+}

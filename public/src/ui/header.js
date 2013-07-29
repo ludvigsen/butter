@@ -16,6 +16,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-btn" ),
+        _translateBtn = _rootElement.querySelector(".butter-translate-btn"),
         _projectBtn = _rootElement.querySelector( ".butter-project-btn" ),
         _projectMenu = _rootElement.querySelector( ".butter-project-menu" ),
         _projectMenuControl = _rootElement.querySelector( ".butter-project-menu-control" ),
@@ -107,6 +108,16 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
         _clearEvents.removeEventListener( "click", clearEventsClick, false );
       }
     }
+    
+    function toggleTranslateButton(on) {
+    	if (on) {
+    		_translateBtn.classList.remove('butter-disabled');
+    		_translateBtn.addEventListener("click",translateClick, false);
+    	} else {
+    		_translateBtn.classList.add("butter-disabled");
+    		_translateBtn.removeEventListener("click",translateClick,false);
+    	}
+    }
 
     function toggleProjectNameListeners( state ) {
       if ( state ) {
@@ -146,6 +157,19 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
         dialog.open();
       }
     }
+    
+    function checkTranslationEnabled() {
+    	if (butter.project && butter.project.isRemix) {
+    		toggleTranslateButton(true);
+    	} else {
+    		toggleTranslateButton(false);
+    	}
+    }
+    
+    function translateClick() {
+    	// TODO:  Translation functionality has not yet been implemented
+    	alert("Translation not yet implemented.");
+    }
 
     this.views = {
       dirty: function() {
@@ -179,6 +203,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
         _projectTitle.classList.remove( "butter-disabled" );
         toggleSaveButton( !butter.project.isSaved );
         toggleProjectNameListeners( true );
+        checkTranslationEnabled();
       },
       mediaChanging: function() {
         _projectTitle.classList.add( "butter-disabled" );

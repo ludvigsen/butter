@@ -162,6 +162,16 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         },
         enumerable: true
       },
+      
+      "isRemix": {
+    	  get: function() {
+    		  if (_remixedFrom) {
+    			  return true;
+    		  }
+    		  return false;
+    	  },
+    	  enumerable: true
+      },
 
       // Have changes made it to the db and been published?
       "isSaved": {

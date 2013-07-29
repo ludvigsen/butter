@@ -20,6 +20,10 @@ define( [ "util/xhr","cornfield/module" ], function( xhr, Cornfield ) {
         organization_id = "",
         language_id = "",
         self = this,
+        _email,
+        _authenticated,
+        _username,
+        _name,
         NULL_FUNCTION = function() {},
         dummy = {listen: NULL_FUNCTION, unlisten: NULL_FUNCTION, dispatch: NULL_FUNCTION},
         cornfield = butter_cornfield ? butter_cornfield : new Cornfield(dummy);
@@ -51,21 +55,36 @@ define( [ "util/xhr","cornfield/module" ], function( xhr, Cornfield ) {
     		}
     	});
     }
+    
+    this.autologin = function(callback) {
+    	xhr.get( "/api/whoami", function( response ) {
+    		if ( response.status === "okay" ) {
+    			_authenticated = true;
+    			_email = response.email;
+    			_username = response.username;
+    			_name = response.name;
+    		}
+    		
+    		if ( callback ) {
+    			callback( response );
+    		}
+    	});
+    }
 
     this.email = function() {
-      return cornfield.email();
+      return cornfield.email() || _email;
     };
 
     this.name = function() {
-      return cornfield.name();
+      return cornfield.name() || _name;
     };
 
     this.username = function() {
-      return cornfield.username();
+      return cornfield.username() || _username;
     };
 
     this.authenticated = function() {
-      return cornfield.authenticated();
+      return cornfield.authenticated() || _authenticated;
     };
     
     this.hasProfile = function() {

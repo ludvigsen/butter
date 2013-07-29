@@ -185,9 +185,16 @@ define(["util/lang",
 	    	_templateListHolderElement.innerHTML = '';
 	    }
 	    
-	    // start in a logged out state.
-	    // NOTE: This will need to change in order to auto-detect.
+	    // start in a logged out state as the default view
 	    this.views.logout();
+	    
+	    // try to autologin
+	    _cornfield.autologin(function() {
+	    	if (_cornfield.authenticated()) {
+	    		_this.views.login(_cornfield.username());
+	    		showUserLoggedIn();
+	    	}
+	    });
 	    
 	}
 	

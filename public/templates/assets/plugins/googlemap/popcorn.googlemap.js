@@ -727,21 +727,23 @@ var googleCallback;
         label: "Transition",
         "default": "popcorn-fade"
       },
+      top: {
+          elem: "input",
+          type: "number",
+          label: "Top",
+          units: "%",
+          "default": 15,
+          hidden: false,
+          group: "advanced"
+        },
       left: {
         elem: "input",
         type: "number",
         label: "Left",
         units: "%",
         "default": 15,
-        hidden: false
-      },
-      top: {
-        elem: "input",
-        type: "number",
-        label: "Top",
-        units: "%",
-        "default": 15,
-        hidden: false
+        hidden: false,
+        group: "advanced"
       },
       width: {
         elem: "input",

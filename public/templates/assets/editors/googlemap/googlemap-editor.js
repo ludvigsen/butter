@@ -52,7 +52,9 @@
             "start",
             "end"
           ],
-          optionsContainer = _rootElement.querySelector( ".editor-options" );
+          basicContainer = _rootElement.querySelector( ".editor-options" ),
+      advancedContainer = _rootElement.querySelector( ".advanced-options" ),
+      pluginOptions = {};
 
       function callback( elementType, element, trackEvent, name ) {
         pluginOptions[ name ] = {
@@ -236,12 +238,13 @@
 
       }
 
-      optionsContainer.appendChild( _this.createStartEndInputs( trackEvent, _this.updateTrackEventSafe ) );
+      basicContainer.insertBefore( _this.createStartEndInputs( trackEvent, _this.updateTrackEventSafe ), basicContainer.firstChild );
 
       _this.createPropertiesFromManifest({
         trackEvent: trackEvent,
         callback: callback,
-        basicContainer: optionsContainer,
+        basicContainer: basicContainer,
+        advancedContainer: advancedContainer,
         ignoreManifestKeys: ignoreKeys
       });
 

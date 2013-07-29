@@ -164,7 +164,8 @@
           label: "Top",
           units: "%",
           "default": 5,
-          hidden: false
+          hidden: false,
+          group: "advanced"
         },
         left: {
           elem: "input",
@@ -172,7 +173,8 @@
           label: "Left",
           units: "%",
           "default": 20,
-          hidden: false
+          hidden: false,
+          group: "advanced"
         },
         width: {
           elem: "input",

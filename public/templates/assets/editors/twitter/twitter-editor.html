@@ -4,8 +4,16 @@
 
 <div class="butter-editor default-editor allow-scrollbar">
   <h1>Twitter Editor</h1>
-  <div class="butter-editor-body scrollbar-container">
+  <ul class="butter-editor-tabs">
+      <li><a class="butter-btn basic-tab butter-active">Basic</a></li>
+      <li><a class="butter-btn advanced-tab">Advanced</a></li>
+  </ul>
+  <div class="butter-editor-body butter-tabs-spacing scrollbar-container">
     <div class="editor-options-wrapper scrollbar-outer">
+        <div class="error-message-container">
+          <div class="error-message"></div>
+        </div>
+
       <div class="editor-options scrollbar-inner">
         <fieldset class="trackevent-property default input radio">
           <label class="property-name" id="search-label">Search</label>
@@ -29,10 +37,8 @@
             <input class="value" type="text" id="user-text" data-manifest-key="username" />
           </div>
         </fieldset>
-        <div class="error-message-container">
-          <div class="error-message"></div>
-        </div>
       </div>
+      <div class="advanced-options scrollbar-inner display-off"></div>
     </div>
   </div>
 </div>

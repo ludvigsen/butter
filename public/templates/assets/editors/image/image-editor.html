@@ -4,7 +4,11 @@
 
 <div class="butter-editor image-editor allow-scrollbar">
   <h1>Image Editor</h1>
-  <div class="butter-editor-body scrollbar-container">
+  <ul class="butter-editor-tabs">
+      <li><a class="butter-btn basic-tab butter-active">Basic</a></li>
+      <li><a class="butter-btn advanced-tab">Advanced</a></li>
+  </ul>
+  <div class="butter-editor-body butter-tabs-spacing scrollbar-container">
     <div class="editor-options-wrapper scrollbar-outer">
       <div class="error-message-container">
         <div class="error-message"></div>
@@ -67,6 +71,7 @@
         </div>
         <hr>
       </div>
+      <div class="advanced-options scrollbar-inner display-off"></div>
     </div>
   </div>
 </div>

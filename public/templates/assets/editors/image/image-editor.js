@@ -174,6 +174,7 @@
 
     function setup( trackEvent ) {
       var container = _rootElement.querySelector( ".editor-options" ),
+      	  advancedContainer = _rootElement.querySelector( ".advanced-options" ),
           startEndElement,
           manifestOpts = trackEvent.popcornTrackEvent._natives.manifest.options;
 
@@ -297,6 +298,7 @@
         trackEvent: trackEvent,
         callback: callback,
         basicContainer: container,
+        advancedContainer: advancedContainer,
         manifestKeys: [ "transition","top","left" ]
       });
 

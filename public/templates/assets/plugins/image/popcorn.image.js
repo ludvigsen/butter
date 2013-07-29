@@ -360,7 +360,8 @@
           label: "Top",
           "default": 10,
           "units": "%",
-          hidden: false
+          hidden: false,
+          group: "advanced"
         },
         left: {
           elem: "input",
@@ -368,7 +369,8 @@
           label: "Left",
           "default": 10,
           "units": "%",
-          hidden: false
+          hidden: false,
+          group: "advanced"
         },
         transition: {
           elem: "select",

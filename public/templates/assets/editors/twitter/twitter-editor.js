@@ -45,6 +45,7 @@
       _trackEvent = trackEvent;
 
       var container = _rootElement.querySelector( ".editor-options" ),
+      	  advancedContainer = _rootElement.querySelector( ".advanced-options" ),
           pluginOptions = {},
           ignoreKeys = [
             "search",
@@ -142,6 +143,7 @@
         trackEvent: trackEvent,
         callback: callback,
         basicContainer: container,
+        advancedContainer: advancedContainer,
         ignoreManifestKeys: ignoreKeys
       });
 

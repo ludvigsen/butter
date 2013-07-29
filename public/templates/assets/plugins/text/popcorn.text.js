@@ -67,6 +67,24 @@
           group: "advanced",
           "units": "seconds"
         },
+        top: {
+            elem: "input",
+            type: "number",
+            label: "Top",
+            units: "%",
+            "default": 0,
+            hidden: false,
+            group: "advanced"
+          },
+        left: {
+            elem: "input",
+            type: "number",
+            label: "Left",
+            units: "%",
+            "default": 25,
+            hidden: false,
+            group: "advanced"
+          },
         transition: {
           elem: "select",
           options: [ "None", "Pop", "Fade", "Slide Up", "Slide Down" ],
@@ -130,22 +148,6 @@
           labels: { bold: "Bold", italics: "Italics" },
           "default": { bold: false, italics: false },
           group: "advanced"
-        },
-        left: {
-          elem: "input",
-          type: "number",
-          label: "Left",
-          units: "%",
-          "default": 25,
-          hidden: false
-        },
-        top: {
-          elem: "input",
-          type: "number",
-          label: "Top",
-          units: "%",
-          "default": 0,
-          hidden: false
         },
         width: {
           elem: "input",

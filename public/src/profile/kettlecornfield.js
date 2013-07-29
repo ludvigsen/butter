@@ -7,41 +7,25 @@
  * This allows a separate login functionality to be used without instantiating the full "Butter" application.
  * This is specific to Kettlecorn
  */
-define( [ "util/xhr" ], function( xhr ) {
+define( [ "util/xhr","cornfield/module" ], function( xhr, Cornfield ) {
 
   /**
-   * BabyCornField includes a subset of the information in the full cornfield module.
-   * This includes only authentications stuff as well as profile updates specific to Kettlecorn implementation. 
+   * KettleCornField is a wrapper function for the cornfield module.  It adds the profile specific functionality of Kettlecorn.
+   * It can be passed the main cornfield or instantiate a new one.  This allows us to take advantage of butter when available,
+   * but still have authentication functionality without the full editor instantiation.
    */
-  var BabyCornField = function() {
+  var KettleCornField = function(butter_cornfield) {
 
-    var authenticated = false,
-    	hasProfile = false,
-        email = "",
-        name = "",
-        username = "",
+    var hasProfile = false,
         organization_id = "",
         language_id = "",
-        self = this;
+        self = this,
+        NULL_FUNCTION = function() {},
+        dummy = {listen: NULL_FUNCTION, unlisten: NULL_FUNCTION, dispatch: NULL_FUNCTION},
+        cornfield = butter_cornfield ? butter_cornfield : new Cornfield(dummy);
 
     this.login = function( callback ) {
-      navigator.id.get( function( assertion ) {
-        if ( assertion ) {
-          xhr.post( "/persona/verify", { assertion: assertion }, function( response ) {
-            if ( response.status === "okay" ) {
-
-              // Get email, name, and username after logging in successfully
-              whoami( callback );
-              return;
-            }
-
-            // If there was an error of some sort, callback on that
-            callback( response );
-          });
-        } else {
-          callback();
-        }
-      });
+      cornfield.login(callback);
     };
     
     this.getProfile = function(callback) {
@@ -60,40 +44,28 @@ define( [ "util/xhr" ], function( xhr ) {
 	    		}
     		} else {
     			hasProfile = true;
+    			email = response.email;
+    			language_id = response.language_id;
+    			organization_id = response.organization_id;
     			callback();
     		}
     	});
     }
 
-    function whoami( callback ) {
-      xhr.get( "/api/whoami", function( response ) {
-        if ( response.status === "okay" ) {
-          authenticated = true;
-          email = response.email;
-          username = response.username;
-          name = response.name;
-        }
-
-        if ( callback ) {
-          callback( response );
-        }
-      });
-    }
-
     this.email = function() {
-      return email;
+      return cornfield.email();
     };
 
     this.name = function() {
-      return name;
+      return cornfield.name();
     };
 
     this.username = function() {
-      return username;
+      return cornfield.username();
     };
 
     this.authenticated = function() {
-      return authenticated;
+      return cornfield.authenticated();
     };
     
     this.hasProfile = function() {
@@ -109,16 +81,7 @@ define( [ "util/xhr" ], function( xhr ) {
     }
 
     this.logout = function(callback) {
-      xhr.post( "/persona/logout", function( response ) {
-        authenticated = false;
-        email = "";
-        username = "";
-        name = "";
-
-        if ( callback ) {
-          callback( response );
-        }
-      });
+    	cornfield.logout(callback);
     };
     
     function saveAccountFunction (data, callback) {
@@ -134,7 +97,7 @@ define( [ "util/xhr" ], function( xhr ) {
 
   };
 
-  BabyCornField.__moduleName = "babycornfield";
+  KettleCornField.__moduleName = "kettlecornfield";
 
-  return BabyCornField;
+  return KettleCornField;
 });

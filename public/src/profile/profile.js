@@ -1,17 +1,17 @@
 define(["util/lang",
-        "ui/webmakernav/webmakernav","./babycornfield",
+        "ui/webmakernav/webmakernav","./kettlecornfield",
         "dialog/dialog","dialogs",
         "text!./profile.html","text!./language_option.html",
         "text!./gettingstarted.html","text!./template_option.html",
-        "core/config", "text!./languages.json","text!./organizations.json","text!./templates.json",
+        "text!./templates.json",
         "./account"],
         
         function(Lang,
-        		WebmakerBar, BabyCornField, 
+        		WebmakerBar, KettleCornField, 
         		Dialog, dialogs,
         		PROFILE_LAYOUT, LANGUAGE_OPTION,
         		GETTING_STARTED, TEMPLATE_OPTION,
-        		Config, LANGUAGES, ORGANIZATIONS, TEMPLATES,
+        		TEMPLATES,
         		Account) {
 	
 	/**
@@ -20,19 +20,15 @@ define(["util/lang",
 	function ProfilePage(){
 		
 	    var _this = this,
-	    	_cornfield = new BabyCornField(),
+	    	_cornfield = new KettleCornField(),
 	        _headerElement = document.querySelector(".login-header"),
 	        _webmakerNavBar = _headerElement.querySelector( "#webmaker-nav" ),
 	        _profileHolderElement = document.querySelector(".profile"),
 	        _templateListHolderElement = document.querySelector(".templates"),
 	        _webmakerNav,
-	        _languageConfig = Config.parse(LANGUAGES),
-	        _organizationConfig = Config.parse(ORGANIZATIONS),
-	        _templateConfig = Config.parse(TEMPLATES),
-	        _languages = _languageConfig.value('languages'),
-	        _organizations = _organizationConfig.value('organizations'),
+	        _templatesByOrganization = JSON.parse(TEMPLATES),
 	        _templates,
-	        _account = new Account(_cornfield,_languages,_organizations);
+	        _account = new Account(_cornfield);
 	    
 	    /*** Header and Authentication ***/
 	    _webmakerNav = new WebmakerBar({
@@ -99,7 +95,7 @@ define(["util/lang",
 	    }
 	    
 	    function showUserProfile() {
-	    	var organization, language, langOption, langInput, langLabel, organizationElement, languagesList,i,num,org;
+	    	var organization, language, langOption, langInput, langLabel, organizationElement, languagesList,i,num,org,languages;
 	        var _profileElement = Lang.domFragment( PROFILE_LAYOUT );
 	    	organizationElement = _profileElement.querySelector('.profile-organization');
 	    	organization = _account.getOrganizationForEmail(_cornfield.email());
@@ -109,9 +105,10 @@ define(["util/lang",
 	    		organizationElement.innerHTML = 'Unrecognized Organization';
 	    	}
 	    	languagesList = _profileElement.querySelector('.profile-language-options');
-	    	num = _languages.length;
+	    	languages = _account.getLanguages();
+	    	num = languages.length;
 	    	for (i=0; i<num; i++) {
-	    		language = _languages[i];
+	    		language = languages[i];
 	    		langOption = Lang.domFragment(LANGUAGE_OPTION);
 	    		langInput = langOption.querySelector('input');
 	    		langInput.value = language.id;
@@ -138,9 +135,9 @@ define(["util/lang",
     		var gettingStartedElement, templateElement, templateListElement, template, i, num, templateOption, templateImage;
     		
     		if (_account.organization_id) {
-    			_templates = _templateConfig.value(_account.organization_id);
+    			_templates = _templatesByOrganization[_account.organization_id];
     		} else {
-    			_templates = _templateConfig.value("other");
+    			_templates = _templatesByOrganization.other;
     		}
     		gettingStartedElement = Lang.domFragment(GETTING_STARTED);
     		templateListElement = gettingStartedElement.querySelector('ul.template-list');

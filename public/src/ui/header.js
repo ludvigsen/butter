@@ -213,6 +213,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
       container: _webmakerNavBar,
       onLogin: _userData.authenticationRequired,
       onLogout: _userData.logout,
+      onProfile: _userData.profile,
       feedbackCallback: feedbackCallback
     });
 

@@ -5,8 +5,8 @@
 /*
  * saving, and logging out.
  */
-define( [ "dialog/dialog" ],
-  function( Dialog ) {
+define( [ "dialog/dialog","profile/kettlecornfield","profile/account" ],
+  function( Dialog, KettleCornField, Account ) {
 
   return function( butter ) {
     var _this = this;
@@ -32,6 +32,24 @@ define( [ "dialog/dialog" ],
       });
       dialog.open();
     };
+    
+    this.profile = function() {
+    	var kettleCornField = new KettleCornField(butter.cornfield);
+    	var account = new Account(kettleCornField);
+    	account.getProfile(function() {
+        	var dialog = Dialog.spawn("profile", {
+        		events: {
+        			cancel: function() {
+        				dialog.close();
+        			}
+        		},
+        		data: {
+        			account: account
+        		}
+        	});
+        	dialog.open();
+    	});
+    }
 
     this.authenticationRequired = function( successCallback, errorCallback ) {
       if ( butter.cornfield.authenticated() ) {

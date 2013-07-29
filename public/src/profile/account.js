@@ -1,15 +1,17 @@
-define([],function() {
+define(["text!./languages.json","text!./organizations.json"],
+		function(LanguagesData,OrganizationsData) {
 
-	function Account(babycornfield,languages,organizations) {
+	function Account(kettleCornField) {
 		var _this = this,
         _email, _language_id, _organization_id,
-        _isDirty = false;
+        _isDirty = false,
+        _languages = JSON.parse(LanguagesData).languages,
+        _organizations = JSON.parse(OrganizationsData).organizations;
 		
 		function invalidate() {
 			// Account is dirty, needs save
 			_isDirty = true;
 		}
-		
 		
 		Object.defineProperties( _this, {
 	      "email": {
@@ -36,9 +38,9 @@ define([],function() {
 	    	  },
 	    	  set: function(value) {
 	    		  if (value != _language_id) {
-	    			  var i, num=languages.length;
+	    			  var i, num=_languages.length;
 	    			  for (i=0; i<num; i++) {
-	    				  var language = languages[i];
+	    				  var language = _languages[i];
 		    				if (language.id === value) {
 		    					_language_id = value;
 		    					invalidate();
@@ -78,12 +80,9 @@ define([],function() {
 	      };
 
 	      // Save to db, then publish
-	      babycornfield.saveAccount( accountData, function( e ) {
+	      kettleCornField.saveAccount( accountData, function( e ) {
 	        if ( e.error === "okay" ) {
 	          _isDirty = false;
-
-	          // Let consumers know that the account is now saved;
-	          _this.dispatch( "accountsaved" );
 
 	          callback( e );
 	        } else {
@@ -95,17 +94,30 @@ define([],function() {
 			var split = email.split('@');
 			var domain;
 			var i;
-			var num = organizations.length;
+			var num = _organizations.length;
 			if (split.length == 2) {
 				domain = split[1];
 				for (i=0; i<num; i++) {
-					var org = organizations[i];
+					var org = _organizations[i];
 					if (org.domain == domain) {
 						return org;
 					}
 				}
 			}
+		};
+		_this.getLanguages = function() {
+			return _languages;
 		}
+		_this.getProfile = function(callback) {
+			kettleCornField.getProfile(function() {
+				_this.email = kettleCornField.email();
+				_this.language_id = kettleCornField.language_id();
+				if ( callback && typeof callback === "function" ) {
+	              callback();
+	            }
+			});
+		};
+
 	}
 	return Account;
 });

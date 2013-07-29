@@ -26,6 +26,7 @@ define( [ "util/lang", "text!./webmakernav.html" ],
         personaBtnGroup = root.querySelector( ".login-join" ),
         loginBtn = root.querySelector( ".login" ),
         logoutBtn = root.querySelector( ".logout-btn" ),
+        profileBtn = root.querySelector(".profile-btn"),
         userMenu = root.querySelector( ".tooltip-user" ),
         username = root.querySelector( ".user-name" ),
         usernameInner = root.querySelector( ".user-name-container" ),
@@ -35,6 +36,7 @@ define( [ "util/lang", "text!./webmakernav.html" ],
         feedbackCallback,
         onLogin,
         onLogout,
+        onProfile,
         webmakerTabSetup,
         userMenuSetup;
 
@@ -53,6 +55,7 @@ define( [ "util/lang", "text!./webmakernav.html" ],
     feedbackCallback = options.feedbackCallback;
     onLogin = options.onLogin || NULL_FUNCTION;
     onLogout = options.onLogout || NULL_FUNCTION;
+    onProfile = options.onProfile || NULL_FUNCTION;
 
     webmakerTabSetup = function( e ) {
       var currentActiveBtn = primary.querySelector( "." + BTN_ACTIVE_CLASS ),
@@ -106,6 +109,7 @@ define( [ "util/lang", "text!./webmakernav.html" ],
     feedbackBtn.addEventListener( "click", feedbackCallback, false );
     loginBtn.addEventListener( "click", onLogin, false );
     logoutBtn.addEventListener( "click", onLogout, false );
+    profileBtn.addEventListener("click",onProfile,false);
     primary.addEventListener( "click", webmakerTabSetup, false );
 
     // Default view

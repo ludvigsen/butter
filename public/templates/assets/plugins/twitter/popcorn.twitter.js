@@ -78,7 +78,8 @@
           elem: "input",
           type: "number",
           units: "%",
-          "default": 0
+          "default": 0,
+          group: "advanced"
         },
         width: {
           hidden: true,

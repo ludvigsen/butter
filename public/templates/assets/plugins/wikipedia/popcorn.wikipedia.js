@@ -361,7 +361,8 @@
         label: "Top",
         "default": 25,
         "units": "%",
-        "hidden": false
+        "hidden": false,
+        group: "advanced"
       },
       left: {
         elem: "input",
@@ -369,7 +370,8 @@
         label: "Left",
         "default": 30,
         "units": "%",
-        "hidden": false
+        "hidden": false,
+        group: "advanced"
       },
       target: {
         hidden: true

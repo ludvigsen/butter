@@ -48,7 +48,6 @@
       },
       {
         "type": "wikipedia",
-        "optional": true,
         "icon": "{{baseDir}}templates/assets/plugins/wikipedia/wikipedia-icon.png"
       },
       {

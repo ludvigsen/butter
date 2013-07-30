@@ -3,7 +3,7 @@
   padding: 20px;
 }
 
-.butter-plugin-tile {
+.butter-plugin-tile, .butter-plugin-add{
   text-transform: capitalize;
   position: relative;
   background: #FFF;
@@ -38,4 +38,21 @@
   height: 24px;
   margin-right: 10px;
 
+}
+
+.butter-plugin-add {
+	cursor: pointer;
+	
+	&:hover {
+		left: 0px;
+		top: 0px;
+	}
+	
+	.icon {
+		display: block;
+		float: left;
+		width: 24px;
+		height: 24px;
+		margin: 5px 10px 0 1px;
+	}
 }

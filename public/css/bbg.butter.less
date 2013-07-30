@@ -15,3 +15,34 @@
 .butter-hidden {
 	display: none;
 }
+
+.butter-dialog-add-profile .butter-plugin-tile {
+  text-transform: capitalize;
+  position: relative;
+  background: #FFF;
+  box-shadow: 1px 5px 2px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #CCC;
+  border-radius: 2px;
+  border-top-color: #E3E3E3;
+  border-bottom-color: #BDBDBD;
+  color: #555;
+  font-size: 13px;
+  line-height: 24px;
+  cursor: pointer;
+  padding: 8px;
+  height: 30px;
+  margin-bottom: 10px;
+  display: block;
+  text-decoration: none;
+
+  &:hover {
+    left: 0px;
+    top: 0px;
+    box-shadow: 4px 4px 0 -2px rgba( 0, 0, 0, .3 );
+  }
+  
+  &.selected {
+  	background-color: @midGrey
+  }
+
+}

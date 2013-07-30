@@ -11,5 +11,6 @@ define([
   "dialog/dialogs/crash",
   "dialog/dialogs/first-run",
   "dialog/dialogs/backup",
-  "dialog/dialogs/profile"
+  "dialog/dialogs/profile",
+  "dialog/dialogs/plugin-add"
 ], function() {} );

@@ -85,6 +85,14 @@
             hidden: false,
             group: "advanced"
           },
+          width: {
+              elem: "input",
+              type: "number",
+              units: "%",
+              label: "Width",
+              "default": 50,
+              group: "advanced"
+            }, 
         transition: {
           elem: "select",
           options: [ "None", "Pop", "Fade", "Slide Up", "Slide Down" ],
@@ -148,14 +156,6 @@
           labels: { bold: "Bold", italics: "Italics" },
           "default": { bold: false, italics: false },
           group: "advanced"
-        },
-        width: {
-          elem: "input",
-          type: "number",
-          units: "%",
-          label: "Width",
-          "default": 50,
-          hidden: true
         },
         zindex: {
           hidden: true

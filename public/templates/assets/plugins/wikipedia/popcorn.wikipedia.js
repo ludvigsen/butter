@@ -339,22 +339,6 @@
         label: "Article Link/Title",
         "default": "Popcorn.js"
       },
-      width: {
-        elem: "input",
-        type: "number",
-        label: "Width",
-        "default": 40,
-        "units": "%",
-        "hidden": true
-      },
-      height: {
-        elem: "input",
-        type: "number",
-        label: "Height",
-        "default": 50,
-        "units": "%",
-        "hidden": true
-      },
       top: {
         elem: "input",
         type: "number",
@@ -373,6 +357,22 @@
         "hidden": false,
         group: "advanced"
       },
+      width: {
+          elem: "input",
+          type: "number",
+          label: "Width",
+          "default": 40,
+          "units": "%",
+          group: "advanced"
+        },
+        height: {
+          elem: "input",
+          type: "number",
+          label: "Height",
+          "default": 50,
+          "units": "%",
+          group: "advanced"
+        },
       target: {
         hidden: true
       },

@@ -299,7 +299,7 @@
         callback: callback,
         basicContainer: container,
         advancedContainer: advancedContainer,
-        manifestKeys: [ "transition","top","left" ]
+        manifestKeys: [ "transition","top","left","width","height" ]
       });
 
       attachHandlers();

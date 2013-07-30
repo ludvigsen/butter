@@ -751,7 +751,7 @@ var googleCallback;
         label: "Width",
         units: "%",
         "default": 70,
-        hidden: true
+        group: "advanced"
       },
       height: {
         elem: "input",
@@ -759,7 +759,7 @@ var googleCallback;
         label: "height",
         units: "%",
         "default": 70,
-        hidden: true
+        group: "advanced"
       },
       lat: {
         elem: "input",

@@ -182,7 +182,7 @@
           units: "%",
           label: "Width",
           "default": 30,
-          hidden: true
+          group: "advanced"
         },
         transition: {
           elem: "select",

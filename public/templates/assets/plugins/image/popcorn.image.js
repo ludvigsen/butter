@@ -338,22 +338,6 @@
           "default": 3,
           MAX_COUNT: 20
         },
-        width: {
-          elem: "input",
-          type: "number",
-          label: "Width",
-          "default": 80,
-          "units": "%",
-          hidden: true
-        },
-        height: {
-          elem: "input",
-          type: "number",
-          label: "Height",
-          "default": 80,
-          "units": "%",
-          hidden: true
-        },
         top: {
           elem: "input",
           type: "number",
@@ -372,6 +356,22 @@
           hidden: false,
           group: "advanced"
         },
+        width: {
+            elem: "input",
+            type: "number",
+            label: "Width",
+            "default": 80,
+            "units": "%",
+            group: "advanced"
+          },
+          height: {
+            elem: "input",
+            type: "number",
+            label: "Height",
+            "default": 80,
+            "units": "%",
+            group: "advanced"
+          },
         transition: {
           elem: "select",
           options: [ "None", "Pop", "Slide Up", "Slide Down", "Fade" ],

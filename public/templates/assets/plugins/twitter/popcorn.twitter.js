@@ -82,7 +82,7 @@
           group: "advanced"
         },
         width: {
-          hidden: true,
+          group: "advanced",
           "default": 35,
         },
         zindex: {

@@ -8,7 +8,55 @@
     "popup": "{{baseDir}}templates/assets/editors/popup/popup-editor.js",
     "image": "{{baseDir}}templates/assets/editors/image/image-editor.js",
     "text": "{{baseDir}}templates/assets/editors/text/text-editor.js",
-    "twitter": "{{baseDir}}templates/assets/editors/twitter/twitter-editor.js"
+    "twitter": "{{baseDir}}templates/assets/editors/twitter/twitter-editor.js",
+    "wikipedia": "{{baseDir}}templates/assets/editors/wikipedia/wikipedia-editor.js"
   },
-  "maxPluginZIndex": 1000
+  "plugin": {
+    "plugins": [
+      {
+        "type": "text",
+        "icon": "{{baseDir}}templates/assets/plugins/text/text-icon.png"
+      },
+      {
+        "type": "popup",
+        "icon": "{{baseDir}}templates/assets/plugins/popup/popup-icon.png"
+      },
+      {
+        "type": "googlemap",
+        "icon": "{{baseDir}}resources/icons/map.png"
+      },
+      {
+        "type": "image",
+        "icon": "{{baseDir}}templates/assets/plugins/image/image-icon.png"
+      },
+      {
+        "type": "loopPlugin",
+        "displayName": "loop",
+        "optional": true,
+        "icon": "{{baseDir}}templates/assets/plugins/loopPlugin/loop-icon.png"
+      },
+      {
+        "type": "skip",
+        "optional": true,
+        "icon": "{{baseDir}}templates/assets/plugins/skip/skip-icon.png"
+      },
+      {
+        "type": "pausePlugin",
+        "optional": true,
+        "displayName": "Pause",
+        "icon": "{{baseDir}}templates/assets/plugins/pausePlugin/pause-icon.png"
+      },
+      {
+        "type": "wikipedia",
+        "optional": true,
+        "icon": "{{baseDir}}templates/assets/plugins/wikipedia/wikipedia-icon.png"
+      },
+      {
+        "type": "sequencer",
+        "hidden": true,
+        "icon": "{{baseDir}}resources/icons/media.png"
+      }
+    ]
+  },
+    "maxPluginZIndex": 1000
 }

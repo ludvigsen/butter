@@ -42,14 +42,14 @@
         function togglePopup() {
           triangleObject.element.parentNode.style.display = "none";
           flipObject.element.parentNode.style.display = "none";
-          soundObject.element.parentNode.style.display = "block";
+          //soundObject.element.parentNode.style.display = "block";
           iconObject.element.parentNode.style.display = "block";
         }
 
         function toggleSpeech() {
           triangleObject.element.parentNode.style.display = "block";
           flipObject.element.parentNode.style.display = "block";
-          soundObject.element.parentNode.style.display = "none";
+          //soundObject.element.parentNode.style.display = "none";
           iconObject.element.parentNode.style.display = "none";
         }
 
@@ -97,7 +97,7 @@
 
             if ( key === "type" ) {
               var triangleObject = pluginOptions.triangle,
-                  soundObject = pluginOptions.sound,
+                  //soundObject = pluginOptions.sound,
                   iconObject = pluginOptions.icon,
                   flipObject = pluginOptions.flip,
                   currentType = option.trackEvent.popcornOptions.type;
@@ -159,7 +159,7 @@
         callback: callback,
         basicContainer: basicContainer,
         advancedContainer: advancedContainer,
-        ignoreManifestKeys: [ "start", "end" ]
+        ignoreManifestKeys: [ "start", "end", "sound" ]
       });
 
       attachHandlers();

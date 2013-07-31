@@ -51,7 +51,15 @@ window.Butter = {
     "<a href=\"#\" class=\"close-button\">here</a> to remove this warning.";
 
   var require = requirejs.config({
-    baseUrl: "/src"
+    baseUrl: "/src",
+    paths: {
+    	"ckeditor": "/external/ckeditor/ckeditor"
+    },
+    shim: {
+    	"ckeditor": {
+    		exports: "CKEDITOR"
+    	}
+    }
   });
 
   define( "butter-main",

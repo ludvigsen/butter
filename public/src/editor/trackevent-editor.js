@@ -3,11 +3,14 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tooltip",
-          "text!layouts/trackevent-editor-defaults.html" ],
+          "text!layouts/trackevent-editor-defaults.html",
+          "ckeditor"],
   function( LangUtils, KeysUtils, TimeUtils, BaseEditor, ToolTip,
-            DEFAULT_LAYOUT_SNIPPETS ) {
+            DEFAULT_LAYOUT_SNIPPETS, CKEDITOR ) {
 
   var NULL_FUNCTION = function(){};
+  
+  var _editorCounter = 0;
 
   var __defaultLayouts = LangUtils.domFragment( DEFAULT_LAYOUT_SNIPPETS ),
       __googleFonts = [
@@ -41,6 +44,13 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
         "teal": "#008080",
         "aqua": "#00ffff"
       };
+  
+/*	CKEDITOR.on('instanceCreated', function(ev) {
+	    ev.editor.on('change',function(chEvent){
+	    	console.log("Editor data: " + chEvent.editor.getData());
+	     });
+	 });*/
+
 
   /**
    * Class: TrackEventEditor
@@ -92,7 +102,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
             extendObject.scrollbar.update();
           }
         });
-
+        
         // Override default scrollbar to account for both tab containers
         extendObject.addScrollbar({
           inner: wrapper,
@@ -500,11 +510,13 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
           ignoreChange,
           tooltipName,
           tooltip,
+          manifest,
           manifestType,
           isNumber;
 
       if ( trackEvent.popcornTrackEvent ) {
-        manifestType = trackEvent.popcornTrackEvent._natives.manifest.options[ propertyName ].type;
+    	manifest = trackEvent.popcornTrackEvent._natives.manifest.options[propertyName];
+        manifestType = manifest.type;
       }
 
       isNumber = manifestType === "number" ? true : false;
@@ -518,66 +530,76 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
         }
         return val;
       }
+      
+      if (manifest.editor && manifest.editor === 'ckeditor') {
+    	  var ckinstance = CKEDITOR.instances[element.name];
+    	  ckinstance.on("change",function(e) {
+    		  var updateOptions = {};
+    		  updateOptions[propertyName] = e.editor.getData();
+    		  updateTrackEvent(trackEvent,callback,updateOptions);
+    	  });
+      } else {
 
-      element.addEventListener( "blur", function() {
-        var val = element.value;
-
-        if ( ignoreBlur ) {
-          ignoreBlur = false;
-        } else {
-          var updateOptions = {};
-
-          if ( isNumber ) {
-            val = validateNumber( val );
-          }
-
-          updateOptions[ propertyName ] = val;
-          updateTrackEvent( trackEvent, callback, updateOptions );
-        }
-        if ( tooltip ) {
-          tooltip.hidden = true;
-        }
-      }, false );
-
-      element.addEventListener( "keypress", function( e ) {
-        var updateOptions = {},
-            val = element.value;
-
-        if ( e.keyCode === KeysUtils.ENTER ) {
-          if ( !e.shiftKey ) {
-            e.preventDefault();
-
-            if ( isNumber ) {
-              val = validateNumber( val );
-            }
-
-            updateOptions[ propertyName ] = val;
-            updateTrackEvent( trackEvent, callback, updateOptions );
-            ignoreBlur = true;
-            ignoreChange = true;
-            element.blur();
-          }
-        }
-      }, false );
-
-      if ( element.type === "number" || isNumber ) {
-        element.addEventListener( "change", function() {
-
-          var updateOptions = {},
-              val = element.value;
-
-          if ( ignoreChange ) {
-            ignoreChange = false;
-          } else {
-
-            ignoreBlur = true;
-
-            val = validateNumber( val );
-
-            updateOptions[ propertyName ] = val;
-            updateTrackEvent( trackEvent, callback, updateOptions );
-          }
-        }, false );
+	      element.addEventListener( "blur", function() {
+	        var val = element.value;
+	
+	        if ( ignoreBlur ) {
+	          ignoreBlur = false;
+	        } else {
+	          var updateOptions = {};
+	
+	          if ( isNumber ) {
+	            val = validateNumber( val );
+	          }
+	
+	          updateOptions[ propertyName ] = val;
+	          updateTrackEvent( trackEvent, callback, updateOptions );
+	        }
+	        if ( tooltip ) {
+	          tooltip.hidden = true;
+	        }
+	      }, false );
+	
+	      element.addEventListener( "keypress", function( e ) {
+	        var updateOptions = {},
+	            val = element.value;
+	
+	        if ( e.keyCode === KeysUtils.ENTER ) {
+	          if ( !e.shiftKey ) {
+	            e.preventDefault();
+	
+	            if ( isNumber ) {
+	              val = validateNumber( val );
+	            }
+	
+	            updateOptions[ propertyName ] = val;
+	            updateTrackEvent( trackEvent, callback, updateOptions );
+	            ignoreBlur = true;
+	            ignoreChange = true;
+	            element.blur();
+	          }
+	        }
+	      }, false );
+	
+	      if ( element.type === "number" || isNumber ) {
+	        element.addEventListener( "change", function() {
+	
+	          var updateOptions = {},
+	              val = element.value;
+	
+	          if ( ignoreChange ) {
+	            ignoreChange = false;
+	          } else {
+	
+	            ignoreBlur = true;
+	
+	            val = validateNumber( val );
+	
+	            updateOptions[ propertyName ] = val;
+	            updateTrackEvent( trackEvent, callback, updateOptions );
+	          }
+	        }, false );
+	      }
       }
 
       if ( element.type === "textarea" && manifestType !== "url" ) {
@@ -706,7 +728,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
         editorElement = propertyArchetype.querySelector( "textarea" );
 
         // data-manifest-key is used to update this property later on
-        editorElement.setAttribute( "data-manifest-key", name );
+        editorElement.setAttribute( "data-manifest-key", name );        
 
         if ( data ) {
           // Don't print "undefined" or the like
@@ -714,6 +736,17 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
             data = "";
           }
           editorElement.value = data;
+        }
+        
+        if (manifestEntry.editor === "ckeditor") {
+        	_editorCounter++;        	
+        	editorElement.setAttribute("name","ckeditor" + _editorCounter);
+        	var editor = CKEDITOR.replace( editorElement );
+	      	editor.on("instanceReady",function(e) {
+	    		// reset the scrollbars to handle the new size
+	    		extendObject.scrollbar.update(); 
+	    	});
+
         }
 
       }
@@ -831,7 +864,11 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
               if ( units === "seconds" ) {
                 element.value = TimeUtils.toTimecode( popcornOptions[ option ] );
               } else {
-                element.value = popcornOptions[ option ];
+            	if (manifestEntry.editor === 'ckeditor') {
+            		CKEDITOR.instances[element.name].setData(popcornOptions[option]);
+            	} else {
+            		element.value = popcornOptions[ option ];
+            	}
               }
             } else {
               element.value = manifestOptions[ option ].default || "";

@@ -31,6 +31,7 @@
       options: {
         text: {
           elem: "textarea",
+          editor: "ckeditor",
           label: "Text",
           "default": "Popcorn Maker"
         },

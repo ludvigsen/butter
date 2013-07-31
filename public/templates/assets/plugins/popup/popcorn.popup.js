@@ -107,6 +107,7 @@
         },
         text: {
           elem: "textarea",
+          editor: "ckeditor",
           label: "Text",
           "default": "Pop!"
         },

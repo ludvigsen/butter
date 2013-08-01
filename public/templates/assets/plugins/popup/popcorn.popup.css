@@ -128,6 +128,7 @@
   text-align: center;
   overflow: hidden;
   word-wrap: break-word;
+  cursor: default;
 }
 
 .popup-inner-div a {

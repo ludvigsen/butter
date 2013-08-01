@@ -81,7 +81,11 @@ define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitize
           return _name;
         },
         set: function( name ) {
-          _name = name;
+		  if (!name || name.length == 0) {
+			  _name =  NAME_PREFIX + _this.order;
+		  } else {
+			  _name = name;
+		  }
           _this.dispatch( "tracknamechanged", _this );
         }
       },

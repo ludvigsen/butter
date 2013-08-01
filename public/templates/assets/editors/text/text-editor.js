@@ -133,7 +133,7 @@
 
       var ignoreKeys = ["start","end"];
       if (trackEvent.manifest.options.text.editor === 'ckeditor') {
-    	  ignoreKeys = ["start","end","alignment","fontFamily","fontSize","fontColor","background","backgroundColor","fontDecorations"];
+    	  ignoreKeys = ["start","end","alignment","linkUrl","fontFamily","fontSize","fontColor","background","backgroundColor","fontDecorations"];
       }
       _this.createPropertiesFromManifest({
         trackEvent: trackEvent,

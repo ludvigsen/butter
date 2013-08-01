@@ -131,12 +131,16 @@
         _popcornOptions.position = "middle";
       }
 
+      var ignoreKeys = ["start","end"];
+      if (trackEvent.manifest.options.text.editor === 'ckeditor') {
+    	  ignoreKeys = ["start","end","alignment","fontFamily","fontSize","fontColor","background","backgroundColor","fontDecorations"];
+      }
       _this.createPropertiesFromManifest({
         trackEvent: trackEvent,
         callback: callback,
         basicContainer: basicContainer,
         advancedContainer: advancedContainer,
-        ignoreManifestKeys: [ "start", "end" ]
+        ignoreManifestKeys: ignoreKeys
       });
 
       attachHandlers();

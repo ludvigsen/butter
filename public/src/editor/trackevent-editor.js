@@ -887,10 +887,12 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
             if ( labels.hasOwnProperty( m ) ) {
               element = extendObject.rootElement.querySelector( "[data-manifest-key='" + m + "']" );
 
-              if ( typeof popcornOptions[ option ] !== "undefined" ) {
-                element.checked = popcornOption[ m ];
-              } else {
-                element.checked = manifestOptions[ option ].default[ m ];
+              if (element) {
+	              if ( typeof popcornOptions[ option ] !== "undefined" ) {
+	                element.checked = popcornOption[ m ];
+	              } else {
+	                element.checked = manifestOptions[ option ].default[ m ];
+	              }
               }
             }
           }

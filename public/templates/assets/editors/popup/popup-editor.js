@@ -154,12 +154,16 @@
         _manifestOptions.fontPercentage.hidden = false;
       }
 
+      var ignoreKeys = ["start","end","sound"];
+      if (trackEvent.manifest.options.text.editor === 'ckeditor') {
+    	  ignoreKeys = ["start","end","sound","fontFamily","fontSize","fontColor","fontPercentage","fontDecorations"];
+      }
       _this.createPropertiesFromManifest({
         trackEvent: trackEvent,
         callback: callback,
         basicContainer: basicContainer,
         advancedContainer: advancedContainer,
-        ignoreManifestKeys: [ "start", "end", "sound" ]
+        ignoreManifestKeys: ignoreKeys
       });
 
       attachHandlers();

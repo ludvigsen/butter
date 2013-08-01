@@ -15,7 +15,7 @@ CKEDITOR.editorConfig = function( config ) {
     	{ name: 'styles' },
     	{ name: 'colors' }
     ];
-	config.removeButtons = 'Source,Save,NewPage,Preview,Print,Templates,PasteText,PasteFromWord,Strike,RemoveFormat,Blockquote,CreateDiv,Anchor,Underline,Subscript,Superscript,Indent,Outdent,NumberedList,BulletedList,Format';
+	config.removeButtons = 'Source,Save,NewPage,Preview,Print,Templates,PasteText,PasteFromWord,Strike,Blockquote,CreateDiv,Anchor,Underline,Subscript,Superscript,Indent,Outdent,NumberedList,BulletedList,Format';
 		
 	config.font_names = 'Merriweather;Gentium Book Basic;Lato;Vollkorn;Gravitas One;PT Sans;Open Sans;Bangers;Fredoka One;Covered By Your Grace;Coda';
 	

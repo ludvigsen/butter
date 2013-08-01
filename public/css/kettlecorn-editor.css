@@ -1,0 +1,16 @@
+/**
+ * Styles that are included in the ckeditor styles drop-down for use within Kettlecorn text areas.
+ */
+
+p.headline {
+	font-size: larger;
+	font-weight: bold;
+}
+
+p.description {
+	font-size: smaller;
+}
+
+p.test {
+	font-weight: bold;
+}

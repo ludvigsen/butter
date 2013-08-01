@@ -4,31 +4,19 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
-	// Define changes to default configuration here.
-	// For the complete reference:
-	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
-
-	// The toolbar groups arrangement, optimized for a single toolbar row.
 	config.toolbarGroups = [
-		{ name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
-		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
-		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
-		{ name: 'forms' },
-		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-		{ name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
-		{ name: 'links' },
-		{ name: 'insert' },
-		{ name: 'styles' },
-		{ name: 'colors' },
-		{ name: 'tools' },
-		{ name: 'others' },
-		{ name: 'about' }
-	];
-
-	// The default plugins included in the basic setup define some buttons that
-	// we don't want too have in a basic editor. We remove them here.
-	config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript';
-
-	// Let's have it basic on dialogs as well.
-	config.removeDialogTabs = 'link:advanced';
+    	{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+    	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+    	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+    	{ name: 'links' },
+    	{ name: 'styles' },
+    	{ name: 'colors' }
+    ];
+	config.removeButtons = 'Source,Save,NewPage,Preview,Print,Templates,PasteText,PasteFromWord,Strike,RemoveFormat,Blockquote,CreateDiv,Anchor,Underline,Subscript,Superscript,Indent,Outdent,NumberedList,BulletedList,Format';
+		
+	config.font_names = 'Merriweather;Gentium Book Basic;Lato;Vollkorn;Gravitas One;PT Sans;Open Sans;Bangers;Fredoka One;Covered By Your Grace;Coda';
+	
+	config.extraPlugins = 'stylesheetparser';
+	config.stylesSet = []; // don't load the default style rules - only load from CSS
+	config.contentsCss = '/css/kettlecorn-editor.css'; // load the styling for standard elements as well as pre-defined class options
 };

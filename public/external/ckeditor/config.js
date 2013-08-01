@@ -4,6 +4,9 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
+	
+	config.baseFloatZIndex = 100000200; // has to be high enough to float over popcorn maker windows (z-index defined in /css/globals.less)
+	
 	config.toolbarGroups = [
     	{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
     	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },

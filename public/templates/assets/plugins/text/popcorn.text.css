@@ -89,6 +89,12 @@
   cursor: default;
 }
 
+.text-inner-div > span > p,
+.text-inner-div > span > div,
+.text-inner-div > span > div > p {
+	margin: 0;
+	padding: 0;
+}
 [contenteditable="true"]:focus {
   outline: none;
 }

@@ -865,7 +865,10 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
                 element.value = TimeUtils.toTimecode( popcornOptions[ option ] );
               } else {
             	if (manifestEntry.editor === 'ckeditor') {
-            		CKEDITOR.instances[element.name].setData(popcornOptions[option]);
+            		if (popcornOptions[option] != CKEDITOR.instances[element.name].getData()) {
+            			// only set the text if it has changed to prevent cursor from resetting unnecessarily
+                		CKEDITOR.instances[element.name].setData(popcornOptions[option]);            			
+            		}
             	} else {
             		element.value = popcornOptions[ option ];
             	}

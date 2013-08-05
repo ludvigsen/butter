@@ -95,6 +95,13 @@
 	margin: 0;
 	padding: 0;
 }
+
+.text-inner-div > span > p + p,
+.text-inner-div > span > div + p,
+.text-inner-div > span > div > p + p {
+	margin-top: 1em;
+}
+
 [contenteditable="true"]:focus {
   outline: none;
 }

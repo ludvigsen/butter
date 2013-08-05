@@ -138,6 +138,12 @@
 	padding: 0;
 }
 
+.popcorn-popup .popup-inner-div > div > span > p + p,
+.popcorn-popup .popup-inner-div > div > span > div + p,
+.popcorn-popup .popup-inner-div > div > span > div > p + p {
+	margin-top: 1em;
+}
+
 .popup-inner-div a {
   text-decoration: none;
 }

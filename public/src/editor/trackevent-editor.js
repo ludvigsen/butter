@@ -4,9 +4,9 @@
 
 define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tooltip",
           "text!layouts/trackevent-editor-defaults.html",
-          "ckeditor"],
+          "ckeditor","util/editor-cleanup"],
   function( LangUtils, KeysUtils, TimeUtils, BaseEditor, ToolTip,
-            DEFAULT_LAYOUT_SNIPPETS, CKEDITOR ) {
+            DEFAULT_LAYOUT_SNIPPETS, CKEDITOR, EditorCleanup ) {
 
   var NULL_FUNCTION = function(){};
   
@@ -44,13 +44,6 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
         "teal": "#008080",
         "aqua": "#00ffff"
       };
-  
-/*	CKEDITOR.on('instanceCreated', function(ev) {
-	    ev.editor.on('change',function(chEvent){
-	    	console.log("Editor data: " + chEvent.editor.getData());
-	     });
-	 });*/
-
 
   /**
    * Class: TrackEventEditor
@@ -535,7 +528,8 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
     	  var ckinstance = CKEDITOR.instances[element.name];
     	  ckinstance.on("change",function(e) {
     		  var updateOptions = {};
-    		  updateOptions[propertyName] = e.editor.getData();
+    		  var editedText = EditorCleanup.cleanCKEditorText(e.editor.getData());
+    		  updateOptions[propertyName] = editedText;
     		  updateTrackEvent(trackEvent,callback,updateOptions);
     	  });
       } else {
@@ -865,7 +859,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
                 element.value = TimeUtils.toTimecode( popcornOptions[ option ] );
               } else {
             	if (manifestEntry.editor === 'ckeditor') {
-            		if (popcornOptions[option] != CKEDITOR.instances[element.name].getData()) {
+            		if (popcornOptions[option] != EditorCleanup.cleanCKEditorText(CKEDITOR.instances[element.name].getData())) {
             			// only set the text if it has changed to prevent cursor from resetting unnecessarily
                 		CKEDITOR.instances[element.name].setData(popcornOptions[option]);            			
             		}

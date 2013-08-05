@@ -59,7 +59,8 @@ window.Butter = {
     	"ckeditor": {
     		exports: "CKEDITOR"
     	}
-    }
+    },
+    waitSeconds: 10
   });
 
   define( "butter-main",

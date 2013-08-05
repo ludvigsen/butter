@@ -211,8 +211,12 @@ define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitize
         if ( manifestOptions.hasOwnProperty(propertyName) ) {
           option = manifestOptions[propertyName];
           if ( option.elem === "textarea" || option.elem === "input" ) {
-            // sanitize the input for this element
-            sanitizationList.push(propertyName);
+        	  if (option.editor && option.editor === 'ckeditor') {
+        		  // don't sanitize this cause it does include HTML on purpose
+        	  } else {
+	            // sanitize the input for this element
+	            sanitizationList.push(propertyName);
+        	  }
           }
         }
       }

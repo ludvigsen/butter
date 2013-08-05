@@ -252,9 +252,10 @@ define( [ "./logger", "./eventmanager", "./observer",
      * Returns a copy of the data needed to create a track event just like this one.
      * Does not copy state or unique data.
      */
-    this.copy = function() {
+    this.copy = function(includeData) {
       var popcornOptions = {},
-          manifestOptions = {};
+          manifestOptions = {},
+          includeData = includeData || false;
       if ( this.manifest ) {
         manifestOptions = _this.manifest.options;
         if ( manifestOptions ) {

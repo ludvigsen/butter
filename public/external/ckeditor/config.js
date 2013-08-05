@@ -22,4 +22,6 @@ CKEDITOR.editorConfig = function( config ) {
 	config.extraPlugins = 'stylesheetparser';
 	config.stylesSet = []; // don't load the default style rules - only load from CSS
 	config.contentsCss = '/css/kettlecorn-editor.css'; // load the styling for standard elements as well as pre-defined class options
+	
+	config.fontSize_sizes = 'xx-small/.2em;x-small/.5em;small/.8em;medium/1em;large/1.2em;x-large/1.5em;xx-large/2em';
 };

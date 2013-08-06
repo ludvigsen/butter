@@ -26,6 +26,10 @@ define( [ "dialog/dialog", "util/xhr", "util/uri" ], function( Dialog, xhr, URI 
   // Only deal with errors we cause (i.e., same origin scripts).
   function shouldHandle( url ) {
     var uriScript = URI.parse( url );
+    if (uriScript.file === 'ckeditor.js') {
+    	// these are non-fatal
+    	return false;
+    }
     return uriScript.host === window.location.hostname;
   }
 

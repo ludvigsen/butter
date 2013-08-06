@@ -6,12 +6,12 @@ define( [ "core/eventmanager", "./toggler",
           "./header", "./unload-dialog", "crashreporter",
           "first-run", "./tray", "editor/ui-kit",
           "core/trackevent", "dialog/dialog",
-          "util/dragndrop" ],
+          "util/dragndrop", "util/undo-manager-wrapper" ],
   function( EventManager, Toggler, Header,
             UnloadDialog, CrashReporter,
             FirstRun, Tray, UIKitDummy,
             TrackEvent, Dialog,
-            DragNDrop ){
+            DragNDrop, UndoManager ){
 
   var TRANSITION_DURATION = 500,
       BUTTER_CSS_FILE = "{css}/butter.ui.css";
@@ -470,7 +470,6 @@ define( [ "core/eventmanager", "./toggler",
           // If we have one track event just delete it, otherwise display a warning dialog.
           if ( selectedEvents.length === 1 ) {
             selectedEvent = selectedEvents[ 0 ];
-            butter.editor.closeTrackEventEditor( selectedEvent );
             selectedEvent.track.removeTrackEvent( selectedEvent );
             return;
           }
@@ -527,7 +526,21 @@ define( [ "core/eventmanager", "./toggler",
           butter.pasteTrackEvents();
         }
       }, // v key
-
+      
+      90: function ( e ) { // z key 
+    	  if ( e.ctrlKey || e.metaKey ) {
+			  if( e.target.nodeName == "INPUT" || e.target.nodeName == "TEXTAREA" || e.target.isContentEditable ) {
+				  document.activeElement.blur()
+			  }
+    		  if (e.shiftKey) {
+    			  UndoManager.redo();
+    		  } else {
+    			  UndoManager.undo();
+    		  }
+			  e.preventDefault();
+    	  }
+      }, // z key
+      
       65: function( e ) {
         if ( e.ctrlKey || e.metaKey ) {
           e.preventDefault();

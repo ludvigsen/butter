@@ -8,9 +8,11 @@
  * Supports a single event in the Media > Track > TrackEvent model.
  */
 define( [ "./logger", "./eventmanager", "./observer",
-          "util/lang", "util/time", "./views/trackevent-view" ],
+          "util/lang", "util/time", "./views/trackevent-view",
+          "util/undo-manager-wrapper"],
   function( Logger, EventManager, Observer,
-            LangUtil, TimeUtil, TrackEventView ) {
+            LangUtil, TimeUtil, TrackEventView,
+            UndoManager) {
 
   var __guid = 0;
 
@@ -138,7 +140,17 @@ define( [ "./logger", "./eventmanager", "./observer",
           media,
           preventUpdate = true,
           updateNotification,
-          duration;
+          duration,
+          originalOptions = {},
+          updatedProperties = [],
+          prop;
+      
+      // copy the current property into an object for purposes of calling the undomanager later on
+      for (prop in _popcornOptions) {
+    	  if (_popcornOptions.hasOwnProperty(prop)) {
+    		  originalOptions[prop] = _popcornOptions[prop];
+    	  }
+      }
 
       if ( !updateOptions ) {
         updateOptions = {};
@@ -173,6 +185,13 @@ define( [ "./logger", "./eventmanager", "./observer",
       if ( newStart !== _popcornOptions.start || newEnd !== _popcornOptions.end ) {
         preventUpdate = false;
       }
+      
+      if (newStart !== _popcornOptions.start) {
+    	  updatedProperties.push("start");
+      }
+      if (newEnd !== _popcornOptions.end) {
+    	  updatedProperties.push("end");
+      }
 
       // Synchronously notify observers that an update is happening.
       // This action gives observers a chance to stop the trackevent from updating
@@ -197,6 +216,7 @@ define( [ "./logger", "./eventmanager", "./observer",
                 // If we find an instance were the two properties differ, it means we need to update.
                 if ( _popcornOptions[ prop ] !== updateOptions[ prop ] ) {
                   preventUpdate = false;
+                  updatedProperties.push(prop);
                 }
                 _popcornOptions[ prop ] = updateOptions[ prop ];
               }
@@ -205,6 +225,7 @@ define( [ "./logger", "./eventmanager", "./observer",
 
               if ( _popcornOptions.target !== updateOptions.target ) {
                 preventUpdate = false;
+                updatedProperties.push("target");
               }
 
               _popcornOptions.target = updateOptions.target;
@@ -214,6 +235,7 @@ define( [ "./logger", "./eventmanager", "./observer",
 
               if ( _popcornOptions.zindex !== newZIndex ) {
                 preventUpdate = false;
+                updatedProperties.push("zindex");
               }
 
               _popcornOptions.zindex = updateOptions.zindex = newZIndex;
@@ -229,6 +251,10 @@ define( [ "./logger", "./eventmanager", "./observer",
       // and can update the corresponding Popcorn trackevent for this object
       if ( _popcornWrapper && !preventUpdate ) {
         _popcornWrapper.synchronizeEvent( _this, updateOptions );
+        if (updatedProperties.length <= 4) {
+        	// if it's more than four properties than it is likely the actual creation and we already track addTrackEvent and removeTrackEvent
+        	UndoManager.register(this,this.update,[originalOptions],'Undo Action: Update track event properties: ' + updatedProperties.join(','),this,this.update,[updateOptions],'Redo Action: Update track event properties ' + updatedProperties.join(','),_track,_track.addTrackEvent,this);
+        }
       }
     };
 

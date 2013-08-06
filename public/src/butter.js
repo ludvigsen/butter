@@ -53,11 +53,15 @@ window.Butter = {
   var require = requirejs.config({
     baseUrl: "/src",
     paths: {
-    	"ckeditor": "/external/ckeditor/ckeditor"
+    	"ckeditor": "/external/ckeditor/ckeditor",
+    	"UndoManager": "/external/undo-manager/UndoManager"
     },
     shim: {
     	"ckeditor": {
     		exports: "CKEDITOR"
+    	},
+    	"UndoManager": {
+    		exports: "UndoManager"
     	}
     },
     waitSeconds: 10
@@ -331,6 +335,7 @@ window.Butter = {
           _selectedEvents.splice( idx, 1 );
           sortSelectedEvents();
         }
+        _this.editor.closeTrackEventEditor( trackEvent );
       }
 
       _this.deselectAllTrackEvents = function() {

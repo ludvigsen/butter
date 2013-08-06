@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-handle.html","ui/widget/textbox" ],
-  function( Dialog, DragNDrop, LangUtils, TRACK_HANDLE_LAYOUT, TextBoxWrapper ) {
+define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-handle.html","ui/widget/textbox", "util/undo-manager-wrapper" ],
+  function( Dialog, DragNDrop, LangUtils, TRACK_HANDLE_LAYOUT, TextBoxWrapper, UndoManager ) {
 
   var ADD_TRACK_BUTTON_Y_ADJUSTMENT = 37;
 
@@ -174,13 +174,16 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
             	node.removeEventListener("dblclick",ignoreEvent,false);
             	node.removeEventListener("mousedown",ignoreEvent,false);
             	
-            	track.name = node.value;
-
-            	trackNameEl.innerHTML = track.name;
+            	UndoManager.register(null,updateTrackName,[track.name],'Undo Action: Set track name to ' + name, null, updateTrackName, [node.value],"Redo action: Set track name to " + node.value);
+            	updateTrackName(node.value);
             	trackDiv.querySelector('.track-handle-icon').classList.remove('butter-hidden');
             	
             	trackDiv.replaceChild(trackNameEl,node);
-            	console.log('save');
+            }
+            
+            function updateTrackName(value) {
+            	track.name = value;
+            	trackNameEl.innerHTML = track.name;
             }
             
             trackDiv.addEventListener("mouseover", function() {

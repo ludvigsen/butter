@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitizer" ],
-        function( EventManager, TrackEvent, TrackView, Sanitizer ){
+define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitizer", "util/undo-manager-wrapper" ],
+        function( EventManager, TrackEvent, TrackView, Sanitizer, UndoManager ){
 
   var __guid = 0,
       NAME_PREFIX = "Layer ",
@@ -52,7 +52,7 @@ define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitize
         trackEvents[ i ].update();
       }
     };
-
+    
     Object.defineProperties( this, {
       view: {
         enumerable: true,
@@ -234,7 +234,7 @@ define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitize
 
     this.addTrackEvent = function( trackEvent ) {
       var oldSelected = false;
-
+      
       if ( !( trackEvent instanceof TrackEvent ) ) {
         trackEvent = new TrackEvent( trackEvent );
       } else if ( trackEvent.selected ) {
@@ -259,6 +259,7 @@ define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitize
       }
       // Remember the trackevent
       _trackEvents.push( trackEvent );
+      UndoManager.register(_this,_this.removeTrackEvent,[trackEvent],'Undo Action: Removing track event',_this,_this.addTrackEvent,[trackEvent],'Redo Action: Adding track event');
 
       // Listen for a handful of events that affect functionality in and outside of this track.
       _this.chain( trackEvent, [
@@ -290,6 +291,8 @@ define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitize
      * @param {Object} trackEvent: The trackEvent to be removed from this track
      */
     this.removeTrackEvent = function( trackEvent, preventRemove ) {
+    	
+      UndoManager.register(this,this.addTrackEvent,[trackEvent],'Undo action: Add track event',this,this.removeTrackEvent,[trackEvent,preventRemove],'Redo action: remove track event');
       var idx = _trackEvents.indexOf( trackEvent );
       if ( idx > -1 ) {
         _trackEvents.splice( idx, 1 );

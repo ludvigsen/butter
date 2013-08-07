@@ -398,6 +398,36 @@ app.get( '/dashboard', filter.isStorageAvailable, function( req, res ) {
   });
 });
 
+app.get('/gallery',filter.isStorageAvailable, function(req, res) {
+	options = {
+		limit: 10	
+	};
+	Project.findRecentlyCreated(options, function (err,docs) {
+		var recentProjects = [];
+		docs.forEach(function(project) {
+			if (project.template && VALID_TEMPLATES[project.template]) {
+				recentProjects.push({
+					_id: String(project.id),
+					name: sanitizer.escapeHTML(project.name),
+					author: project.author,
+					template: project.template,
+					href: utils.generateIframeUrl(project.id),
+					createdAt: new Date(project.createdAt).toDateString(),
+					updatedAt: new Date(project.updatedAt).toDateString(),
+					description: sanitizer.escapeHTML(project.description),
+					thumbnail: project.thumbnail,
+					remixedFrom: project.remixedFrom,
+					remixHref: utils.pathToURL(path.relative(WWW_ROOT, templateConfigs[project.template].template) + "?savedDataUrl=/api/remix/" + project.id)
+				});
+			}
+		});
+		
+		res.render('gallery.jade', {
+			projects: recentProjects
+		});
+	});
+});
+
 app.listen( config.PORT, function() {
   console.log( 'HTTP Server started on ' + APP_HOSTNAME );
   console.log( 'Press Ctrl+C to stop' );

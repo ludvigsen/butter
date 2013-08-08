@@ -76,7 +76,8 @@ window.Butter = {
             "util/xhr", "util/lang", "util/tutorial",
             "util/warn", "text!default-config.json",
             "ui/widget/tooltip", "crashreporter", "core/project",
-            "../external/ua-parser/ua-parser"
+            "../external/ua-parser/ua-parser",
+            "util/undo-manager-wrapper"
           ],
           function(
             EventManager, Logger, Config, Track,
@@ -86,7 +87,7 @@ window.Butter = {
             xhr, Lang, Tutorial,
             Warn, DEFAULT_CONFIG_JSON,
             ToolTip, CrashReporter, Project,
-            UAParser
+            UAParser, UndoManager
           ){
 
     var __guid = 0;
@@ -548,6 +549,8 @@ window.Butter = {
           media.unlisten( "trackeventremoved", onTrackEventRemoved );
 
           media.unlisten( "trackeventrequested", mediaTrackEventRequested );
+          
+          UndoManager.clear();
 
           _this.dispatch( "mediaremoved", media );
           return media;
@@ -659,6 +662,7 @@ window.Butter = {
               _currentMedia = media;
               _logger.log( "Media Changed: " + media.name );
               _this.dispatch( "mediachanged", media );
+              UndoManager.clear();
               return _currentMedia;
             } //if
           },

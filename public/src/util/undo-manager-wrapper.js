@@ -26,6 +26,9 @@ define(['UndoManager'],function(UndoManagerQueue){
     	},    	
     	redo: function() {
    			undoManager.redo();
+    	},
+    	clear: function() {
+    		undoManager.clear();
     	}
     };
     

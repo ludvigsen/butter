@@ -508,6 +508,12 @@ window.Butter = {
         media.listen( "trackeventremoved", onTrackEventRemoved );
 
         media.listen( "trackeventrequested", mediaTrackEventRequested );
+        
+        media.listen( "mediaready", function() {
+        	// clear out the history from any previous media as well as history
+        	// that would have been created just by populating tracks from the new media
+        	UndoManager.clear(); 
+        })
 
         _this.dispatch( "mediaadded", media );
         if ( !_currentMedia ) {
@@ -549,8 +555,6 @@ window.Butter = {
           media.unlisten( "trackeventremoved", onTrackEventRemoved );
 
           media.unlisten( "trackeventrequested", mediaTrackEventRequested );
-          
-          UndoManager.clear();
 
           _this.dispatch( "mediaremoved", media );
           return media;
@@ -662,7 +666,6 @@ window.Butter = {
               _currentMedia = media;
               _logger.log( "Media Changed: " + media.name );
               _this.dispatch( "mediachanged", media );
-              UndoManager.clear();
               return _currentMedia;
             } //if
           },

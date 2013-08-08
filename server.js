@@ -400,7 +400,8 @@ app.get( '/dashboard', filter.isStorageAvailable, function( req, res ) {
 
 app.get('/gallery',filter.isStorageAvailable, function(req, res) {
 	options = {
-		limit: 10	
+		limit: 10,
+		published: true
 	};
 	Project.findRecentlyCreated(options, function (err,docs) {
 		var recentProjects = [];

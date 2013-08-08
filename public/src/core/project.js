@@ -283,6 +283,10 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
       if ( json.remixedFrom ) {
         _remixedFrom = json.remixedFrom;
       }
+      
+      if ( json.sharePublic ) {
+    	  _sharePublic = json.sharePublic;
+      } 
 
       targets = json.targets;
       if ( targets && Array.isArray( targets ) ) {

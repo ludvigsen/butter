@@ -110,6 +110,7 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
       projectJSON.template = doc.template;
       projectJSON.publishUrl = utils.generatePublishUrl( doc.id );
       projectJSON.iframeUrl = utils.generateIframeUrl( doc.id );
+      projectJSON.sharePublic = doc.sharePublic;
       projectJSON.remixedFrom = doc.remixedFrom;
       res.json( projectJSON );
     });

@@ -20,8 +20,9 @@ define([ "editor/editor", "editor/base-editor",
         _embedSize = _rootElement.querySelector( ".butter-embed-size" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-link" ),
         _viewSourceBtn = _rootElement.querySelector( ".butter-view-source-btn" ),
-        _shareTwitter = _rootElement.querySelector( ".butter-share-twitter" ),
+        _shareTwitter= _rootElement.querySelector( ".butter-share-twitter" ),
         _shareGoogle = _rootElement.querySelector( ".butter-share-google" ),
+        _sharePublic = _rootElement.querySelector(".butter-project-public"),
         _embedDimensions = _embedSize.value.split( "x" ),
         _embedWidth = _embedDimensions[ 0 ],
         _embedHeight = _embedDimensions[ 1 ],
@@ -36,6 +37,8 @@ define([ "editor/editor", "editor/base-editor",
 
     _authorInput.value = butter.project.author ? butter.project.author : "";
     _descriptionInput.value = butter.project.description ? butter.project.description : "";
+    _sharePublic.value = true;
+    _sharePublic.checked = butter.project.sharePublic ? butter.project.sharePublic == 1 : false;
 
     ToolTip.create({
       name: "description-tooltip",
@@ -102,35 +105,59 @@ define([ "editor/editor", "editor/base-editor",
       _embedHeight = _embedDimensions[ 1 ];
       updateEmbed( butter.project.iframeUrl );
     }, false );
+    
+    function applyCheckboxListeners(element,key) {
+    	if (element.checked) {
+    		applyInput
+    	}
+    }
 
     function applyInputListeners( element, key ) {
       var ignoreBlur = false,
           target;
-
-      function checkValue( e ) {
-        target = e.target;
-        if ( target.value !== _project[ key ] ) {
-          _project[ key ] = target.value;
-          if ( butter.cornfield.authenticated() ) {
-            _project.save(function() {
-              butter.editor.openEditor( "project-editor" );
-              checkDescription();
-            });
-          }
-        }
+      
+      function checkValue(value) {
+          if ( value !== _project[ key ] ) {
+              _project[ key ] = value;
+              if ( butter.cornfield.authenticated() ) {
+                _project.save(function() {
+                  butter.editor.openEditor( "project-editor" );
+                  checkDescription();
+                });
+              }
+          }  
+      }
+      
+      function checkboxValue(e) {
+    	  var targetValue = false;
+    	  if (e.target.checked) {
+    		  targetValue = e.target.value;
+    	  }
+    	  checkValue(targetValue);
       }
 
-      element.addEventListener( "blur", function( e ) {
-        if ( !ignoreBlur ) {
-          checkValue( e );
-        } else {
-          ignoreBlur = false;
-        }
-      }, false );
+      function checkInputValue( e ) {
+    	  checkValue(e.target.value);
+      }
+
+      if (element.type == 'checkbox') {
+    	  element.addEventListener("click",function(e) {
+    		  checkboxValue(e);
+    	  }, false);
+      } else {
+		  element.addEventListener( "blur", function(e) {
+			  if (!ignoreBlur) {
+				  checkInputValue(e);
+			  } else {
+				  ignoreBlur = false;
+			  }
+		  }, false);
+      }
     }
 
     applyInputListeners( _authorInput, "author" );
     applyInputListeners( _thumbnailInput, "thumbnail" );
+    applyInputListeners( _sharePublic, "sharePublic");
 
     applyInputListeners( _descriptionInput, "description" );
     _descriptionInput.addEventListener( "keyup", checkDescription, false );

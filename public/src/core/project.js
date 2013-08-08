@@ -11,7 +11,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
 
     var _this = this,
         _id, _name, _template, _author, _description, _dataObject,
-        _publishUrl, _iframeUrl, _remixedFrom,
+        _publishUrl, _iframeUrl, _remixedFrom, _sharePublic,
 
         // Whether or not a save to server is required (project data has changed)
         _isDirty = false,
@@ -122,6 +122,20 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
           return _thumbnail;
         },
         enumerable: true
+       },
+       
+       "sharePublic": {
+    	   set: function(val) {
+    		   _sharePublic = val;
+    		   invalidate();
+    	   },
+    	   get: function() {
+    		   if (_sharePublic) {
+    			   return _sharePublic;
+    		   }
+    		   return false;
+    	   },
+    	   enumerable: true
        },
 
       "data": {
@@ -333,6 +347,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
       data.description = _description;
       data.thumbnail = _thumbnail;
       data.backupDate = Date.now();
+      data.sharePublic = _sharePublic;
       try {
         __butterStorage.setItem( "butter-backup-project", JSON.stringify( data ) );
         _needsBackup = false;
@@ -371,8 +386,9 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         author: _author,
         description: _description,
         thumbnail: _thumbnail,
-        data: _this.data,
-        remixedFrom: _remixedFrom
+        remixedFrom: _remixedFrom,
+        sharePublic: _sharePublic,
+        data: _this.data
       };
 
       // Save to local storage first in case network is down.

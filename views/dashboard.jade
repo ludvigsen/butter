@@ -4,6 +4,7 @@ html
     script(src='//cdn.optimizely.com/js/206878104.js')
     title Dashboard
     link(rel='stylesheet',href='../css/butter.ui.css')
+    link(rel='stylesheet',href='/media/css/page.css')
     script
       (function(){
         var currentDeletionId;
@@ -220,5 +221,10 @@ html
             td
               a(href= "#", data-project-id=project._id, data-project-name=project.name).butter-delete-button
                 span.icon.icon-trash.icon-only
-
+                
+            
     input(id="csrf", type="hidden", value=user.csrf)
+    p.intro-bar
+     a(href="/templates/journalist") Start a project
+  
+    

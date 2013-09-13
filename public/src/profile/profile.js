@@ -114,6 +114,7 @@ define(["util/lang",
 	    }
 	    
 	    function showUserProfile() {
+	    	//this function is called to display a user profile form for data entry if the user profile has NOT been created
 	    	var organization, language, langOption, langInput, langLabel, organizationElement, languagesList,i,num,org,languages;
 	        var _profileElement = Lang.domFragment( PROFILE_LAYOUT );
 	    	organizationElement = _profileElement.querySelector('.profile-organization');
@@ -145,6 +146,7 @@ define(["util/lang",
 	    }
 	    
 	    function hideUserProfile() {
+	    	//if user profile already created, we don't show it
 	    	_profileHolderElement.style.display = "none";
 	    	_profileHolderElement.innerHTML = '';
 	    }

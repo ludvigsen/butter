@@ -1,211 +1,258 @@
 /* This Source Code Form is subject to the terms of the MIT license
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
+(function (Butter) {
 
-(function( Butter ) {
+	Butter.Editor.register("popup", "load!{{baseDir}}templates/assets/editors/popup/popup-editor.html",
+		function (rootElement, butter) {
 
-  Butter.Editor.register( "popup", "load!{{baseDir}}templates/assets/editors/popup/popup-editor.html",
-    function( rootElement, butter ) {
+			var _this = this;
 
-    var _this = this;
+			var _rootElement = rootElement,
+				_trackEvent,
+				_manifestOptions,
+				_butter,
+				_popcornOptions;
 
-    var _rootElement = rootElement,
-        _trackEvent,
-        _manifestOptions,
-        _butter,
-        _popcornOptions;
+			/**
+			 * Member: setup
+			 * Sets up the content of this editor
+			 * @param {TrackEvent} trackEvent: The TrackEvent being edited
+			 */
 
-    /**
-     * Member: setup
-     *
-     * Sets up the content of this editor
-     *
-     * @param {TrackEvent} trackEvent: The TrackEvent being edited
-     */
-    function setup( trackEvent ) {
-      _trackEvent = trackEvent;
-      _manifestOptions = _trackEvent.manifest.options;
-      _popcornOptions = _trackEvent.popcornOptions;
+			function setup(trackEvent) {
+				_trackEvent = trackEvent;
+				_manifestOptions = _trackEvent.manifest.options;
+				_popcornOptions = _trackEvent.popcornOptions;
 
-      var basicContainer = _rootElement.querySelector( ".editor-options" ),
-          advancedContainer = _rootElement.querySelector( ".advanced-options" ),
-          pluginOptions = {};
+				var basicContainer = _rootElement.querySelector(".editor-options"),
+					advancedContainer = _rootElement.querySelector(".advanced-options"),
+					pluginOptions = {};
 
-      function callback( elementType, element, trackEvent, name ) {
-        pluginOptions[ name ] = { element: element, trackEvent: trackEvent, elementType: elementType };
-      }
+				function callback(elementType, element, trackEvent, name) {
+					pluginOptions[name] = {
+						element: element,
+						trackEvent: trackEvent,
+						elementType: elementType
+					};
+				}
 
-      function attachHandlers() {
-        var key,
-            option;
+				function attachHandlers() {
+					var key,
+						option;
 
-        function togglePopup() {
-          triangleObject.element.parentNode.style.display = "none";
-          flipObject.element.parentNode.style.display = "none";
-          //soundObject.element.parentNode.style.display = "block";
-          iconObject.element.parentNode.style.display = "block";
-        }
+					function togglePopup() {
+						triangleObject.element.parentNode.style.display = "none";
+						flipObject.element.parentNode.style.display = "none";
+						//soundObject.element.parentNode.style.display = "block";
+						iconObject.element.parentNode.style.display = "block";
+					}
 
-        function toggleSpeech() {
-          triangleObject.element.parentNode.style.display = "block";
-          flipObject.element.parentNode.style.display = "block";
-          //soundObject.element.parentNode.style.display = "none";
-          iconObject.element.parentNode.style.display = "none";
-        }
+					function toggleSpeech() {
+						triangleObject.element.parentNode.style.display = "block";
+						flipObject.element.parentNode.style.display = "block";
+						//soundObject.element.parentNode.style.display = "none";
+						iconObject.element.parentNode.style.display = "none";
+					}
 
-        function attachTypeHandler( option ) {
-          option.element.addEventListener( "change", function( e ) {
-            var elementVal = e.target.value,
-                updateOptions = {},
-                target;
+					function attachTypeHandler(option) {
+						option.element.addEventListener("change", function (e) {
+							var elementVal = e.target.value,
+								updateOptions = {},
+								target;
 
-            if ( elementVal === "popup" ) {
-              togglePopup();
-            }
-            else {
-              toggleSpeech();
-            }
+							if (elementVal === "popup") {
+								togglePopup();
+							} else {
+								toggleSpeech();
+							}
 
-            updateOptions.type = elementVal;
-            option.trackEvent.update( updateOptions );
+							updateOptions.type = elementVal;
+							option.trackEvent.update(updateOptions);
 
-            // Attempt to make the trackEvent's target blink
-            target = _butter.getTargetByType( "elementID", option.trackEvent.popcornOptions.target );
-            if( target ) {
-              target.view.blink();
-            }
-            else {
-              _butter.currentMedia.view.blink();
-            }
-          }, false );
-        }
+							// Attempt to make the trackEvent's target blink
+							target = _butter.getTargetByType("elementID", option.trackEvent.popcornOptions.target);
+							if (target) {
+								target.view.blink();
+							} else {
+								_butter.currentMedia.view.blink();
+							}
+						}, false);
+					}
 
-        function colorCallback( te, prop, message ) {
-          if ( message ) {
-            _this.setErrorState( message );
-            return;
-          } else {
-            te.update({
-              fontColor: prop.fontColor
-            });
-          }
-        }
+					function colorCallback(te, prop, message) {
+						if (message) {
+							_this.setErrorState(message);
+							return;
+						} else {
+							te.update({
+								fontColor: prop.fontColor
+							});
+						}
+					}
 
-        for ( key in pluginOptions ) {
-          if ( pluginOptions[ key ] ) {
-            option = pluginOptions[ key ];
+					for (key in pluginOptions) {
+						if (pluginOptions[key]) {
+							option = pluginOptions[key];
 
-            if ( key === "type" ) {
-              var triangleObject = pluginOptions.triangle,
-                  //soundObject = pluginOptions.sound,
-                  iconObject = pluginOptions.icon,
-                  flipObject = pluginOptions.flip,
-                  currentType = option.trackEvent.popcornOptions.type;
+							if (key === "type") {
+								var triangleObject = pluginOptions.triangle,
+									//soundObject = pluginOptions.sound,
+									iconObject = pluginOptions.icon,
+									flipObject = pluginOptions.flip,
+									currentType = option.trackEvent.popcornOptions.type;
 
-              if ( currentType === "popup" ) {
-                togglePopup();
-              }
-              else {
-                toggleSpeech();
-              }
+								if (currentType === "popup") {
+									togglePopup();
+								} else {
+									toggleSpeech();
+								}
 
-              attachTypeHandler( option );
-            }
-            else if ( option.elementType === "select" && key !== "type" ) {
-              _this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
-            }
-            else if ( option.elementType === "input" ) {
-              if ( key === "linkUrl" ) {
-                _this.createTooltip( option.element, {
-                  name: "text-link-tooltip" + Date.now(),
-                  element: option.element.parentElement,
-                  message: "Links will be clickable when shared.",
-                  top: "105%",
-                  left: "50%",
-                  hidden: true,
-                  hover: false
-                });
-              }
+								attachTypeHandler(option);
+							} else if (option.elementType === "select" && key !== "type") {
+								_this.attachSelectChangeHandler(option.element, option.trackEvent, key, _this.updateTrackEventSafe);
+							} else if (option.elementType === "input") {
+								if (key === "linkUrl") {
+									_this.createTooltip(option.element, {
+										name: "text-link-tooltip" + Date.now(),
+										element: option.element.parentElement,
+										message: "Links will be clickable when shared.",
+										top: "105%",
+										left: "50%",
+										hidden: true,
+										hover: false
+									});
+								}
 
-              if ( option.element.type === "checkbox" ) {
-                _this.attachCheckboxChangeHandler( option.element, option.trackEvent, key );
-              }
-              else if ( key === "fontColor" ) {
-                _this.attachColorChangeHandler( option.element, option.trackEvent, key, colorCallback );
-              }
-              else {
-                _this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
-              }
-            }
-            else if ( option.elementType === "textarea" ) {
-              _this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
-            }
-          }
-        }
+								if (option.element.type === "checkbox") {
+									_this.attachCheckboxChangeHandler(option.element, option.trackEvent, key);
+								} else if (key === "fontColor") {
+									_this.attachColorChangeHandler(option.element, option.trackEvent, key, colorCallback);
+								} else {
+									_this.attachInputChangeHandler(option.element, option.trackEvent, key, _this.updateTrackEventSafe);
+								}
+							} else if (option.elementType === "textarea") {
+								_this.attachInputChangeHandler(option.element, option.trackEvent, key, _this.updateTrackEventSafe);
+							}
+						}
+					}
 
-        basicContainer.insertBefore( _this.createStartEndInputs( trackEvent, _this.updateTrackEventSafe ), basicContainer.firstChild );
-      }
+					basicContainer.insertBefore(_this.createStartEndInputs(trackEvent, _this.updateTrackEventSafe), basicContainer.firstChild);
+				}
 
-      if ( _popcornOptions.fontSize ) {
-        _manifestOptions.fontPercentage.hidden = true;
-        _manifestOptions.fontSize.hidden = false;
-      } else {
-        _manifestOptions.fontSize.hidden = true;
-        _manifestOptions.fontPercentage.hidden = false;
-      }
+				if (_popcornOptions.fontSize) {
+					_manifestOptions.fontPercentage.hidden = true;
+					_manifestOptions.fontSize.hidden = false;
+				} else {
+					_manifestOptions.fontSize.hidden = true;
+					_manifestOptions.fontPercentage.hidden = false;
+				}
 
-      var ignoreKeys = ["start","end","sound"];
-      if (trackEvent.manifest.options.text.editor === 'ckeditor') {
-    	  ignoreKeys = ["start","end","sound","linkUrl","fontFamily","fontSize","fontColor","fontPercentage","fontDecorations"];
-      }
-      _this.createPropertiesFromManifest({
-        trackEvent: trackEvent,
-        callback: callback,
-        basicContainer: basicContainer,
-        advancedContainer: advancedContainer,
-        ignoreManifestKeys: ignoreKeys
-      });
+				function runTranslator() {
+					var translateURL="http://oddi.bbg.gov/translation/index.php";
+					var currentInstance=0;
+					for ( var i in CKEDITOR.instances ){
+						currentInstance = i;
+					}
+					
+					for (key in pluginOptions) {
+						if (pluginOptions[key]) {
+							option = pluginOptions[key];
+							if (option.elementType === "textarea") {
+								//option.element.disabled=true;
+								option.element.readOnly=true;
+								//option.element.attributes.disabled=true;
+								//option.element.set('disabled','disabled'); 
+							}
+						}
+					}
+					
+					var ckinstance=CKEDITOR.instances[currentInstance];
+					ckinstance.on("change",function(e) {
+			    		  
+			    	});
+					console.log("let's disable the CKEditor");
+					//ckinstance.config.readOnly=true;
+					ckinstance.destroy(); 
+					//ckinstance.attr('disabled','disabled');
+					/*
+					var strToTranslate=ckinstance.getData();
+			    	$.post(translateURL, {phrase:strToTranslate},
+						function(data){
+							var newData="<p>"+data+"</p>";
+							console.log("update with " + newData);
+							ckinstance.setData(newData);
+							var updateOptions={"text":newData}
+							_trackEvent.update(updateOptions);
+							
+						}, 
+					"text");
+					*/
+					
+				}
+				
+				var btnTranslate= document.createElement('input');
+				btnTranslate.setAttribute('type','button');
+				btnTranslate.setAttribute('name','translate');
+				btnTranslate.setAttribute('id','translate');
+				btnTranslate.setAttribute('value','Translate Me');
+				//btnTranslate.attachEvent('onclick',runTranslator);
+				btnTranslate.addEventListener("click", runTranslator);
+				basicContainer.insertBefore(btnTranslate, basicContainer.firstChild);
+				
+				
+				var ignoreKeys = ["start", "end", "sound"];
+				if (trackEvent.manifest.options.text.editor === 'ckeditor') {
+					ignoreKeys = ["start", "end", "sound", "linkUrl", "fontFamily", "fontSize", "fontColor", "fontPercentage", "fontDecorations"];
+				}
+				_this.createPropertiesFromManifest({
+					trackEvent: trackEvent,
+					callback: callback,
+					basicContainer: basicContainer,
+					advancedContainer: advancedContainer,
+					ignoreManifestKeys: ignoreKeys
+				});
 
-      attachHandlers();
-      _this.updatePropertiesFromManifest( trackEvent );
-      _this.setTrackEventUpdateErrorCallback( _this.setErrorState );
-    }
+				attachHandlers();
+				_this.updatePropertiesFromManifest(trackEvent);
+				_this.setTrackEventUpdateErrorCallback(_this.setErrorState);
+			}
 
-    function anchorClickPrevention( anchorContainer ) {
-      if ( anchorContainer ) {
+			function anchorClickPrevention(anchorContainer) {
+				if (anchorContainer) {
 
-        anchorContainer.onclick = function() {
-          return false;
-        };
-      }
-    }
+					anchorContainer.onclick = function () {
+						return false;
+					};
+				}
+			}
 
-    function onTrackEventUpdated( e ) {
-      _trackEvent = e.target;
+			function onTrackEventUpdated(e) {
+				_trackEvent = e.target;
 
-      var anchorContainer = _trackEvent.popcornTrackEvent._container.querySelector( "a" );
-      anchorClickPrevention( anchorContainer );
+				var anchorContainer = _trackEvent.popcornTrackEvent._container.querySelector("a");
+				anchorClickPrevention(anchorContainer);
 
-      _this.updatePropertiesFromManifest( _trackEvent );
-      _this.setErrorState( false );
-    }
+				_this.updatePropertiesFromManifest(_trackEvent);
+				_this.setErrorState(false);
+			}
 
-    // Extend this object to become a TrackEventEditor
-    Butter.Editor.TrackEventEditor.extend( _this, butter, rootElement, {
-      open: function( parentElement, trackEvent ) {
-        var anchorContainer = trackEvent.popcornTrackEvent._container.querySelector( "a" );
+			// Extend this object to become a TrackEventEditor
+			Butter.Editor.TrackEventEditor.extend(_this, butter, rootElement, {
+				open: function (parentElement, trackEvent) {
+					var anchorContainer = trackEvent.popcornTrackEvent._container.querySelector("a");
 
-        anchorClickPrevention( anchorContainer );
+					anchorClickPrevention(anchorContainer);
 
-        _butter = butter;
+					_butter = butter;
 
-        // Update properties when TrackEvent is updated
-        trackEvent.listen( "trackeventupdated", onTrackEventUpdated );
-        setup( trackEvent );
-      },
-      close: function() {
-        _trackEvent.unlisten( "trackeventupdated", onTrackEventUpdated );
-      }
-    });
-  });
-}( window.Butter ));
+					// Update properties when TrackEvent is updated
+					trackEvent.listen("trackeventupdated", onTrackEventUpdated);
+					setup(trackEvent);
+				},
+				close: function () {
+					_trackEvent.unlisten("trackeventupdated", onTrackEventUpdated);
+				}
+			});
+		});
+}(window.Butter));

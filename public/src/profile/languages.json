@@ -2,51 +2,63 @@
   "languages": [
     {
       "id":	"ara",
-      "name": "Arabic"
+      "name": "Arabic",
+      "enableTranslation":"true"
     },
     {
       "id":	"chi",
-      "name":	"Chinese"
+      "name":	"Chinese",
+      "enableTranslation":"true"
     },
     {
       "id":	"eng",
-      "name":	"English"
+      "name":	"English",
+      "enableTranslation":"true"
     },
     {
       "id":	"fre",
-      "name":	"French"
+      "name":	"French",
+      "enableTranslation":"true"
     },
     {
       "id":	"hau",
-      "name":	"Hausa"
+      "name":	"Hausa",
+      "enableTranslation":"false"
     },
     {
       "id":	"ind",
-      "name":	"Indonesian"
+      "name":	"Indonesian",
+      "enableTranslation":"false"
     },
     {
       "id":	"kor",
-      "name":	"Korean"
+      "name":	"Korean",
+      "enableTranslation":"false"
     },
     {
       "id":	"por",
-      "name":	"Portugese"
+      "name":	"Portugese",
+      "enableTranslation":"false"
     },
     {
       "id":	"rus",
-      "name":	"Russian"
+      "name":	"Russian",
+      "enableTranslation":"true"
     },
     {
       "id":	"spa",
-      "name":	"Spanish"
+      "name":	"Spanish",
+      "enableTranslation":"true"
     },
     {
       "id":	"swa",
-      "name":	"Swahili"
+      "name":	"Swahili",
+      "enableTranslation":"false"
     },
     {
       "id":	"ukr",
-      "name":	"Ukrainian"
+      "name":	"Ukrainian",
+      "enableTranslation":"false"
     }
   ]
 }

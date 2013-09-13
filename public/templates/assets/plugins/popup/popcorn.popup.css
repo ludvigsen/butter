@@ -128,8 +128,10 @@
   text-align: center;
   overflow: hidden;
   word-wrap: break-word;
-  cursor: default;
+  cursor: default; /* BBG addition */
 }
+
+/* BBG addition START */
 
 .popcorn-popup .popup-inner-div > div > span > p,
 .popcorn-popup .popup-inner-div > div > span > div,
@@ -143,6 +145,7 @@
 .popcorn-popup .popup-inner-div > div > span > div > p + p {
 	margin-top: 1em;
 }
+/* BBG addition END */
 
 .popup-inner-div a {
   text-decoration: none;

@@ -21,13 +21,13 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
         _projectMenu = _rootElement.querySelector( ".butter-project-menu" ),
         _projectMenuControl = _rootElement.querySelector( ".butter-project-menu-control" ),
         _projectMenuList = _projectMenu.querySelector( ".butter-btn-menu" ),
-        _tabzilla = _rootElement.querySelector( "#tabzilla" ),
+        //_tabzilla = _rootElement.querySelector( "#tabzilla" ),
         _noProjectNameToolTip,
         _projectTitlePlaceHolderText = _projectName.innerHTML,
         _webmakerNav,
         _toolTip;
 
-    // create a tooltip for the plrojectName element
+    // create a tooltip for the projectName element
     _toolTip = ToolTip.create({
       title: "header-title-tooltip",
       message: "Change the name of your project",
@@ -39,9 +39,11 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
 
     ToolTip.apply( _projectTitle );
 
+    /*
     _tabzilla.addEventListener( "click", function() {
       document.body.classList.toggle( "tabzilla-open" );
     }, false );
+	*/
 
     function saveProject() {
       if ( !butter.cornfield.authenticated() ) {
@@ -203,7 +205,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
         _projectTitle.classList.remove( "butter-disabled" );
         toggleSaveButton( !butter.project.isSaved );
         toggleProjectNameListeners( true );
-        checkTranslationEnabled();
+        //checkTranslationEnabled();
       },
       mediaChanging: function() {
         _projectTitle.classList.add( "butter-disabled" );

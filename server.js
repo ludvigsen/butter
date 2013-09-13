@@ -245,8 +245,13 @@ app.post( '/api/publish/:id',
       if ( templateConfig.plugin && templateConfig.plugin.plugins ) {
         var plugins = templateConfig.plugin.plugins;
         for ( i = 0, len = plugins.length; i < len; i++ ) {
-          externalAssetURL = utils.pathToURL( APP_HOSTNAME + '/' + plugins[ i ].path.split( '{{baseDir}}' ).pop() );
-          externalAssetsString += '\n  <script src="' + externalAssetURL + '"></script>';
+        	//KETTLECORN: we check if path is defined.  It might not be defined for a given plugin, but might instead
+        	//be located inside of our split
+        	if (plugins[ i ].path) {
+	        	externalAssetURL = utils.pathToURL( APP_HOSTNAME + '/' + plugins[ i ].path.split( '{{baseDir}}' ).pop() );
+	        	console.log("Path is " + plugins[ i ].path);
+	        	externalAssetsString += '\n  <script src="' + externalAssetURL + '"></script>';
+        	}
         }
         externalAssetsString += '\n';
       }
@@ -363,10 +368,11 @@ app.get( '/dashboard', filter.isStorageAvailable, function( req, res ) {
       if ( project.template && VALID_TEMPLATES[ project.template ] ) {
         userProjects.push({
           // make sure _id is a string. saw some strange double-quotes on output otherwise
-          _id: String(project.id),
+          //NOTE ON HREF PATH - edited by JBF@BBG - had to add "/" before path.relative .  might need to fix a var instead
+        	_id: String(project.id),
           name: sanitizer.escapeHTML( project.name ),
           template: project.template,
-          href: utils.pathToURL( path.relative( WWW_ROOT, templateConfigs[ project.template ].template ) +
+          href: utils.pathToURL( "/"+path.relative( WWW_ROOT, templateConfigs[ project.template ].template ) +
             "?savedDataUrl=/api/project/" + project.id ),
           updatedAt: project.updatedAt
         });

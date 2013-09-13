@@ -253,7 +253,10 @@ define( [ "./logger", "./eventmanager", "./observer",
         _popcornWrapper.synchronizeEvent( _this, updateOptions );
         if (updatedProperties.length <= 4) {
         	// if it's more than four properties than it is likely the actual creation and we already track addTrackEvent and removeTrackEvent
-        	UndoManager.register(this,this.update,[originalOptions],'Undo Action: Update track event properties: ' + updatedProperties.join(','),this,this.update,[updateOptions],'Redo Action: Update track event properties ' + updatedProperties.join(','),_track,_track.addTrackEvent,this);
+        	
+        	if (_track != null) {  //EDIT: JBF - temporary workaround for certain undo actions not functioning right - just avoid null track
+        		UndoManager.register(this,this.update,[originalOptions],'Undo Action: Update track event properties: ' + updatedProperties.join(','),this,this.update,[updateOptions],'Redo Action: Update track event properties ' + updatedProperties.join(','),_track,_track.addTrackEvent,this);
+        	}
         }
       }
     };

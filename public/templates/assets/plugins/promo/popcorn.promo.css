@@ -1,0 +1,28 @@
+.promoLabel {
+	text-transform:uppercase;
+	font-weight:bold;
+}
+.promoLink {
+	color:#FFFFFF;
+}
+#promoBackground {
+	position:absolute;
+	margin: -56.1% auto 0 auto;
+	background-color:rgba(0,0,0,0.7);
+	width:100%;
+	height:100%;
+	color:#FFFFFF;
+	z-index:999;
+	
+}
+#promoTable {
+	margin-top:7%;
+}
+		
+				
+				
+#promoBackground.off {	
+	visibility:hidden;
+}
+
+

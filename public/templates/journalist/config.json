@@ -6,10 +6,12 @@
   "editor": {
     "googlemap": "{{baseDir}}templates/assets/editors/googlemap/googlemap-editor.js",
     "popup": "{{baseDir}}templates/assets/editors/popup/popup-editor.js",
+    "promo": "{{baseDir}}templates/assets/editors/promo/promo-editor.js",
     "image": "{{baseDir}}templates/assets/editors/image/image-editor.js",
     "text": "{{baseDir}}templates/assets/editors/text/text-editor.js",
     "twitter": "{{baseDir}}templates/assets/editors/twitter/twitter-editor.js",
-    "wikipedia": "{{baseDir}}templates/assets/editors/wikipedia/wikipedia-editor.js"
+    "wikipedia": "{{baseDir}}templates/assets/editors/wikipedia/wikipedia-editor.js",
+    "lowerThird": "{{baseDir}}templates/assets/editors/lowerThird/lowerThird-editor.js"
   },
   "plugin": {
     "plugins": [
@@ -28,6 +30,14 @@
       {
         "type": "image",
         "icon": "{{baseDir}}templates/assets/plugins/image/image-icon.png"
+      },
+      {
+        "type": "lowerThird",
+        "icon": "{{baseDir}}templates/assets/plugins/lowerThird/lowerThird-icon.png"
+      },
+       {
+        "type": "promo",
+        "icon": "{{baseDir}}templates/assets/plugins/promo/promo-icon.png"
       },
       {
         "type": "loopPlugin",

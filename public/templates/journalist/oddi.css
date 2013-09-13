@@ -1,6 +1,6 @@
 /* TEST Stylesheet for experimenting with styles in the editor */
 
-body{background-color: red;}
+body{background-color: #f9ae40;}
 
 
 .speechBubble {
@@ -49,10 +49,67 @@ body{background-color: red;}
   border-radius: 0em;
 }
 
-fieldset.trackevent-property.default.input.checkbox{
-  /*
-  //This hides ALL checkboxes, not just the sound box.
-  //You can also disable the sound check box by editing popcorn.popup.js and popup-editor.js
-  display: none;
-  */
+
+/*reds: rgb(235, 75, 45) and rgb(216, 57, 32) */
+/*oranges: rgb(249, 174, 64) and rgb(245, 146, 30)*/
+
+.butter-editor-header .butter-btn.butter-active {
+  background: rgb(216, 57, 32) !important;
+  /*background: rgb(245, 146, 30) !important;*/
 }
+
+/*if we're switching the button color from green to red, should we go ahead and update the class name from .btn-green to .btn-red?*/
+.btn-green, .btn-green.butter-disabled:hover, .btn-green.butter-disabled:active {
+background: rgb(216, 57, 32) !important;
+box-shadow: rgb(235, 75, 45) 0px 1px 0px inset !important;
+border: 1px solid #900 !important;
+/*border: 1px solid #ef5a29 !important;*/
+}
+
+.butter-project-title {
+color: rgb(245, 146, 30) !important;
+}
+
+.butter-editor-header {
+border-bottom: 5px solid rgb(216, 57, 32) !important;
+/*border-bottom: 5px solid rgb(245, 146, 30) !important;*/
+}
+
+.butter-editor-area .butter-editor h1, .butter-editor-area .butter-editor .butter-breadcrumbs, .butter-editor-area .butter-editor .editor-title-card > .title {
+color: rgb(245, 146, 30) !important;
+}
+
+.butter-editor-area .project-editor .butter-project-url {
+border-color: rgb(245, 146, 30) !important;
+}
+
+.butter-super-scrollbar-handle {
+background: rgb(249, 174, 64)!important;
+border: 1px solid rgb(245, 146, 30)!important;
+}
+.butter-super-scrollbar-handle::before {
+background: rgb(249, 174, 64)!important;
+}
+
+.butter-super-arrow {
+background-image: url(http://popcorn.innovation-series.com/resources/icons/glyphiconshalflings-alt.png) !important;
+}
+#butter-super-scrollbar-handle-left .butter-super-arrow {
+left: 0px;
+background-position: -240px -96px !important;
+}
+#butter-super-scrollbar-handle-right .butter-super-arrow {
+right: 0px;
+background-position: -264px -96px !important;
+}
+
+
+
+.time-bar-scrubber-node {
+background: rgb(249, 174, 64)!important;
+}
+.time-bar-scrubber-container .fill-bar {
+background: rgb(245, 146, 30)!important;
+}
+
+/*you may want to recolor a few icons: media.png, big-loader.gif;*/

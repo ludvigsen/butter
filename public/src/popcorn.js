@@ -25,12 +25,13 @@ requirejs.config({
     "popcorn.loopPlugin": "../templates/assets/plugins/loopPlugin/popcorn.loopPlugin",
     "popcorn.pausePlugin": "../templates/assets/plugins/pausePlugin/popcorn.pausePlugin",
     "popcorn.popup": "../templates/assets/plugins/popup/popcorn.popup",
+    "popcorn.promo": "../templates/assets/plugins/promo/popcorn.promo",
     "popcorn.sequencer": "../templates/assets/plugins/sequencer/popcorn.sequencer",
     "popcorn.skip": "../templates/assets/plugins/skip/popcorn.skip",
     "popcorn.text": "../templates/assets/plugins/text/popcorn.text",
+    "popcorn.lowerThird": "../templates/assets/plugins/lowerThird/popcorn.lowerThird",
     "popcorn.twitter": "../templates/assets/plugins/twitter/popcorn.twitter",
     "popcorn.wikipedia": "../templates/assets/plugins/wikipedia/popcorn.wikipedia",
-
     // RequireJS
     "text": "../external/require/text"
   },
@@ -59,9 +60,11 @@ requirejs.config({
     "popcorn.loopPlugin": [ "popcorn.core" ],
     "popcorn.pausePlugin": [ "popcorn.core" ],
     "popcorn.popup": [ "popcorn.core"],
+    "popcorn.promo": [ "popcorn.core"],
     "popcorn.sequencer": [ "popcorn.core", "popcorn.player" ],
     "popcorn.skip": [ "popcorn.core" ],
     "popcorn.text": [ "popcorn.core" ],
+    "popcorn.lowerThird": [ "popcorn.core" ],    
     "popcorn.twitter": [ "popcorn.core" ],
     "popcorn.wikipedia": [ "popcorn.core" ]
   }
@@ -78,9 +81,11 @@ define([
   "popcorn.loopPlugin",
   "popcorn.pausePlugin",
   "popcorn.popup",
+  "popcorn.promo",
   "popcorn.sequencer",
   "popcorn.skip",
   "popcorn.text",
+  "popcorn.lowerThird",
   "popcorn.twitter",
   "popcorn.wikipedia",
   "popcorn.HTMLMediaElement",

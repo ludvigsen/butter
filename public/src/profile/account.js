@@ -108,6 +108,9 @@ define(["text!./languages.json","text!./organizations.json"],
 		_this.getLanguages = function() {
 			return _languages;
 		}
+		_this.getOrganizations = function() {
+			return _organizations;
+		}
 		_this.getProfile = function(callback) {
 			kettleCornField.getProfile(function() {
 				_this.email = kettleCornField.email();

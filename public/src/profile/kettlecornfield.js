@@ -7,13 +7,13 @@
  * This allows a separate login functionality to be used without instantiating the full "Butter" application.
  * This is specific to Kettlecorn
  */
-define( [ "util/xhr","cornfield/module" ], function( xhr, Cornfield ) {
+define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield, Account ) {
 
   /**
    * KettleCornField is a wrapper function for the cornfield module.  It adds the profile specific functionality of Kettlecorn.
    * It can be passed the main cornfield or instantiate a new one.  This allows us to take advantage of butter when available,
    * but still have authentication functionality without the full editor instantiation.
-   */
+   */  //  function EventEditor( butter, moduleOptions, ButterNamespace ){
   var KettleCornField = function(butter_cornfield) {
 
     var hasProfile = false,
@@ -25,8 +25,22 @@ define( [ "util/xhr","cornfield/module" ], function( xhr, Cornfield ) {
         _username,
         _name,
         NULL_FUNCTION = function() {},
-        dummy = {listen: NULL_FUNCTION, unlisten: NULL_FUNCTION, dispatch: NULL_FUNCTION},
-        cornfield = butter_cornfield ? butter_cornfield : new Cornfield(dummy);
+        dummy = {listen: NULL_FUNCTION, unlisten: NULL_FUNCTION, dispatch: NULL_FUNCTION};
+        //cornfield = butter_cornfield ? butter_cornfield : new Cornfield(dummy);
+        //MODIFICATION JBF: Allow for the possibility that cornfield is actually in butter_cornfied.app.cornfield
+        var cornfield;
+        if (butter_cornfield) {
+	       	 if (butter_cornfield.app) {
+	       		cornfield=butter_cornfield.app.cornfield;
+	       	 } else {
+	       		cornfield=butter_cornfield;
+	         }
+  		} else {
+  			cornfield=new Cornfield(dummy);
+  		}
+        var _account = new Account(cornfield);
+ 
+
 
     this.login = function( callback ) {
       cornfield.login(callback);
@@ -51,7 +65,9 @@ define( [ "util/xhr","cornfield/module" ], function( xhr, Cornfield ) {
     			email = response.email;
     			language_id = response.language_id;
     			organization_id = response.organization_id;
-    			callback();
+    			if (callback) {
+    				callback();
+    			}
     		}
     	});
     }
@@ -94,7 +110,19 @@ define( [ "util/xhr","cornfield/module" ], function( xhr, Cornfield ) {
     this.organization_id = function() {
     	return organization_id;
     }
-    
+    this.organization_domain=function() {
+		var i;
+		var _organizations=_account.getOrganizations();
+		var num = _organizations.length;
+		var domain="NO_DOMAIN";
+		for (i=0; i<num; i++) {
+			var org = _organizations[i];
+			if (org.id == organization_id) {
+				domain=org.domain;
+			}
+		}
+		return domain;
+    }
     this.language_id = function() {
     	return language_id;
     }
@@ -105,18 +133,19 @@ define( [ "util/xhr","cornfield/module" ], function( xhr, Cornfield ) {
     
     function saveAccountFunction (data, callback) {
     	var url = "/api/profile";
-    	
     	xhr.post(url, data, function(response) {
-    		
     		callback(response);
     	});
     }
 
     this.saveAccount = saveAccountFunction;
+    this.getProfile();  
 
   };
 
   KettleCornField.__moduleName = "kettlecornfield";
+  
+  
 
   return KettleCornField;
-});
+});	//end define( [ "util/xhr","cornfield/module" ]

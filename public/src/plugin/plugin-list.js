@@ -115,7 +115,10 @@ define( [ "util/dragndrop", "util/lang", "editor/editor", "text!layouts/plugin-l
       }
       showAddMore(); // update the add more link
 
-      _containerElement.appendChild( element );
+      //we want the 'add more events' button to show at the END of the list, so we're adding new plugins BEFORE
+      _containerElement.insertBefore( element, _addPluginElement );
+      //_containerElement.appendChild( element );
+      
     });
     
     function showAddMore() {

@@ -663,7 +663,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
       propertyArchetype = __defaultLayouts.querySelector( propertyArchetypeSelector ).cloneNode( true );
 
       // If the manifestEntry was specified to be hidden bail early
-      //EDIT FOR TRANSLATION: hidden ones will now be fields with style=display:none so that we can show them at will
+      //JBF@BBG: EDIT FOR TRANSLATION: hidden ones will now be fields with style=display:none so that we can show them at will
       /*
       if ( manifestEntry.hidden ) {
         return;
@@ -796,11 +796,14 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
 
           try {
             editorElement.type = manifestEntry.type;
+            
+            /* JBF@BBG: hide elements using this mehtod now */
             if  (manifestEntry.hidden) {
             	editorElement.style.display="none";
             	label = propertyArchetype.querySelector( ".property-name" );
             	label.style.display="none"; 
             }
+            
             // step="any" will stop the :invalid pseudo class in Chrome from being applied if the value is a not a "whole" number. i.e. 1.234
             if ( editorElement.type === "number" ) {
               editorElement.step = manifestEntry.step || "any";

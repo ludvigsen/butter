@@ -157,12 +157,9 @@
 					
 					for (key in pluginOptions) {
 						if (pluginOptions[key]) {
-							option = pluginOptions[key];
+							var option = pluginOptions[key];
 							if (option.elementType === "textarea") {
-								//option.element.disabled=true;
 								option.element.readOnly=true;
-								//option.element.attributes.disabled=true;
-								//option.element.set('disabled','disabled'); 
 							}
 						}
 					}
@@ -172,9 +169,9 @@
 			    		  
 			    	});
 					console.log("let's disable the CKEditor");
-					//ckinstance.config.readOnly=true;
 					ckinstance.destroy(); 
-					//ckinstance.attr('disabled','disabled');
+					
+					//TODO: REMOVE THE TOOLTIP
 					/*
 					var strToTranslate=ckinstance.getData();
 			    	$.post(translateURL, {phrase:strToTranslate},
@@ -196,7 +193,6 @@
 				btnTranslate.setAttribute('name','translate');
 				btnTranslate.setAttribute('id','translate');
 				btnTranslate.setAttribute('value','Translate Me');
-				//btnTranslate.attachEvent('onclick',runTranslator);
 				btnTranslate.addEventListener("click", runTranslator);
 				basicContainer.insertBefore(btnTranslate, basicContainer.firstChild);
 				

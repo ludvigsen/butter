@@ -98,7 +98,8 @@
 					options: ["None", "Pop", "Fade", "Slide Up", "Slide Down"],
 					values: ["popcorn-none", "popcorn-pop", "popcorn-fade", "popcorn-slide-up", "popcorn-slide-down"],
 					label: "Transition",
-					"default": "popcorn-fade"
+					"default": "popcorn-fade",
+          group: "advanced"
 				},
 				fontFamily: {
 					elem: "select",

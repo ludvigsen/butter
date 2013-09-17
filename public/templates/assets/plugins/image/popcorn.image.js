@@ -377,7 +377,8 @@
           options: [ "None", "Pop", "Slide Up", "Slide Down", "Fade" ],
           values: [ "popcorn-none", "popcorn-pop", "popcorn-slide-up", "popcorn-slide-down", "popcorn-fade" ],
           label: "Transition",
-          "default": "popcorn-fade"
+          "default": "popcorn-fade",
+          group: "advanced"
         },
         start: {
           elem: "input",

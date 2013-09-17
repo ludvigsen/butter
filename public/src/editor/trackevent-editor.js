@@ -795,28 +795,38 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
           }
 
           try {
-            editorElement.type = manifestEntry.type;
-            
-            /* JBF@BBG: hide elements using this mehtod now */
+            editorElement.type = manifestEntry.type;            
+            /* JBF@BBG: hide elements using this method now */
             if  (manifestEntry.hidden) {
-            	editorElement.style.display="none";
             	label = propertyArchetype.querySelector( ".property-name" );
-            	label.style.display="none"; 
+              console.log("running the manifest creation");
+              if (name =="text_original") {
+                //label.value="Original Text";
+                label.innerHTML="Original Text";
+              }
+              if (name !="text_original" || editorElement.value=="") {
+                editorElement.style.display="none";
+                label.style.display="none"; 
+              } else{
+                editorElement.readOnly=true;
+                editorElement.style.display="";
+              }
+              
+              //we assign a reference to this label so that we can show it when we later show the option
+              editorElement.originalTextLabel=label;
             }
             
             // step="any" will stop the :invalid pseudo class in Chrome from being applied if the value is a not a "whole" number. i.e. 1.234
             if ( editorElement.type === "number" ) {
               editorElement.step = manifestEntry.step || "any";
             }
-            
-            
-            
           }
           catch ( e ) {
             // Suppress IE9 errors
           }
           // data-manifest-key is used to update this property later on
           editorElement.setAttribute( "data-manifest-key", name );
+
         }
       }
 

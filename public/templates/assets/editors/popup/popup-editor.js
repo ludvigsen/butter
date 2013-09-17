@@ -148,46 +148,54 @@
 					_manifestOptions.fontPercentage.hidden = false;
 				}
 
+				function stripIt(str) {
+					return str.replace(/<(?:.|\n)*?>/gm, '');
+				}
+
 				function runTranslator() {
+					console.log("RUNNING TRANSLATOR");
 					var translateURL="http://oddi.bbg.gov/translation/index.php";
 					var currentInstance=0;
 					for ( var i in CKEDITOR.instances ){
 						currentInstance = i;
 					}
+
+
+					var ckinstance=CKEDITOR.instances[currentInstance];
+					var strToTranslate=ckinstance.getData();
+					strToTranslate=stripIt(strToTranslate);
+					//ckinstance.destroy(); 
+					//TODO: REMOVE THE TOOLTIP
 					
+					//set our textarea to readonly
 					for (key in pluginOptions) {
 						if (pluginOptions[key]) {
 							var option = pluginOptions[key];
 							if (option.elementType === "textarea") {
-								option.element.readOnly=true;
+								//option.element.readOnly=true;
+								console.log("WE HAVE OUR OPTION");
+								var updateOptions={originalTextName:strToTranslate};
+								_trackEvent.update(updateOptions);
+								console.log("we are done setting original text");
+								pluginOptions["text_original"].element.style.display="";
+								pluginOptions["text_original"].element.originalTextLabel.style.display="";
 							}
 						}
 					}
-					
-					var ckinstance=CKEDITOR.instances[currentInstance];
-					ckinstance.on("change",function(e) {
-			    		  
-			    	});
-					console.log("let's disable the CKEditor");
-					ckinstance.destroy(); 
-					
-					//TODO: REMOVE THE TOOLTIP
-					/*
-					var strToTranslate=ckinstance.getData();
+
 			    	$.post(translateURL, {phrase:strToTranslate},
 						function(data){
 							var newData="<p>"+data+"</p>";
-							console.log("update with " + newData);
 							ckinstance.setData(newData);
-							var updateOptions={"text":newData}
-							_trackEvent.update(updateOptions);
-							
+							var updateOptions={"text":newData, "text_original":strToTranslate};
+							_trackEvent.update(updateOptions); 
+							pluginOptions["text_original"].element.readOnly=true; 
+							//pluginOptions["text_original"].element.originalTextLabel.value="Original Text"; 
 						}, 
 					"text");
-					*/
-					
 				}
-				
+
+
 				var btnTranslate= document.createElement('input');
 				btnTranslate.setAttribute('type','button');
 				btnTranslate.setAttribute('name','translate');
@@ -216,7 +224,6 @@
 
 			function anchorClickPrevention(anchorContainer) {
 				if (anchorContainer) {
-
 					anchorContainer.onclick = function () {
 						return false;
 					};

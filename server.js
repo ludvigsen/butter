@@ -198,7 +198,9 @@ app.post( '/api/publish/:id',
       return;
     }
 
-    var projectData = JSON.parse( project.data, sanitizer.escapeHTMLinJSON ),
+    
+    //var projectData = JSON.parse( project.data, sanitizer.escapeHTMLinJSON ),
+    var projectData = JSON.parse( project.data ),
         templateConfig = templateConfigs[ template ],
         templateFile = templateConfig.template,
         baseHref;

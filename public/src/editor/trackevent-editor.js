@@ -799,7 +799,6 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
             /* JBF@BBG: hide elements using this method now */
             if  (manifestEntry.hidden) {
             	label = propertyArchetype.querySelector( ".property-name" );
-              console.log("running the manifest creation");
               if (name =="text_original") {
                 //label.value="Original Text";
                 label.innerHTML="Original Text";

@@ -85,6 +85,12 @@
 			
 			if (options.logo=="notYetSet_logo" && window.Butter && window.Butter.app && window.Butter.app.kettlecornfield) {
 				var newLogo=window.Butter.app.kettlecornfield.organization_id();
+				//in the case of a user logging in with a non-organization email (such as gmail) they will have an empty org.  Supply default image
+				
+				if (newLogo=="" || newLogo==null) {
+					newLogo = "kettlecorn";
+				}
+				
 				options.logo=newLogo;
 			}
 			
@@ -144,7 +150,7 @@
 				var imgDivStr="";
 				if (options.includeLogo) {
 					if (options.logo) {
-						imgStyle=" style=\"background-image:url('../assets/images/logo_"+options.logo+".png')\" ";
+						imgStyle=" style=\"background-image:url('../assets/images/lowerthird_logo_"+options.logo+".png')\" ";
 						imgDivStr+="<div id='lowerThirdPromoImageContainer' "  + imgStyle + "  >";
 						//imgDivStr+="<img src=\"../assets/images/1_1_borderFix.png\" id=\"logoLowerThird\" " + imgStyle+">";
 						imgDivStr+="</span>";

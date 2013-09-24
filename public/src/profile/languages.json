@@ -3,22 +3,26 @@
     {
       "id":	"ara",
       "name": "Arabic",
-      "enableTranslation":"true"
+      "enableTranslation":"true",
+      "bingCode":"ar"
     },
     {
       "id":	"chi",
       "name":	"Chinese",
-      "enableTranslation":"true"
+      "enableTranslation":"true",
+      "bingCode":"zh-CHS"
     },
     {
       "id":	"eng",
       "name":	"English",
-      "enableTranslation":"true"
+      "enableTranslation":"false",
+      "bingCode":"en"
     },
     {
       "id":	"fre",
       "name":	"French",
-      "enableTranslation":"true"
+      "enableTranslation":"true",
+      "bingCode":"fr"
     },
     {
       "id":	"hau",
@@ -43,12 +47,14 @@
     {
       "id":	"rus",
       "name":	"Russian",
-      "enableTranslation":"true"
+      "enableTranslation":"true",
+      "bingCode":"ru"
     },
     {
       "id":	"spa",
       "name":	"Spanish",
-      "enableTranslation":"true"
+      "enableTranslation":"true",
+      "bingCode":"es"
     },
     {
       "id":	"swa",

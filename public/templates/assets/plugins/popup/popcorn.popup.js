@@ -111,11 +111,6 @@
           label: "Text",
           "default": "Pop!"
         },
-        text_original: {
-        	elem:"input",
-        	hidden:true,
-        	"default": ""
-        },
         linkUrl: {
           elem: "input",
           type: "text",
@@ -145,22 +140,24 @@
         },
         icon: {
           elem: "select",
-          options: [ "Error", "Audio", "Broken Heart", "Cone", "Earth",
-                     "Eye", "Heart", "Idea", "Info", "Man", "Map", "Money", "Music", "Net",
-                     "Skull", "Star", "Thumbs Down", "Thumbs Up", "Time",
-                     "Trophy", "Tv", "User", "Virus", "Women", 
-                     "Arrow down", "Arrow left", "Arrow right", "Arrow up",
-                     "Database", "Document", "File", "PDF", "Facebook", "Twitter", "Image",
-                     "Interactive", "Spreadsheet", "Video", "Zip file", "None" ],
-          values: [ "error", "audio", "brokenheart", "cone", "earth",
-                     "eye", "heart", "idea", "info", "man", "map", "money", "music", "net",
-                     "skull", "star", "thumbsdown", "thumbsup", "time",
-                     "trophy", "tv", "user", "virus", "women", 
-                     "arrowDown", "arrowLeft", "arrowRight", "arrowUp",
-                     "database", "document", "file", "pdf", "facebook", "twitter", "image",
-                     "interactive", "spreadsheet", "video", "zipfile", "none" ],
+          options: [ "Arrow down", "Arrow left", "Arrow right", "Arrow up",
+                     "Audio",
+                     "Facebook", "Fact check: true", "Fact check: false", "Globe", "Graphic", "Idea", "Image",
+                     "Interactive", "Map pin", "Popcorn", "Thumbs down", "Thumbs up", "Time", "Twitter", "Video",
+                     "None", 
+                     "----ENTITY ICONS----", 
+                     "VOA", "Alhurra", "RFA", "RFE", "BBG"
+                     ],
+          values: [ "arrowDown", "arrowLeft", "arrowRight", "arrowUp",
+                     "audio",
+                     "facebook", "checkMark", "xMark", "globe", "graphic", "idea", "image",
+                     "interactive", "map", "popcorn", "thumbsDown", "thumbsUp", "clock", "twitter", "video",
+                     "none",
+                     "none",
+                     "icon_voa", "icon_alhurra", "icon_rfa", "icon_rfe", "icon_bbg"
+                     ],
           label: "Pop Icon",
-          "default": "error",
+          "default": "image",
           optional: true
         },
         flip: {
@@ -201,8 +198,7 @@
           options: [ "None", "Pop", "Fade", "Slide Up", "Slide Down" ],
           values: [ "popcorn-none", "popcorn-pop", "popcorn-fade", "popcorn-slide-up", "popcorn-slide-down" ],
           label: "Transition",
-          "default": "popcorn-fade",
-          group: "advanced"
+          "default": "popcorn-fade"
         },
         fontFamily: {
           elem: "select",

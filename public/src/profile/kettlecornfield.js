@@ -16,6 +16,7 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
    */  //  function EventEditor( butter, moduleOptions, ButterNamespace ){
   var KettleCornField = function(butter_cornfield) {
 
+
     var hasProfile = false,
         organization_id = "",
         language_id = "",
@@ -29,14 +30,14 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
         //cornfield = butter_cornfield ? butter_cornfield : new Cornfield(dummy);
         //MODIFICATION JBF: Allow for the possibility that cornfield is actually in butter_cornfied.app.cornfield
         var cornfield;
-        if (butter_cornfield) {
+        if (butter_cornfield) {     
 	       	 if (butter_cornfield.app) {
 	       		cornfield=butter_cornfield.app.cornfield;
 	       	 } else {
 	       		cornfield=butter_cornfield;
 	         }
   		} else {
-  			cornfield=new Cornfield(dummy);
+  			cornfield=new Cornfield(dummy);    //this happens, for instance, in the PROFILE.JS which creates a NEW kettlecornfield object (oddly)
   		}
         var _account = new Account(cornfield);
  
@@ -47,7 +48,8 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
     };
     
     this.getProfile = function(callback) {
-    	xhr.get("/api/profile", function(response) {
+    	//console.log("calling getProfile from KettleCornfield");
+        xhr.get("/api/profile", function(response) {
     		if (response.error) {
     			if (response.error.substring(0,3) === "404") {
     				// user does not have a profile
@@ -108,7 +110,7 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
     }
     
     this.organization_id = function() {
-    	return organization_id;
+    	return organization_id; 
     }
     this.organization_domain=function() {
 		var i;
@@ -122,6 +124,42 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
 			}
 		}
 		return domain;
+    } 
+    this.language_bing_code=function() {
+        console.log("lang bing code");
+        var i;
+        var _languages=_account.getLanguages();
+        var num = _languages.length;
+        var code="";
+        for (i=0; i<num; i++) {
+            var theLang = _languages[i];
+            if (theLang.id == language_id) {
+                console.log("foound our id " + theLang.id);
+                if (theLang.bingCode) {
+                    code=theLang.bingCode;
+                }
+            }
+        }
+        console.log("returns code " + code );
+        return code;
+    }
+    this.language_name=function() {
+        console.log("lang bing code");
+        var i;
+        var _languages=_account.getLanguages();
+        var num = _languages.length;
+        var langName="";
+        for (i=0; i<num; i++) {
+            var theLang = _languages[i];
+            if (theLang.id == language_id) {
+                console.log("foound our id " + theLang.id);
+                if (theLang.langName) {
+                    langName=theLang.name;
+                }
+            }
+        }
+        console.log("returns langName " + langName );
+        return langName;
     }
     this.language_id = function() {
     	return language_id;
@@ -139,6 +177,7 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
     }
 
     this.saveAccount = saveAccountFunction;
+    //console.log("KettleCornfield is initializing, so let's call getProfile");
     this.getProfile();  
 
   };

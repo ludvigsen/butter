@@ -69,6 +69,7 @@ define(["text!./languages.json","text!./organizations.json"],
 
 	      // Don't save if there is nothing new to save.
 	      if (!_isDirty ) {
+	       // console.log("nothing to save in account.js");
 	        callback({ error: "okay" });
 	        return;
 	      }
@@ -83,7 +84,7 @@ define(["text!./languages.json","text!./organizations.json"],
 	      kettleCornField.saveAccount( accountData, function( e ) {
 	        if ( e.error === "okay" ) {
 	          _isDirty = false;
-
+	       //   console.log("we are back from kettlesave");
 	          callback( e );
 	        } else {
 	          callback( e );
@@ -112,6 +113,7 @@ define(["text!./languages.json","text!./organizations.json"],
 			return _organizations;
 		}
 		_this.getProfile = function(callback) {
+			//console.log("we are inside _account.getProfile()");
 			kettleCornField.getProfile(function() {
 				_this.email = kettleCornField.email();
 				_this.language_id = kettleCornField.language_id();

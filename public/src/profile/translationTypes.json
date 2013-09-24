@@ -1,0 +1,12 @@
+{
+  "translationTypes": [
+    {
+      "id":	"hand",
+      "name": "By Hand"
+    },
+    {
+      "id":	"bing",
+      "name":	"Bing Translate"
+    },
+  ]
+}

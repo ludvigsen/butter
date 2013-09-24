@@ -207,11 +207,11 @@
 				htmlStr+="<td></td>";
 				htmlStr+="</tr>";
 				htmlStr+="<tr>";
-				htmlStr+="<td width='6%'></td>";
+				htmlStr+="<td width='6.5%'></td>";
 				htmlStr+="<td width='29%'><a target='_blank' class='promoLink' href='"+linkURL1 + "'>"+headline1+"</a></td>";
-				htmlStr+="<td width='30%'><a target='_blank' class='promoLink' href='"+linkURL2 + "'>"+headline2+"</a></td>";
+				htmlStr+="<td width='29%'><a target='_blank' class='promoLink' href='"+linkURL2 + "'>"+headline2+"</a></td>";
 				htmlStr+="<td width='29%'><a target='_blank' class='promoLink' href='"+linkURL3 + "'>"+headline3+"</a></td>";
-				htmlStr+="<td width='6%'></td>";
+				htmlStr+="<td width='6.5%'></td>";
 				htmlStr+="</tr>";
 				htmlStr+="</table>";
 				/*

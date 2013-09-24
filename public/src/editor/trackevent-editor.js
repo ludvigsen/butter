@@ -957,10 +957,14 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
 
       manifestKeys = options.manifestKeys || Object.keys( manifestOptions );
 
+      var advancedItemCount=0
       for ( i = 0, l = manifestKeys.length; i < l; ++i ) {
         item = manifestKeys[ i ];
         optionGroup = manifestOptions[ item ].group ? manifestOptions[ item ].group : "basic";
         container = optionGroup === "advanced" ? advancedContainer : basicContainer;
+        if (optionGroup==="advanced") {
+          advancedItemCount++;
+        }
         if ( ignoreManifestKeys && ignoreManifestKeys.indexOf( item ) > -1 ) {
           continue;
         }
@@ -971,6 +975,13 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
           container.appendChild( element );
         }
       }
+
+      //if we don't have any advanced items, let's not show the tab
+      var advancedButton = rootElement.querySelector( ".advanced-tab" );
+      if (advancedButton) {
+        advancedButton.style.display= (advancedItemCount > 0) ? "" : "none"; 
+      }
+      
     };
 
     /**

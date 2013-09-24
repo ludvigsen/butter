@@ -111,6 +111,11 @@
           label: "Text",
           "default": "Pop!"
         },
+        text_original: {
+          elem: "input",
+          hidden:true,
+          "default": ""
+        },
         linkUrl: {
           elem: "input",
           type: "text",

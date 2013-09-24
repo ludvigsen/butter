@@ -14,6 +14,9 @@
 				_butter,
 				_popcornOptions;
 
+			var preloaderContainer,
+				translationLang;	
+
 			/**
 			 * Member: setup
 			 * Sets up the content of this editor
@@ -152,8 +155,13 @@
 					return str.replace(/<(?:.|\n)*?>/gm, '');
 				}
 
+
+
 				function runTranslator() {
 					console.log("RUNNING TRANSLATOR");
+
+					//basicContainer.insertBefore(translationPreloaderImg, basicContainer.firstChild); 
+
 					var translateURL="http://oddi.bbg.gov/translation/index.php";
 					var currentInstance=0;
 					for ( var i in CKEDITOR.instances ){
@@ -166,25 +174,37 @@
 					strToTranslate=stripIt(strToTranslate);
 					//ckinstance.destroy(); 
 					//TODO: REMOVE THE TOOLTIP
+					console.log("BASIC CONTAINER");
+					basicContainer.insertBefore(preloaderContainer, basicContainer.firstChild);
+					preloaderContainer.style.display="";
 					
+
 					//set our textarea to readonly
 					for (key in pluginOptions) {
 						if (pluginOptions[key]) {
 							var option = pluginOptions[key];
 							if (option.elementType === "textarea") {
-								//option.element.readOnly=true;
-								console.log("WE HAVE OUR OPTION");
 								var updateOptions={originalTextName:strToTranslate};
 								_trackEvent.update(updateOptions);
-								console.log("we are done setting original text");
 								pluginOptions["text_original"].element.style.display="";
 								pluginOptions["text_original"].element.originalTextLabel.style.display="";
 							}
 						}
 					}
 
-			    	$.post(translateURL, {phrase:strToTranslate},
+					translationLang="es";
+					translationLangName="Spanish";
+					if (window.Butter && window.Butter.app && window.Butter.app.kettlecornfield) { 
+						translationLang=window.Butter.app.kettlecornfield.language_bing_code();
+						translationLangName=window.Butter.app.kettlecornfield.language_name();
+					}
+					preloaderBG.innerHTML="<BR><BR><strong style='font-size:2.0em;'>Seasoning the corn...<BR><BR></strong><em>(translating to " + translationLangName + ")</em>";
+					
+
+					$.post(translateURL, {phrase:strToTranslate, lang:translationLang},
 						function(data){
+							//translationPreloaderImg.style.display="none";
+							preloaderContainer.style.display="none";
 							var newData="<p>"+data+"</p>";
 							ckinstance.setData(newData);
 							var updateOptions={"text":newData, "text_original":strToTranslate};
@@ -196,15 +216,58 @@
 				}
 
 
-				var btnTranslate= document.createElement('input');
-				btnTranslate.setAttribute('type','button');
-				btnTranslate.setAttribute('name','translate');
-				btnTranslate.setAttribute('id','translate');
-				btnTranslate.setAttribute('value','Translate Me');
-				btnTranslate.addEventListener("click", runTranslator);
-				basicContainer.insertBefore(btnTranslate, basicContainer.firstChild);
+				function addTranslationUI() {
+					var btnTranslate= document.createElement('input');
+					btnTranslate.setAttribute('type','button');
+					btnTranslate.setAttribute('name','translate');
+					btnTranslate.setAttribute('id','translate');
+					btnTranslate.setAttribute('value','Translate Me');
+					btnTranslate.addEventListener("click", runTranslator);
+					basicContainer.insertBefore(btnTranslate, basicContainer.firstChild);
+					
+						
+					preloaderContainer = document.createElement( "div" );
+					preloaderContainer.setAttribute('id','preloaderContainer');
+					preloaderBG=document.createElement("div");
+					preloaderBG.setAttribute('id','preloaderBG');
+					
+					preloaderBG.style.backgroundColor="rgba(0,0,0,0.9)";
+					preloaderBG.style.width="100%";
+					preloaderBG.style.height="100%";
+					preloaderContainer.style.overflow="visible";
+					preloaderBG.style.overflow="visible";
+
+					preloaderContainer.style.width="100%";
+					preloaderContainer.style.height="100%";
+					preloaderContainer.style.zIndex =99999;
+					preloaderContainer.setAttribute("id", "preloaderContainer");
+					preloaderContainer.style.position="absolute";
+					preloaderContainer.style.display="none";
+					preloaderContainer.style.textAlign="center";
+					
+					preloaderBG.style.paddingTop="35%";
+					preloaderBG.style.color="#FFFFFF";
+					
+					/*
+					preloaderText = document.createElement( "div" );
+					preloaderText.innerHTML="<BR><BR><strong>Hello World!</strong>";
+					preloaderText.style.color="0xFFFFFF";
+					*/
+
+					preloaderContainer.appendChild(preloaderBG); 
+					//preloaderContainer.appendChild(preloaderText); 
+					/*
+					translationPreloaderImg = new Image(); 
+					translationPreloaderImg.src = "/templates/assets/images/loader_circle.gif";
+					preloaderContainer.appendChild(translationPreloaderImg); 
+					*/
+
+					
+					
+					console.log("inside the container");
+				}
 				
-				
+
 				var ignoreKeys = ["start", "end", "sound"];
 				if (trackEvent.manifest.options.text.editor === 'ckeditor') {
 					ignoreKeys = ["start", "end", "sound", "linkUrl", "fontFamily", "fontSize", "fontColor", "fontPercentage", "fontDecorations"];
@@ -218,6 +281,7 @@
 				});
 
 				attachHandlers();
+				addTranslationUI();
 				_this.updatePropertiesFromManifest(trackEvent);
 				_this.setTrackEventUpdateErrorCallback(_this.setErrorState);
 			}

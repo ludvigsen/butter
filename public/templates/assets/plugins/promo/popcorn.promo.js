@@ -29,68 +29,63 @@
 					type:"textarea",
 //					editor: "ckeditor",
 					label: "Label",
-					"default": "PROMO-label"
+					"default": "Related Links"
 				},
 				headline1: {
 					elem: "input",
 					type: "textarea",
 					label: "Headline1",
-					"default": "This is the default headline1  and it can span a few lines"
+					"default": "The Innovation Series"
 				},
 				imageURL1: {
 					elem: "input",
 					type: "textarea",
 					label: "Image URL1",
-					"default": "../assets/images/promo-red.jpg"
+					"default": "../assets/images/promo_default_left.jpg"
 				},
 				linkURL1: {
 					elem: "input",
 					type: "textarea",
 					label: "Link URL1",
-					"default": "http://google.com?link1"
+					"default": "http://www.innovation-series.com/"
 				},
 				headline2: {
 					elem: "input",
 					type: "textarea",
 					label: "Headline2",
-					"default": "This is the default headline2 and it can span a few lines"
+					"default": "Our Block Community Radio"
 				},
 				imageURL2: {
 					elem: "input",
 					type: "textarea",
 					label: "Image URL2",
-					"default": "../assets/images/promo-blue.jpg"
+					"default": "../assets/images/promo_default_middle.jpg"
 				},
 				linkURL2: {
 					elem: "input",
 					type: "textarea",
 					label: "Link URL2",
-					"default": "http://google.com?link2"
+					"default": "http://isourblock.org/"
 				},
 				headline3: {
 					elem: "input",
 					type: "textarea",
 					label: "Headline3",
-					"default": "This is the default headline3  and it can span a few lines"
+					"default": "Mozilla Webmaker"
 				},
 				imageURL3: {
 					elem: "input",
 					type: "textarea",
 					label: "Image URL3",
-					"default": "../assets/images/promo-green.png"
+					"default": "../assets/images/promo_default_right.jpg"
 				},
 				linkURL3: {
 					elem: "input",
 					type: "textarea",
 					label: "Link URL3",
-					"default": "http://google.com?link3"
+					"default": "https://webmaker.org/"
 				},
-				rssFeed: {
-					elem:"input",
-					type:"textarea",
-					label:"RSS Feed",
-					group:"advanced"
-				},
+				
 				zindex: {
 		          hidden: true
 		        }

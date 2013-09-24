@@ -126,7 +126,7 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
 		return domain;
     } 
     this.language_bing_code=function() {
-        console.log("lang bing code");
+        console.log("language_bing_code");
         var i;
         var _languages=_account.getLanguages();
         var num = _languages.length;
@@ -144,7 +144,7 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
         return code;
     }
     this.language_name=function() {
-        console.log("lang bing code");
+        console.log("language_name");
         var i;
         var _languages=_account.getLanguages();
         var num = _languages.length;
@@ -153,7 +153,7 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
             var theLang = _languages[i];
             if (theLang.id == language_id) {
                 console.log("foound our id " + theLang.id);
-                if (theLang.langName) {
+                if (theLang.name) {
                     langName=theLang.name;
                 }
             }

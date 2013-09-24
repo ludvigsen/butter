@@ -186,8 +186,10 @@
 							if (option.elementType === "textarea") {
 								var updateOptions={originalTextName:strToTranslate};
 								_trackEvent.update(updateOptions);
-								pluginOptions["text_original"].element.style.display="";
-								pluginOptions["text_original"].element.originalTextLabel.style.display="";
+								if (pluginOptions["text_original"]) {
+									pluginOptions["text_original"].element.style.display="";
+									pluginOptions["text_original"].element.originalTextLabel.style.display="";
+								}
 							}
 						}
 					}

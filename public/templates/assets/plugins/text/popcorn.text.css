@@ -43,13 +43,15 @@
 
 .text-fixed > div > span {
   display: table-cell;
-  padding: 20px;
+  /*padding: 20px;*/
+  padding: 0px;
   line-height: 1;
 }
 
 .text-fixed > div > span > div {
   position: relative;
   display: inline-block;
+  width: 100%;
 }
 
 .center > span {

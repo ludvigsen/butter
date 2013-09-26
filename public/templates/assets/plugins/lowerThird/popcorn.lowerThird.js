@@ -101,7 +101,7 @@
 				if (org) {
 					newLink="http://"+domain;
 				} else {
-					newLink="http://google.com";
+					newLink="http://mozilla.org";
 				}
 				options.linkUrl=newLink;
 			}

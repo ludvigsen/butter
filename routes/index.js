@@ -233,7 +233,7 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
 	filter.isLoggedIn, filter.isStorageAvailable,
 	function (req, res) {
 	  var profileData = req.body;
-	  Profile.update({email: req.session.email, language_id: profileData.language_id, organization_id: profileData.organization_id}, function(err,doc) {
+	  Profile.update({email: req.session.email, language_id: profileData.language_id, organization_id: profileData.organization_id, translationType:profileData.translationType}, function(err,doc) {
 		  if (err) {
 			  res.json({error: err}, 500);
 			  metrics.increment('error.profilesave');

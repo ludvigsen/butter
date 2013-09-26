@@ -6,14 +6,15 @@
 CKEDITOR.editorConfig = function( config ) {
 	
 	config.baseFloatZIndex = 100000200; // has to be high enough to float over popcorn maker windows (z-index defined in /css/globals.less)
-	
+	//translate
 	config.toolbarGroups = [
     	{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
     	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
     	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
     	{ name: 'links' },
     	{ name: 'styles' },
-    	{ name: 'colors' }
+    	{ name: 'colors' },
+    	{ name: 'translate'}
     ];
 	config.removeButtons = 'Source,Save,NewPage,Preview,Print,Templates,PasteText,PasteFromWord,Strike,Blockquote,CreateDiv,Anchor,Underline,Subscript,Superscript,Indent,Outdent,NumberedList,BulletedList,Format';
 	
@@ -21,10 +22,11 @@ CKEDITOR.editorConfig = function( config ) {
 	config.toolbarStartupExpanded=false;	// start the toolbar in collapsed mode 
 	config.toolbarCanCollapse =true;		// also required for starting collapsed 
 	
+ 
+	//config.font_names = 'Merriweather;Gentium Book Basic;Lato;Vollkorn;Gravitas One;PT Sans;Open Sans;Bangers;Fredoka One;Covered By Your Grace;Coda';
+	config.font_names = 'Merriweather;Open Sans;Bangers;Fredoka One;Coda';
 
-	config.font_names = 'Merriweather;Gentium Book Basic;Lato;Vollkorn;Gravitas One;PT Sans;Open Sans;Bangers;Fredoka One;Covered By Your Grace;Coda';
-	
-	config.extraPlugins = 'stylesheetparser';
+	config.extraPlugins = 'stylesheetparser,translate';
 	config.stylesSet = []; // don't load the default style rules - only load from CSS
 	config.contentsCss = '/css/kettlecorn-editor.css'; // load the styling for standard elements as well as pre-defined class options
 	

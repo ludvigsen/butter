@@ -2,15 +2,37 @@
  * Styles that are included in the ckeditor styles drop-down for use within Kettlecorn text areas.
  */
 
-p.headline {
-	font-size: larger;
+p.quotation {
+	font-family:open sans;
+	font-size: 1.5em;
+}
+p.quotation_name{
+	font-family:open sans;
 	font-weight: bold;
+	font-size: 1em;
+	margin-top: .5em;
+}
+p.quotation_tag{
+	font-family:open sans;
+	font-weight: normal;
+	font-size: .75em;
+	margin-top: .5em !important;
 }
 
-p.description {
-	font-size: smaller;
+p.subtitles {
+	background: rgb(25, 25, 25);
+    background: rgba(25, 25, 25, .7);
+	color:#FFF;
+	font-family:open sans;
+	font-weight: normal;
+	font-size: .5em;
+	padding: 20px 40px !important;
+	text-align: center;
 }
 
-p.test {
-	font-weight: bold;
+span.label{
+	font-family:open sans;
+	font-weight: bolder;
+	color:#900;
+	text-transform:uppercase;
 }

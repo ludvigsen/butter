@@ -20,6 +20,7 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
     var hasProfile = false,
         organization_id = "",
         language_id = "",
+        translationType,
         self = this,
         _email,
         _authenticated,
@@ -48,8 +49,7 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
     };
     
     this.getProfile = function(callback) {
-    	//console.log("calling getProfile from KettleCornfield");
-        xhr.get("/api/profile", function(response) {
+    	xhr.get("/api/profile", function(response) {
     		if (response.error) {
     			if (response.error.substring(0,3) === "404") {
     				// user does not have a profile
@@ -67,6 +67,7 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
     			email = response.email;
     			language_id = response.language_id;
     			organization_id = response.organization_id;
+                translationType=response.translationType;
     			if (callback) {
     				callback();
     			}
@@ -126,7 +127,6 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
 		return domain;
     } 
     this.language_bing_code=function() {
-        console.log("language_bing_code");
         var i;
         var _languages=_account.getLanguages();
         var num = _languages.length;
@@ -134,17 +134,14 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
         for (i=0; i<num; i++) {
             var theLang = _languages[i];
             if (theLang.id == language_id) {
-                console.log("foound our id " + theLang.id);
                 if (theLang.bingCode) {
                     code=theLang.bingCode;
                 }
             }
         }
-        console.log("returns code " + code );
         return code;
     }
     this.language_name=function() {
-        console.log("language_name");
         var i;
         var _languages=_account.getLanguages();
         var num = _languages.length;
@@ -152,18 +149,21 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
         for (i=0; i<num; i++) {
             var theLang = _languages[i];
             if (theLang.id == language_id) {
-                console.log("foound our id " + theLang.id);
                 if (theLang.name) {
                     langName=theLang.name;
                 }
             }
         }
-        console.log("returns langName " + langName );
+        
         return langName;
     }
     this.language_id = function() {
     	return language_id;
     }
+    this.translationType=function() {
+        return translationType;
+    }
+
 
     this.logout = function(callback) {
     	cornfield.logout(callback);
@@ -177,7 +177,6 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
     }
 
     this.saveAccount = saveAccountFunction;
-    //console.log("KettleCornfield is initializing, so let's call getProfile");
     this.getProfile();  
 
   };

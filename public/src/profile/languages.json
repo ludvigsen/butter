@@ -15,7 +15,7 @@
     {
       "id":	"eng",
       "name":	"English",
-      "enableTranslation":"false",
+      "enableTranslation":"true",
       "bingCode":"en"
     },
     {

@@ -15,7 +15,9 @@
 				_popcornOptions;
 
 			var preloaderContainer,
-				translationLang;	
+				translationLang,
+				translationLangName,
+				translationType;	
 
 			/**
 			 * Member: setup
@@ -156,7 +158,7 @@
 				}
 
 
-
+ 
 				function runTranslator() {
 					console.log("RUNNING TRANSLATOR");
 
@@ -193,29 +195,49 @@
 							}
 						}
 					}
-
+					
 					translationLang="es";
 					translationLangName="Spanish";
+					translationType="auto";
+
 					if (window.Butter && window.Butter.app && window.Butter.app.kettlecornfield) { 
 						translationLang=window.Butter.app.kettlecornfield.language_bing_code();
 						translationLangName=window.Butter.app.kettlecornfield.language_name();
+						var possibleTT=window.Butter.app.kettlecornfield.translationType();
+						if (possibleTT && possibleTT =="hand") {
+							translationType="hand";
+						}
 					}
-					preloaderBG.innerHTML="<BR><BR><strong style='font-size:2.0em;'>Seasoning the corn...<BR><BR></strong><em>(translating to " + translationLangName + ")</em>";
-					
 
-					$.post(translateURL, {phrase:strToTranslate, lang:translationLang},
-						function(data){
-							//translationPreloaderImg.style.display="none";
+					if (translationType == "auto") {
+						preloaderBG.innerHTML="<BR><BR><strong style='font-size:2.0em;'>Translating to " + translationLangName + "</strong>";
+						$.post(translateURL, {phrase:strToTranslate, lang:translationLang},
+							function(data){
+								//translationPreloaderImg.style.display="none";
+								preloaderContainer.style.display="none";
+								var newData="<p>"+data+"</p>";
+								ckinstance.setData(newData);
+								var updateOptions={"text":newData, "text_original":strToTranslate};
+								_trackEvent.update(updateOptions); 
+								pluginOptions["text_original"].element.readOnly=true; 
+								//pluginOptions["text_original"].element.originalTextLabel.value="Original Text"; 
+							}, 
+						"text");
+					} else {
+						preloaderBG.innerHTML="<BR><BR><strong style='font-size:1.5em;'>Translation by hand!<BR><BR></strong></em>";
+
+						setTimeout(function(){
 							preloaderContainer.style.display="none";
-							var newData="<p>"+data+"</p>";
+							var newData="<p>Replace this text with your translation</p>";
 							ckinstance.setData(newData);
 							var updateOptions={"text":newData, "text_original":strToTranslate};
 							_trackEvent.update(updateOptions); 
 							pluginOptions["text_original"].element.readOnly=true; 
-							//pluginOptions["text_original"].element.originalTextLabel.value="Original Text"; 
-						}, 
-					"text");
-				}
+						},1000);
+
+					}
+				}	//end runtranslator
+				window.runTheTranslator=runTranslator;	 
 
 
 				function addTranslationUI() {
@@ -286,6 +308,9 @@
 				addTranslationUI();
 				_this.updatePropertiesFromManifest(trackEvent);
 				_this.setTrackEventUpdateErrorCallback(_this.setErrorState);
+
+
+
 			}
 
 			function anchorClickPrevention(anchorContainer) {

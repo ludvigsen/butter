@@ -9,7 +9,7 @@
 CKEDITOR.plugins.add( 'translate', {
 
 	// Register the icons. They must match command names.
-	icons: 'timestamp',
+	icons: 'translate',
 
 	// The plugin initialization logic goes inside this method.
 	init: function( editor ) {
@@ -30,10 +30,13 @@ CKEDITOR.plugins.add( 'translate', {
 		});
 
 		// Create the toolbar button that executes the above command.
-		editor.ui.addButton( 'Timestamp', {
-			label: 'Translate Text',
+		editor.ui.addButton( 'Translate', {
+			label: 'Translate',
 			command: 'translateSomething',
 			toolbar: 'translate'
 		});
+
+
+
 	}
 });

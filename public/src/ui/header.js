@@ -66,6 +66,8 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
     }
 
     function toggleProjectButton( on ) {
+      //we've removed project button from layout, so we just return
+      return;
       if ( on ) {
         _projectBtn.classList.remove( "butter-disabled" );
         _projectBtn.addEventListener( "click", openProjectEditor, false );
@@ -76,6 +78,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
     }
 
     function toggleSaveButton( on ) {
+      
       if ( on ) {
         _saveButton.classList.remove( "butter-disabled" );
         _saveButton.addEventListener( "click", saveProject, false );
@@ -86,6 +89,8 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
     }
 
     function togglePreviewButton( on ) {
+      //we've removed preview button from layout, so we just return
+      return;
       if ( on ) {
         _previewBtn.classList.remove( "butter-disabled" );
         _previewBtn.href = butter.project.previewUrl;
@@ -93,6 +98,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
           return true;
         };
       } else {
+        
         _previewBtn.classList.add( "butter-disabled" );
         _previewBtn.href = "";
         _previewBtn.onclick = function() {

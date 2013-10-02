@@ -1,14 +1,15 @@
 doctype 5
 html
   head
-    title Gallery
+    title Kettlecorn Showcase
+    meta(name="viewport",content="width=device-width, initial-scale=1")
     link(rel='stylesheet',href='../css/butter.ui.css')
     style
       html,body {
         height: 100%;
       }
       body {
-        font-family: "Open Sans", "Helvetica Neue", sans-serif;
+        font-family: "Open Sans", sans-serif;
         background: #F4F5F5;
         color: #888;
         margin: 0 auto;
@@ -16,82 +17,146 @@ html
         font-size: .9em;
         overflow: scroll;
       }
-      .butter-nav {
-        width: 100%;
+
+      a{
+        color:#f15a29;
+        text-decoration: none;
       }
-      .butter-project-title {
-        max-width: none;
-        cursor: default;
+      a:hover{
+        text-decoration: underline;
       }
-      .project-listing {
-        padding: 10px;
+
+      h3 a{
+        color:#333;
+      }
+      h3 a:hover{
+        color:#f15a29;
+      }
+
+      .project-listing{
+        width:96%;
+        background-color: #FFF;
+        margin: 0;
+        padding:10px 2%;
+        float: left;
+        border-bottom: solid 1px #d1d3d4; 
+      }
+      .project-detail h3{
+        white-space: nowrap;
         overflow: hidden;
-        margin: 10px;
+        text-overflow: ellipsis;
+        padding: 0;
+        margin: 0 0 10px 0;
       }
-      .project-container {
-        position: relative;
+
+      .project-author{
+        font-size: .9em;
+      }
+      .project-update{
+        font-size: .9em;
+      }
+      .project-description{
+      }
+      .thumbnail-container{
+        border: 1px solid #d1d3d4;
         float: left;
-        background-color: #888;
-        width: 20%;
-        padding-bottom: 20%;
-      }
-      .project-detail {
-        position: absolute;
-        left: 10px;
-        right: 10px;
-        top: 10px;
-        bottom: 10px;
-        overflow: hidden;     
-        padding: 10px;
-        background-color: #fff; 	
-      }
-      .project-detail img {
-        float: left;
-        margin-right: 10px;
-        border: 0;
-      }
-      .project-detail .project-links {
-        width: 95%;
-        clear: both;
-        position: absolute;
-        bottom: 5px;
-      }
-      .project-detail .project-links a {
         display: block;
+        width:36%;
       }
-      .project-detail .project-links a.project-link {
-        float: left;
+      .thumbnail{
+        border: 8px solid #FFF;
+        width: 85%;
+        height: 100px;
+        background-size:cover;
+        background-position: center;
+        background-repeat: no-repeat;
       }
-      .project-detail .project-links a.remix-link {
-        float: right;
+
+      .description{
+        font-size: .9em;
+        line-height: 1.2em;
+        height: 7em;
+        overflow: hidden;
+        padding:0px;
+        margin: 0 1% 0 0;
+        width:60%;
+        float:right;
+      }
+      .description p{
+        padding: 0;
+        margin: 0;
+      }
+      .project-description-text{
+        color:#666;
+      }
+      .project-link{
+        margin: 10px 1% 0 0;
+        float:right;
+        width:60%;
+        font-size: .9em;
+        font-weight: bold;
+      }
+
+      @media (min-width:550px) {
+        .project-listing{
+          width:44%;
+          margin: 0 1% 20px 1%;
+          -moz-box-shadow:1px 1px 2px 2px #ccc;
+          -webkit-box-shadow: 1px 1px 2px 2px #ccc;
+          box-shadow: 1px 1px 2px 2px #ccc;
+          padding:10px 1%;
+          float: left;
+        }
+      }
+      @media (min-width:900px) {
+        .project-listing{
+          width:29%;
+          margin: 0 1% 20px 1%;
+          -moz-box-shadow:1px 1px 2px 2px #ccc;
+          -webkit-box-shadow: 1px 1px 2px 2px #ccc;
+          box-shadow: 1px 1px 2px 2px #ccc;
+          padding:10px 1%;
+          float: left;
+        }
       }
     
   body.butter-header-spacing.butter-editor-spacing
     div#butter-header.butter-header
       div.butter-header-primary
-        div.butter-logo
-        ul.butter-nav
-          li.butter-breadcrumbs
-          li.butter-project-title
-            span.butter-name Gallery Recent Projects
-    .project-listing
-      each project in projects
+        a(href="/")
+          div.butter-logo
+          ul.butter-nav
+            li.butter-breadcrumbs
+            li.butter-project-title
+              span.butter-name Showcase
+    each project in projects
+      .project-listing
         .project-container
           .project-detail
-            h3 Project: 
-              = project.name
+            h3
+              a(href=project.href, target="_blank")
+                =project.name
             if project.description || project.thumbnail
-              .project-description 
+              div.project-description 
                 if project.thumbnail
-                  img(src=project.thumbnail,alt=project.name)
+                  div.thumbnail-container
+                    a(href=project.href, target="_blank")
+                      div.thumbnail(style="background-image:url('"+project.thumbnail+"')")
                 if project.description
-                  span.description Description: 
-                  = project.description
-            if project.author
-              p.project-author Author:
-                = project.author
-            p.project-update Last Update: 
-             = project.updatedAt
-            div.project-links
-              a.project-link(href=project.href) Details
-              a.remix-link(href=project.remixHref) Remix
+                  div.description
+                    if project.author
+                      p.project-author By: 
+                        a(href="gallery?author="+project.author)
+                          = project.author
+                        span  (org)
+                        a(href="gallery?org="+project.organization)
+                            br
+                    p.project-update 
+                      = project.updatedAt + " (lang)"
+                    br
+                    p.project-description-text
+                      = project.description
+                  div.project-link
+                    a(href=project.href) View
+                    &nbsp;|&nbsp;
+                    a.remix-link(href=project.remixHref) Remix

@@ -534,6 +534,19 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
     	  });
       } else {
 
+        //ADDED BY jflowers@bbg: there is no checkbox handling here so we're adding it
+        if ( element.type === "checkbox") {
+           element.addEventListener( "click", function( e ) {
+            var updateOptions = {};
+            updateOptions[propertyName]=false;
+            if ( element.checked ) {
+              updateOptions[propertyName]=true;
+            }
+            updateTrackEvent( trackEvent, callback, updateOptions );
+            
+          }, false );
+        } 
+
 	      element.addEventListener( "blur", function() {
 	        var val = element.value;
 	
@@ -594,6 +607,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
 	          }
 	        }, false );
 	      }
+
       }
 
       if ( element.type === "textarea" && manifestType !== "url" ) {

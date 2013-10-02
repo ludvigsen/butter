@@ -125,27 +125,10 @@
   border-radius: 0.03em;
   padding: 0.026em;
   position: relative;
-  text-align: center;
+  text-align: left;
   overflow: hidden;
   word-wrap: break-word;
-  cursor: default; /* BBG addition */
 }
-
-/* BBG addition START */
-
-.popcorn-popup .popup-inner-div > div > span > p,
-.popcorn-popup .popup-inner-div > div > span > div,
-.popcorn-popup .popup-inner-div > div > span > div > p {
-	margin: 0;
-	padding: 0;
-}
-
-.popcorn-popup .popup-inner-div > div > span > p + p,
-.popcorn-popup .popup-inner-div > div > span > div + p,
-.popcorn-popup .popup-inner-div > div > span > div > p + p {
-	margin-top: 1em;
-}
-/* BBG addition END */
 
 .popup-inner-div a {
   text-decoration: none;
@@ -172,7 +155,7 @@
 }
 
 .popcorn-popup .popup-icon + div {
-  padding-left: 12px;
+  padding-left: .05em;
 }
 
 [contenteditable="true"]:focus {

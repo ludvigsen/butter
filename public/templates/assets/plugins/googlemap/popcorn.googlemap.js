@@ -14,7 +14,8 @@ var googleCallback;
 		// Store location objects in case the same string location is used multiple times.
 		_cachedGeoCode = {},
 		MAP_FAILURE_TIMEOUT = 100,
-		geocoder;
+		geocoder,
+		_mapCompletelyLoaded;
 
 	//google api callback
 	window.googleCallback = function (data) {
@@ -70,6 +71,7 @@ var googleCallback;
 
 		// Used to notify any users of the plugin when the maps has completely loaded
 		google.maps.event.addListenerOnce(map, "idle", function () {
+			_mapCompletelyLoaded=true;
 			pluginInstance.emit("googlemaps-loaded");
 		});
 
@@ -79,6 +81,106 @@ var googleCallback;
 
 		return map;
 	}	//end buildMap
+
+	function formatInfoWindowString (title,description) {
+		var contentString = '<div id="mapInfoWindow">'+
+						'<p class="gmap_infoWindowTitle">' + title + '</p>'+
+						'<p class="gmap_infoWindowDesc">' + description+ '</p>'+
+						'</div>';
+
+		return contentString;
+	}
+
+	function trimString(str) {
+		return str.replace(/^\s+|\s+$/g, '');
+	};
+	
+	function parseTimeStr(aStr) {
+		var strArray=aStr.split(".");
+
+		//parse the minutes and seconds from the left side of .
+		var minutesAndSeconds=strArray[0];
+		var minSecArray=minutesAndSeconds.split(":");
+		var m=parseInt(minSecArray[0]);
+		var s=parseInt(minSecArray[1]);
+		
+		//parse the milliseconds from the right side of .
+		var ms=parseInt(strArray[1]);
+		
+		var totalTime=(m*60) + (s) + (ms/1000);
+		return totalTime;
+
+	}
+
+	function parseSpreadsheetLine(str) {
+
+		//the format returned from google's jsonp is TERRIBLE.  as a result we do some really ugly parsing
+		//I originally had a more elegant solution but when values contain the delimiters (comma or semicolon) it wasn't working
+
+		var props=str.split(",");
+		var newstr="";
+		var o={};
+		
+		//endtime,title,description,lat,lng,zoom,thumbnail,openWindow
+
+		i1=str.indexOf("starttime:")+10;
+		i2=str.indexOf(", endtime",i1);
+		o.starttimeString=trimString(str.substring(i1,i2))
+
+		o.starttime=parseTimeStr(o.starttimeString);
+
+
+
+		i1=str.indexOf("endtime:")+8;
+		i2=str.indexOf(", title",i1);
+		o.endtimeString=trimString(str.substring(i1,i2))
+		o.endtime=parseTimeStr(o.endtimeString);
+
+		
+		i1=str.indexOf("title:")+6;
+		i2=str.indexOf(", description",i1);
+		o.title=trimString(str.substring(i1,i2))
+
+		i1=str.indexOf("description:")+12;
+		i2=str.indexOf(", lat",i1);
+		o.description=trimString(str.substring(i1,i2))
+
+		i1=str.indexOf("lat:")+4;
+		i2=str.indexOf(", lng",i1);
+		o.lat=trimString(str.substring(i1,i2))
+		
+		i1=str.indexOf("lng:")+4;
+		i2=str.indexOf(", zoom",i1);
+		o.lng=trimString(str.substring(i1,i2))
+
+		i1=str.indexOf("zoom:")+5;
+		i2=str.indexOf(", thumbnail",i1);
+		o.zoom=trimString(str.substring(i1,i2))
+
+		i1=str.indexOf("thumbnail:")+10;
+		i2=str.indexOf(", openwindow",i1);
+		o.thumbnail=trimString(str.substring(i1,i2))
+
+		i1=str.indexOf("openwindow:")+11;
+		o.openWindow=trimString(str.substring(i1))
+		return o;
+	}
+
+	function getCurrentPinFromTime(md,time) {
+		//mapDataFromSpreadsheet
+		var currentPin=-1;
+		for (var i=0; i < md.length; i++) {
+			var aStartTime = md[i].starttime;
+			var aEndTime=md[i].endtime;
+			//console.log("looking at " + aStartTime + " TO " + aEndTime);
+			if (time >= aStartTime && time < aEndTime) { 
+				currentPin=i+1;
+			}
+		}
+		//console.log(time + "... returns " + currentPin);
+		return currentPin;
+
+	}
 
 	/**
    * googlemap popcorn plug-in
@@ -134,17 +236,14 @@ var googleCallback;
 			marker, infoWindow,
 			target = Popcorn.dom.find(options.target),
 			that = this,
-			ranOnce = false;
+			spreadsheetMode=false,
+			pinMode=false,
+			ranOnce = false,
+			mapDataFromSpreadsheet,
+			markersFromSpreadsheet=[],
+			originalZoom;
 
-		function formatInfoWindowString (title,description) {
-			var contentString = '<div id="mapInfoWindow">'+
-							'<p class="gmap_infoWindowTitle">' + title + '</p>'+
-							'<p class="gmap_infoWindowDesc">' + description+ '</p>'+
-							'</div>';
-
-			return contentString;
-		}
-
+		
 		function geoCodeCallback(results, status) {
 			// second check for innerdiv since it could have disappeared before
 			// this callback is actually run
@@ -202,6 +301,64 @@ var googleCallback;
 
 		return {
 			_setup: function (options) {
+				
+
+				function loadSpreadsheet(lsUrl,lsCallback) {
+					Popcorn.getJSONP(
+						lsUrl,
+						function( data ) {
+							
+							var entries=data.feed.entry;
+							var arr=[];
+							//we ingnore row 0 because it's the header vals
+							for (i=0; i< entries.length; i++) {
+								var o=entries[i];
+								var contentStr=o.content["$t"];
+								var r=parseSpreadsheetLine(contentStr);
+								arr.push(r);
+							}
+							lsCallback(arr);
+						} //end anonymous callback
+					);
+				}	//end loadSpreadsheet
+				
+				function placeMarkersWhenMapReady() {
+					if (_mapCompletelyLoaded) {
+						var md=mapDataFromSpreadsheet;
+						for (var i=0; i < md.length; i++) {
+							var ev=md[i];
+							var aMarker= new google.maps.Marker({
+								position: new google.maps.LatLng(ev.lat, ev.lng), 
+								title: 'MARKERTITLE',
+								animation: google.maps.Animation.DROP
+							});
+							aMarker.setMap(map);
+							markersFromSpreadsheet.push(aMarker);
+							aMarker.markerNum=i;
+							google.maps.event.addListener(aMarker, 'click', function() {
+								var cmData=mapDataFromSpreadsheet[this.markerNum]
+								//console.log("go to marker " + this.markerNum + " with time " + cmData.starttime);
+								that.currentTime( cmData.starttime )
+							});
+
+						}
+					} else {
+						setTimeout(function () {
+							placeMarkersWhenMapReady(md);
+						}, 50);
+					}
+				}
+
+				originalZoom=options.zoom;
+				var loc="https://spreadsheets.google.com/feeds/list/" + options.spreadsheetKey + "/od6/public/values?alt=json-in-script&callback=jsonp";
+				loadSpreadsheet(loc,function(lsData) {
+					mapDataFromSpreadsheet=lsData;
+					//create all of our markers and infoWindows
+					placeMarkersWhenMapReady();
+				})
+				lastFrameTime=-1;
+				lastPinNum=-1;
+				duration = options.end - options.start;
 				console.log("gMap setup");
 				if (!target) {
 					target = that.media.parentNode;
@@ -264,10 +421,10 @@ var googleCallback;
 					sView,
 					redrawBug,
 					MAX_MAP_ZOOM_VALUE = 22,
-					DEFAULT_MAP_ZOOM_VALUE = options._natives.manifest.options.zoom["default"],
 					MAX_MAP_PITCH_VALUE = 12,
-					DEFAULT_MAP_PITCH_VALUE = options._natives.manifest.options.pitch["default"],
 					MAX_MAP_HEADING_VALUE = 12,
+					DEFAULT_MAP_ZOOM_VALUE = options._natives.manifest.options.zoom["default"],
+					DEFAULT_MAP_PITCH_VALUE = options._natives.manifest.options.pitch["default"],
 					DEFAULT_MAP_HEADING_VALUE = options._natives.manifest.options.heading["default"];
 
 				// ensure the map has been initialized in the setup function above
@@ -276,9 +433,7 @@ var googleCallback;
 				var isMapSetup = function () {
 
 					//REMOVED FUNCTION TWEEN
-
 					function tween(rM, t) {
-
 						var computeHeading = google.maps.geometry.spherical.computeHeading;
 						setTimeout(function () {
 
@@ -341,25 +496,34 @@ var googleCallback;
 						google.maps.event.trigger(map, "resize");
 						map.setCenter(location);
 
-						var contentString=formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc);
-						infowindow = new google.maps.InfoWindow({
-							content: contentString
-						});
 
-						marker = new google.maps.Marker({
-							position: location,
-							title: 'MARKERTITLE',
-							animation: google.maps.Animation.DROP
-						});
-						google.maps.event.addListener(marker, 'click', function() {
-							infowindow.open(map,marker);
-						});
-						marker.setMap(map);
-						
-						if (options.infoWindowOpen) {
-							infowindow.open(map,marker);
+						if (options.spreadsheetKey) {
+							pinMode=false;
+							spreadsheetMode=true;
+						} else if (options.infoWindowTitle || options.infoWindowDesc) {
+							pinMode=true;
+							spreadsheetMode=false;
 						}
 
+						if (pinMode) {
+							infowindow = new google.maps.InfoWindow({
+								content: formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc)
+							});
+
+							marker = new google.maps.Marker({
+								position: location,
+								title: 'MARKERTITLE',
+								animation: google.maps.Animation.DROP
+							});
+							google.maps.event.addListener(marker, 'click', function() {
+								infowindow.open(map,marker);
+							});
+							marker.setMap(map);
+							
+							if (options.infoWindowOpen) {
+								infowindow.open(map,marker);
+							}
+						}
 
 						// make sure options.zoom is a number
 						if (options.zoom && typeof options.zoom !== "number") {
@@ -475,6 +639,62 @@ var googleCallback;
 				};  //end isMapSetup
 				isMapSetup();
 			},	//end start
+			
+			frame: function(event, options, time) {
+		        var scale = 1, opacity = 1,
+		          t = time - options.start,
+		          div = options.container,
+		          transform;
+
+				//console.log("FRAME " + time); 
+				if (lastFrameTime != time) {
+					//console.log("run frame at " + time);
+					
+					if (mapDataFromSpreadsheet) {	//we may not yet have finished loading the spreadsheet so let's make sure it exists
+						var currentPin=getCurrentPinFromTime(mapDataFromSpreadsheet,time);
+						var percentPlayed=time/duration; 
+						if (lastPinNum != currentPin) {
+							lastPinNum=currentPin;
+							if (currentPin != -1) {
+								var thisPin=mapDataFromSpreadsheet[currentPin-1];
+								if (thisPin && google) {
+									console.log("GOTO PIN " + currentPin + " lat=" + thisPin.lat + " lng=" + thisPin.lng + " zoom=" + thisPin.zoom + " title " + thisPin.title);
+									var newLocation=new google.maps.LatLng(thisPin.lat, thisPin.lng);
+									map.panTo(newLocation);
+									map.setZoom(parseInt(thisPin.zoom));
+									
+									//If we are in spreadsheet mode, we don't create the infowindow early on (yet)
+									if (typeof infowindow == "undefined") {
+										console.log("CREATING NEW EMPTY INFOWINDOW");
+										infowindow = new google.maps.InfoWindow({
+											content: "",
+											pixelOffset: new google.maps.Size(0, -50)
+
+										});
+									}
+									
+									infowindow.setPosition(newLocation);
+									infowindow.open(map,markersFromSpreadsheet[thisPin-1]);
+									infowindow.setContent(formatInfoWindowString(thisPin.title,thisPin.description)); 
+									
+								}
+							} else {
+								map.panTo(location);	//this scenario is if we hit a time period that's not covered by spreadsheet.  Take default location.
+								console.log("set zoom to " + originalZoom);
+								infowindow.close();
+								map.setZoom(originalZoom);
+							}
+						}
+					}
+				}
+				lastFrameTime=time;
+		        if (!options.container) {
+		          return;
+		        }
+
+		     },
+
+
 			/**
 			 * @member webpage
 			 * The end function will be executed when the currentTime
@@ -501,6 +721,7 @@ var googleCallback;
 			_update: function (trackEvent, options) {
 				//update fires when you change a value in the editor pane
 				//NOTE: Options in THIS function only contains properties that have CHANGED
+				console.log("the update function in google map plugin is firing");
 				var updateLocation = false,
 					map = trackEvent._map,
 					triggerResize = false,
@@ -509,37 +730,35 @@ var googleCallback;
 					location,
 					layer,
 					oldType;
-
-				if (options.infoWindowTitle || options.infoWindowDesc) {
-					var newTitle=(options.infoWindowTitle != null);
-					var newDesc=(options.infoWindowDesc != null);
+				
+				var newTitle=("infoWindowTitle" in options);
+				var newDesc=("infoWindowDesc" in options); 
+				var newInfoWindowOpen = ("infoWindowOpen" in options); 
+				
+				//if they toggled either the title or description, we have to redraw the bubble's contents
+				if (newTitle || newDesc) {
 					var iTitle=trackEvent.infoWindowTitle;
 					var iDesc=trackEvent.infoWindowDesc;
-
 					if (newTitle) {
 						iTitle=options.infoWindowTitle;
-						trackEvent.infoWindowTitle=options.infoWindowTitle;	//this ensure the new value is saved in this track even
+						trackEvent.infoWindowTitle=options.infoWindowTitle;	
 					}
 					if (newDesc) {
 						iDesc=options.infoWindowDesc;
 						trackEvent.infoWindowDesc=options.infoWindowDesc;
 					}
-					var iTitle = options.infoWindowTitle ? options.infoWindowTitle : trackEvent.infoWindowTitle;
-					var iDesc = options.infoWindowDesc ? options.infoWindowDesc : trackEvent.infoWindowDesc;
-					contentString=formatInfoWindowString(iTitle,iDesc);
-					infowindow.setContent(contentString); 
+					infowindow.setContent(formatInfoWindowString(iTitle,iDesc)); 
 				}
-				console.log("we are in the update function!");
-				
-				if (options.infoWindowOpen != null) {
-					if (options.infowWindowOpen) {
-						console.log("it is time to open this thing");
+
+				//if they toggled either the checkbox, show or hide the bubble
+				if (newInfoWindowOpen) {
+					if (options.infoWindowOpen) {
 						infowindow.open(map,marker);
 					} else {
-						console.log("it is time to close this thing");
 						infowindow.close(); 
 					}
-				}
+				} 
+				
 
 				function streetViewSearch(latLng, res, errorMsg, toggleMaps, success) {
 					var streetViewService = new google.maps.StreetViewService();
@@ -613,13 +832,7 @@ var googleCallback;
 				}
 
 				if (!ignoreValue && options.location && options.location !== trackEvent.location) {
-					
-
-
-
 					updateLocation = true;
-
-
 					location = _cachedGeoCode[options.location];
 					trackEvent.location = options.location;
 					if (location) {
@@ -767,7 +980,7 @@ var googleCallback;
 				elem: "input",
 				type: "text",
 				label: "Location",
-				"default": "Toronto, Ontario, Canada"
+				"default": "Washington, DC"
 			},
 			fullscreen: {
 				elem: "input",
@@ -797,6 +1010,34 @@ var googleCallback;
 				label: "Zoom",
 				"default": 10,
 				optional: true
+			},
+			spreadsheetKey: {
+				elem: "input",
+				type:"text",
+				label: "Google Spreadsheet Key",
+				group:"advanced",
+				"default":"0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c"
+			},
+			infoWindowTitle: {
+				elem: "input",
+				type:"text",
+				label: "Pin Title",
+				group:"advanced",
+				"default":"Washington, DC"
+			},
+			infoWindowDesc: {
+				elem: "input",
+				type:"text",
+				label: "Pin Description",
+				group:"advanced",
+				"default":"Voice of America HQ"
+			},
+			infoWindowOpen: {
+				elem: "input",
+				type: "checkbox",
+				label: "Open Pin Window by Default",
+				group:"advanced",
+				"default": true
 			},
 			transition: {
 				elem: "select",
@@ -854,26 +1095,7 @@ var googleCallback;
 				optional: true,
 				hidden: true
 			},
-			infoWindowTitle: {
-				elem: "input",
-				type:"text",
-				label: "infoWindow Title (optional)",
-				group:"advanced",
-				"default":"Anytown, USA"
-			},
-			infoWindowDesc: {
-				elem: "input",
-				type:"text",
-				label: "infoWindow Description (optional)",
-				group:"advanced",
-				"default":"There are several things to do in Anytown."
-			},
-			infoWindowOpen: {
-				elem: "input",
-				type: "checkbox",
-				label: "Open by Default",
-				"default": true
-			},
+
 			zindex: {
 				hidden: true
 			}

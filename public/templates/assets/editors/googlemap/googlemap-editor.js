@@ -181,13 +181,13 @@
             trackEvent.update( updateOptions );
           }, false );
         }
+        /*
         function attachDefaultOpenHandler( option ) {
           option.element.addEventListener( "click", function( e ) {
             var srcElement = e.target,
                 updateOptions = {},
                 popcornOptions = _trackEvent.popcornOptions;
 
-            console.log("we are in the4 doh");
             if ( srcElement.checked ) {
               updateOptions = {
                 infoWindowOpen: true
@@ -201,14 +201,21 @@
             console.log("calling update for dfoh with " + updateOptions.infoWindowOpen);
 
             trackEvent.update( updateOptions );
-          })
-        }
+          }, false );
+        }*/
 
         function updateLocation( te, prop ) {
           _cachedValues.location = prop.location;
 
           _this.updateTrackEventSafe( te, {
             location: prop.location
+          });
+        }
+        function updateInfoWindowOpen(te,prop) {
+          console.log("updateInfoWindowOpen!!!"); 
+          _cachedValues.infoWindowOpen=prop.infoWindowOpen;
+          _this.updateTrackEventSafe( te, {
+            infoWindowOpen: prop.infoWindowOpen
           });
         }
 
@@ -252,9 +259,17 @@
               _this.attachInputChangeHandler( option.element, option.trackEvent, key, updateLocation );
             } else if ( key === "zoom" ) {
               _this.attachInputChangeHandler( option.element, option.trackEvent, key, updateZoom );
-            } else if (key == "infoWindowOpen") {
+            }  else if ( key === "infoWindowOpen" ) {
+              console.log("attaching updateInfoWindowOpen " );
+              _this.attachInputChangeHandler( option.element, option.trackEvent, key, updateInfoWindowOpen ); 
+            } 
+            /*
+            else if (key == "infoWindowOpen") {
               attachDefaultOpenHandler(option);
-            } else if ( option.elementType === "input" ) {
+            } 
+            */
+            else if ( option.elementType === "input" ) {
+              //note: it appears that the default change handler, which is this, doesn't
               _this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
             }
           }

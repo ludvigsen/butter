@@ -29,6 +29,7 @@ requirejs.config({
     "popcorn.sequencer": "../templates/assets/plugins/sequencer/popcorn.sequencer",
     "popcorn.skip": "../templates/assets/plugins/skip/popcorn.skip",
     "popcorn.text": "../templates/assets/plugins/text/popcorn.text",
+    "popcorn.audioKeyframe": "../templates/assets/plugins/audioKeyframe/popcorn.audioKeyframe",
     "popcorn.lowerThird": "../templates/assets/plugins/lowerThird/popcorn.lowerThird",
     "popcorn.twitter": "../templates/assets/plugins/twitter/popcorn.twitter",
     "popcorn.wikipedia": "../templates/assets/plugins/wikipedia/popcorn.wikipedia",
@@ -64,6 +65,7 @@ requirejs.config({
     "popcorn.sequencer": [ "popcorn.core", "popcorn.player" ],
     "popcorn.skip": [ "popcorn.core" ],
     "popcorn.text": [ "popcorn.core" ],
+    "popcorn.audioKeyframe": [ "popcorn.core" ],    
     "popcorn.lowerThird": [ "popcorn.core" ],    
     "popcorn.twitter": [ "popcorn.core" ],
     "popcorn.wikipedia": [ "popcorn.core" ]
@@ -86,6 +88,7 @@ define([
   "popcorn.skip",
   "popcorn.text",
   "popcorn.lowerThird",
+  "popcorn.audioKeyframe",
   "popcorn.twitter",
   "popcorn.wikipedia",
   "popcorn.HTMLMediaElement",

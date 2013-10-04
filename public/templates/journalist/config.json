@@ -11,7 +11,9 @@
     "text": "{{baseDir}}templates/assets/editors/text/text-editor.js",
     "twitter": "{{baseDir}}templates/assets/editors/twitter/twitter-editor.js",
     "wikipedia": "{{baseDir}}templates/assets/editors/wikipedia/wikipedia-editor.js",
-    "lowerThird": "{{baseDir}}templates/assets/editors/lowerThird/lowerThird-editor.js"
+    "lowerThird": "{{baseDir}}templates/assets/editors/lowerThird/lowerThird-editor.js",
+    "audioKeyframe": "{{baseDir}}templates/assets/editors/audioKeyframe/audioKeyframe-editor.js"
+
   },
   "plugin": {
     "plugins": [
@@ -33,10 +35,17 @@
       },
       {
         "type": "lowerThird",
+        "displayName": "Lower Third",
         "icon": "{{baseDir}}templates/assets/plugins/lowerThird/lowerThird-icon.png"
+      },
+      {
+        "type": "audioKeyframe",
+        "displayName": "Audio Keyframe",
+        "icon": "{{baseDir}}templates/assets/plugins/audioKeyframe/audioKeyframe-icon.png"
       },
        {
         "type": "promo",
+        "displayName": "End Card",
         "icon": "{{baseDir}}templates/assets/plugins/promo/promo-icon.png"
       },
       {

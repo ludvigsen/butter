@@ -12,7 +12,8 @@
     "twitter": "{{baseDir}}templates/assets/editors/twitter/twitter-editor.js",
     "wikipedia": "{{baseDir}}templates/assets/editors/wikipedia/wikipedia-editor.js",
     "lowerThird": "{{baseDir}}templates/assets/editors/lowerThird/lowerThird-editor.js",
-    "audioKeyframe": "{{baseDir}}templates/assets/editors/audioKeyframe/audioKeyframe-editor.js"
+    "audioKeyframe": "{{baseDir}}templates/assets/editors/audioKeyframe/audioKeyframe-editor.js",
+    "sketchfab": "{{baseDir}}templates/assets/editors/sketchfab/sketchfab-editor.js"
 
   },
   "plugin": {
@@ -42,6 +43,11 @@
         "type": "audioKeyframe",
         "displayName": "Audio Keyframe",
         "icon": "{{baseDir}}templates/assets/plugins/audioKeyframe/audioKeyframe-icon.png"
+      },
+      {
+        "type": "sketchfab",
+        "displayName": "3d",
+        "icon": "{{baseDir}}templates/assets/plugins/sketchfab/sketchfab-icon.png"
       },
        {
         "type": "promo",

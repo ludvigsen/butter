@@ -30,11 +30,16 @@ requirejs.config({
     "popcorn.skip": "../templates/assets/plugins/skip/popcorn.skip",
     "popcorn.text": "../templates/assets/plugins/text/popcorn.text",
     "popcorn.audioKeyframe": "../templates/assets/plugins/audioKeyframe/popcorn.audioKeyframe",
+    "popcorn.sketchfab": "../templates/assets/plugins/sketchfab/popcorn.sketchfab",
     "popcorn.lowerThird": "../templates/assets/plugins/lowerThird/popcorn.lowerThird",
     "popcorn.twitter": "../templates/assets/plugins/twitter/popcorn.twitter",
     "popcorn.wikipedia": "../templates/assets/plugins/wikipedia/popcorn.wikipedia",
+    
     // RequireJS
-    "text": "../external/require/text"
+    "text": "../external/require/text",
+
+    "sketchfab-iframe": "../external/sketchfab/sketchfab-iframe"
+
   },
   // shim config defines dependencies between non-AMD modules, which is all of the Popcorn code
   shim: {
@@ -66,6 +71,7 @@ requirejs.config({
     "popcorn.skip": [ "popcorn.core" ],
     "popcorn.text": [ "popcorn.core" ],
     "popcorn.audioKeyframe": [ "popcorn.core" ],    
+    "popcorn.sketchfab": [ "popcorn.core", "sketchfab-iframe" ],   
     "popcorn.lowerThird": [ "popcorn.core" ],    
     "popcorn.twitter": [ "popcorn.core" ],
     "popcorn.wikipedia": [ "popcorn.core" ]
@@ -89,6 +95,7 @@ define([
   "popcorn.text",
   "popcorn.lowerThird",
   "popcorn.audioKeyframe",
+  "popcorn.sketchfab",
   "popcorn.twitter",
   "popcorn.wikipedia",
   "popcorn.HTMLMediaElement",

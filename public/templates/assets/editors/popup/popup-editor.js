@@ -162,8 +162,6 @@
 				function runTranslator() {
 					console.log("RUNNING TRANSLATOR");
 
-					//basicContainer.insertBefore(translationPreloaderImg, basicContainer.firstChild); 
-
 					var translateURL="http://oddi.bbg.gov/translation/index.php";
 					var currentInstance=0;
 					for ( var i in CKEDITOR.instances ){
@@ -174,6 +172,7 @@
 					var ckinstance=CKEDITOR.instances[currentInstance];
 					var strToTranslate=ckinstance.getData();
 					strToTranslate=stripIt(strToTranslate);
+					
 					//ckinstance.destroy(); 
 					//TODO: REMOVE THE TOOLTIP
 					console.log("BASIC CONTAINER");
@@ -241,14 +240,17 @@
 
 
 				function addTranslationUI() {
-					var btnTranslate= document.createElement('input');
-					btnTranslate.setAttribute('type','button');
-					btnTranslate.setAttribute('name','translate');
-					btnTranslate.setAttribute('id','translate');
-					btnTranslate.setAttribute('value','Translate Me');
-					btnTranslate.addEventListener("click", runTranslator);
-					basicContainer.insertBefore(btnTranslate, basicContainer.firstChild);
 					
+					var useGrayButton=false;
+					if (useGrayButton) {
+						var btnTranslate= document.createElement('input');
+						btnTranslate.setAttribute('type','button');
+						btnTranslate.setAttribute('name','translate');
+						btnTranslate.setAttribute('id','translate');
+						btnTranslate.setAttribute('value','Translate Me');
+						btnTranslate.addEventListener("click", runTranslator);
+						basicContainer.insertBefore(btnTranslate, basicContainer.firstChild);
+					}
 						
 					preloaderContainer = document.createElement( "div" );
 					preloaderContainer.setAttribute('id','preloaderContainer');
@@ -272,23 +274,7 @@
 					preloaderBG.style.paddingTop="35%";
 					preloaderBG.style.color="#FFFFFF";
 					
-					/*
-					preloaderText = document.createElement( "div" );
-					preloaderText.innerHTML="<BR><BR><strong>Hello World!</strong>";
-					preloaderText.style.color="0xFFFFFF";
-					*/
-
 					preloaderContainer.appendChild(preloaderBG); 
-					//preloaderContainer.appendChild(preloaderText); 
-					/*
-					translationPreloaderImg = new Image(); 
-					translationPreloaderImg.src = "/templates/assets/images/loader_circle.gif";
-					preloaderContainer.appendChild(translationPreloaderImg); 
-					*/
-
-					
-					
-					console.log("inside the container");
 				}
 				
 
@@ -308,8 +294,6 @@
 				addTranslationUI();
 				_this.updatePropertiesFromManifest(trackEvent);
 				_this.setTrackEventUpdateErrorCallback(_this.setErrorState);
-
-
 
 			}
 
@@ -335,11 +319,8 @@
 			Butter.Editor.TrackEventEditor.extend(_this, butter, rootElement, {
 				open: function (parentElement, trackEvent) {
 					var anchorContainer = trackEvent.popcornTrackEvent._container.querySelector("a");
-
 					anchorClickPrevention(anchorContainer);
-
 					_butter = butter;
-
 					// Update properties when TrackEvent is updated
 					trackEvent.listen("trackeventupdated", onTrackEventUpdated);
 					setup(trackEvent);

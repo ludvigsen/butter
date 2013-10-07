@@ -2,23 +2,23 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
+/*
+	* audioKeyframe popcorn plug-in editor
+
+	
+*/
+
 (function( Butter ) {
 	Butter.Editor.register( "audioKeyframe", "load!{{baseDir}}templates/assets/editors/audioKeyframe/audioKeyframe-editor.html", function( rootElement, butter ) {
 		var _this = this;
 		var _rootElement = rootElement,
 			_trackEvent,
 			_butter,
-			_popcornOptions,
-			_falseClick = function() {
-				return false;
-			},
-			_trueClick = function() {
-				return true;
-			};
+			_popcornOptions;
 		
 		/**
 		 * Member: setup
-		 * Sets up the content of this editor
+		 * Sets up the content of this editor 
 		 * @param {TrackEvent} trackEvent: The TrackEvent being edited
 		 */
 		function setup( trackEvent ) {
@@ -28,14 +28,6 @@
 			var advancedContainer = _rootElement.querySelector( ".advanced-options" );
 			var pluginOptions = {};
 			var pickers = {};
-			
-			/* when a user drops a lower third onto the track, we detect their organization and adjust the logo and linkUrl
-			 * accordingly.  To make this change reflected in the editor we have this segment of code.  Also, if you save the project
-			 * and you don't have this line of code, the logo/linkUrl don't make it through */
-			if (_trackEvent.manifest.about.codeKey=="audioKeyframe") {
-				_trackEvent.popcornOptions.linkUrl=_trackEvent.popcornTrackEvent.linkUrl;
-				_trackEvent.popcornOptions.logo=_trackEvent.popcornTrackEvent.logo;
-			}
 			
 			function callback( elementType, element, trackEvent, name ) {
 				pluginOptions[ name ] = { element: element, trackEvent: trackEvent, elementType: elementType };
@@ -54,12 +46,14 @@
 						option = pluginOptions[ key ];
 						if ( option.elementType === "select" ) {
 							_this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
+						} else if (key=="volumeStart" || key=="volumeEnd") {
+							//for whatever reason, couldn't check for option.type=="range".  so used key name.
+							_this.attachSliderChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
 						}
 						else if ( option.elementType === "input" ) {
 							if ( option.element.type === "checkbox" ) {
 								_this.attachCheckboxChangeHandler( option.element, option.trackEvent, key, checkboxCallback );
-							} 
-							else {
+							} else {
 								_this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
 							}
 						}
@@ -85,21 +79,9 @@
 			_this.setTrackEventUpdateErrorCallback( _this.setErrorState );
 		}	//end setup
 		
-		function anchorClickPrevention( anchorContainer ) {
-			if ( anchorContainer ) {
-				anchorContainer.onclick = _falseClick;
-			}
-		}	//anchorClickPrevention
-		
 		function onTrackEventUpdated( e ) {
-			console.log("lowerThird-TrackEventUpdated");
 			_trackEvent = e.target;
 			
-			/*
-			var anchorContainer = _trackEvent.popcornTrackEvent._container.querySelector( "a" );
-			anchorClickPrevention( anchorContainer );
-			*/
-
 			_this.updatePropertiesFromManifest( _trackEvent );
 			_this.setErrorState( false );
 		}	//onTrackEventUpdated
@@ -107,15 +89,7 @@
 		// Extend this object to become a TrackEventEditor
 		Butter.Editor.TrackEventEditor.extend( _this, butter, rootElement, {
 			open: function( parentElement, trackEvent ) {
-				console.log("here we are!");
-				
-				/* we don't have a container on the track event
-				var anchorContainer = trackEvent.popcornTrackEvent._container.querySelector( "a" );
-				anchorClickPrevention( anchorContainer );
-				*/
-
 				_butter = butter;
-				
 				// Update properties when TrackEvent is updated
 				trackEvent.listen( "trackeventupdated", onTrackEventUpdated );
 				setup( trackEvent );

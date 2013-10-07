@@ -1,0 +1,184 @@
+
+<html>
+<head>
+<title>Sample gallery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/butter.ui.css">
+<style>
+body {
+  font-family: "Open Sans", sans-serif;
+  background: #F4F5F5;
+  color: #888;
+  margin: 0 auto;
+  padding: 0;
+  font-size: .9em;
+  overflow: scroll;
+}
+
+a{
+	color:#f15a29;
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: underline;
+}
+
+h3 a{
+	color:#333;
+}
+h3 a:hover{
+	color:#f15a29;
+}
+
+.project-listing{
+	/*width:300px;*/
+	width:96%;
+	background-color: #FFF;
+	/*margin: 0 0 20px 20px;*/
+	margin: 0;
+	/*padding:10px;*/
+	padding:10px 2%;
+	float: left;
+	border-bottom: solid 1px #d1d3d4; 
+}
+.project-detail h3{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+.project-author{
+	font-size: .9em;
+}
+.project-update{
+	font-size: .9em;
+}
+.project-description{
+}
+.thumbnail-container{
+	border: 1px solid #d1d3d4;
+	float: left;
+	display: block;
+	width:36%;
+}
+.thumbnail{
+	border: 8px solid #FFF;
+	width: 85%;
+	height: 100px;
+	background-size:cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.description{
+	font-size: .9em;
+	line-height: 1.2em;
+	height: 7em;
+	overflow: hidden;
+	padding:0px;
+	margin: 0 1% 0 0;
+	width:60%;
+	float:right;
+}
+.description p{
+	padding: 0;
+	margin: 0;
+}
+.project-description-text{
+	color:#666;
+}
+.project-link{
+	margin: 10px 1% 0 0;
+	float:right;
+	width:60%;
+	font-size: .9em;
+	font-weight: bold;
+}
+
+@media (min-width:550px) {
+	.project-listing{
+		width:44%;
+		margin: 0 1% 20px 1%;
+		-moz-box-shadow:1px 1px 2px 2px #ccc;
+		-webkit-box-shadow: 1px 1px 2px 2px #ccc;
+		box-shadow: 1px 1px 2px 2px #ccc;
+		padding:10px 1%;
+		float: left;
+	}
+}
+@media (min-width:900px) {
+	.project-listing{
+		width:29%;
+		margin: 0 1% 20px 1%;
+		-moz-box-shadow:1px 1px 2px 2px #ccc;
+		-webkit-box-shadow: 1px 1px 2px 2px #ccc;
+		box-shadow: 1px 1px 2px 2px #ccc;
+		padding:10px 1%;
+		float: left;
+	}
+}
+
+
+</style>
+</head>
+<body class="butter-header-spacing butter-editor-spacing">
+  <div id="butter-header" class="butter-header">
+    <div class="butter-header-primary">
+      <div class="butter-logo"></div>
+      <ul class="butter-nav">
+        <li class="butter-breadcrumbs"></li><li class="butter-project-title"><span class="butter-name">Gallery</span></li></ul>
+      </div>
+    </div>
+
+
+     <div class="project-listing">
+        <div class="project-container">
+          <div class="project-detail">
+            <h3><a href="http://kettlecorn.innovation-series.com/v/d.html">Pres. Obama speaks to Burma about the future of international relations</a></h3>
+            <div class="project-description"> 
+              <div class="thumbnail-container">
+              	<a href="http://kettlecorn.innovation-series.com/v/d.html">
+              	<div class="thumbnail" style="background-image:url(http://stuff.webmaker.org/editorial-assets/makerparty_tile7.jpg);">
+              	</div>
+              </a>
+              </div>
+	            <div class="description">
+	            	<p class="project-author">By <a href="http://popcorn.innovation-series.com/sampleGallery.html?author=brianwilliamson">Brian Williamson</a> | <a href="http://popcorn.innovation-series.com/sampleGallery.html?entity=bbg">BBG</a></p>
+		            <p class="project-update">Sept. 23, 2013 <a href='http://popcorn.innovation-series.com/sampleGallery.html?language=english'>(English)</a></p><br/>
+		            <p class="project-description-text">This is a quick demo of some of the new features of KettleCorn including: new popup styles, lower thirds, subtitles, translations, new icons etc.</p>
+	        	</div>
+            </div>
+            <div class="project-link"><a href="http://kettlecorn.innovation-series.com/v/d.html">View</a> | <a href="templates/journalist/index.html?savedDataUrl=/api/remix/3" class="remix-link">Remix</a></div>
+          </div>
+        </div>
+    </div>
+    <div class="project-listing">
+        <div class="project-container">
+          <div class="project-detail">
+            <h3><a href="http://kettlecorn.innovation-series.com/v/d.html">Greek debt rocks global economy</a></h3>
+            <div class="project-description"> 
+	              <div class="thumbnail-container">
+	              	<a href="http://kettlecorn.innovation-series.com/v/d.html">
+	              	<div class="thumbnail" style="background-image:url(http://stuff.webmaker.org/editorial-assets/makerparty_tile7.jpg);">
+	              	</div>
+		            </a>
+	              </div>
+	            <div class="description">
+	            	<p class="project-author">By <a href="http://popcorn.innovation-series.com/sampleGallery.html?author=ahranlee">Ahran Lee</a> | <a href="http://popcorn.innovation-series.com/sampleGallery.html?entity=bbg">VOA</a></p>
+		            <p class="project-update">Sept. 23, 2013 <a href='http://popcorn.innovation-series.com/sampleGallery.html?language=korean'>(Korean)</a></p><br/>
+		            <p class="project-description-text">This is a quick demo of some of the new features of KettleCorn including: new popup styles, lower thirds, subtitles, translations, new icons etc.</p>
+	        	</div>
+            </div>
+            <div class="project-link"><a href="http://kettlecorn.innovation-series.com/v/d.html">View</a> | <a href="templates/journalist/index.html?savedDataUrl=/api/remix/3" class="remix-link">Remix</a></div>
+          </div>
+        </div>
+	</div>
+
+
+      
+
+</body>
+</html>
+

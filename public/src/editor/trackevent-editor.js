@@ -672,8 +672,8 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
       }
       if ( manifestEntry.type === "range" ) {
         propertyArchetypeSelector += ".range";
-      }
-
+      } 
+     // console.log("RUNNING SELECTOR FOR TYPE " + propertyArchetypeSelector)
       propertyArchetype = __defaultLayouts.querySelector( propertyArchetypeSelector ).cloneNode( true );
 
       // If the manifestEntry was specified to be hidden bail early

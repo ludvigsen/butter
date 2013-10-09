@@ -143,7 +143,7 @@
 					}
 
 					basicContainer.insertBefore(_this.createStartEndInputs(trackEvent, _this.updateTrackEventSafe), basicContainer.firstChild);
-				}
+				}	//end attachHandlers
 
 				if (_popcornOptions.fontSize) {
 					_manifestOptions.fontPercentage.hidden = true;
@@ -153,16 +153,17 @@
 					_manifestOptions.fontPercentage.hidden = false;
 				}
 
+				
 				function stripIt(str) {
 					return str.replace(/<(?:.|\n)*?>/gm, '');
 				}
-
-
  
 				function runTranslator() {
 					console.log("RUNNING TRANSLATOR");
 
-					var translateURL="http://oddi.bbg.gov/translation/index.php";
+					//var translateURL="http://oddi.bbg.gov/translation/index.php";
+					var translateURL="/translatePhrase";
+
 					var currentInstance=0;
 					for ( var i in CKEDITOR.instances ){
 						currentInstance = i;
@@ -236,7 +237,7 @@
 
 					}
 				}	//end runtranslator
-				window.runTheTranslator=runTranslator;	 
+				window.runTheTranslator=runTranslator;
 
 
 				function addTranslationUI() {

@@ -17,6 +17,7 @@ var express = require('express'),
     filter = require( './lib/filter' )( DB.isDBOnline ),
     sanitizer = require( './lib/sanitizer' ),
     FileStore = require('./lib/file-store.js'),
+    MsTranslator = require('mstranslator'), //used for on-the-fly translation by bing, from https://github.com/nanek/mstranslator
     metrics,
     utils,
     stores = {},
@@ -24,7 +25,12 @@ var express = require('express'),
     WWW_ROOT = path.resolve( __dirname, config.dirs.wwwRoot ),
     VALID_TEMPLATES = config.templates;
 
+
 var templateConfigs = {};
+
+//create our bing translation client and initialize its token
+var bingTranslationClient = new MsTranslator({client_id:config.bing_clientID, client_secret: config.bing_secret});
+bingTranslationClient.initialize_token(function(keys){}); 
 
 function readTemplateConfig( templateName, templatedPath ) {
   var configPath = templatedPath.replace( '{{templateBase}}', config.dirs.templates + '/' );
@@ -104,7 +110,8 @@ app.configure( function() {
     .use( express.bodyParser() )
     .use( express.cookieParser() )
     .use( express.cookieSession( config.session ) )
-    .use( express.csrf() )
+    //.use( express.csrf() )  //this enables cross site restriction forgery
+
     // for access control issues when loading from s3
     .use (function (req, res, next) {
     	res.header('Access-Control-Allow-Origin', '*');
@@ -145,7 +152,7 @@ require( 'express-persona' )( app, {
 });
 
 var routes = require('./routes');
-routes( app, Project, Profile, filter, sanitizer, stores, utils, metrics );
+routes( app, Project, Profile, filter, sanitizer, stores, utils, metrics,bingTranslationClient);
 
 app.use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
 

@@ -34,6 +34,11 @@
 					label: "Text",
 					"default": "Popcorn Maker"
 				},
+				text_original: {
+					elem: "input",
+					hidden:true,
+					"default": ""
+				},
 				linkUrl: {
 					elem: "input",
 					type: "text",
@@ -99,7 +104,7 @@
 					values: ["popcorn-none", "popcorn-pop", "popcorn-fade", "popcorn-slide-up", "popcorn-slide-down"],
 					label: "Transition",
 					"default": "popcorn-fade",
-          group: "advanced"
+          			group: "advanced"
 				},
 				fontFamily: {
 					elem: "select",

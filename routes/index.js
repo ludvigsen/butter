@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
-                                      stores, utils, metrics ) {
+                                      stores, utils, metrics, bingTranslationClient ) {
 
   var uuid = require( "node-uuid" ),
       // Keep track of whether this is production or development
@@ -13,6 +13,18 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
   app.get('/templates/:name/*', filter.showLogin);
 
   app.put( "/api/image", filter.isImage, api.image );
+
+  app.post('/translatePhrase', function(req,res) {
+    var params = { 
+      text: req.body.phrase
+      //, from: 'en'  we leave this blank allow bing to determine the langage
+      , to: req.body.lang
+    };
+    bingTranslationClient.translate(params, function(err, data) {
+      //console.log(data);
+      res.send(200,data); 
+    });
+  });
 
   app.get( '/api/whoami', function( req, res ) {
     var email = req.session.email;

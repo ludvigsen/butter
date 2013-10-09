@@ -867,7 +867,10 @@ var googleCallback;
 									);
 								} else {
 
-									marker.setPosition(location);
+									if (pinMode) { 
+										marker.setPosition(location);
+									}
+
 									map.panTo(location);
 								}
 							}
@@ -970,8 +973,10 @@ var googleCallback;
 			},
 			type: {
 				elem: "select",
-				options: ["Road Map", "Satellite", "Street View", "Hybrid", "Terrain", "Stamen - Water Color", "Stamen - Terrain", "Stamen - Toner"],
-				values: ["ROADMAP", "SATELLITE", "STREETVIEW", "HYBRID", "TERRAIN", "STAMEN-WATERCOLOR", "STAMEN-TERRAIN", "STAMEN-TONER"],
+				//options: ["Road Map", "Satellite", "Street View", "Hybrid", "Terrain", "Stamen - Water Color", "Stamen - Terrain", "Stamen - Toner"],
+				//values: ["ROADMAP", "SATELLITE", "STREETVIEW", "HYBRID", "TERRAIN", "STAMEN-WATERCOLOR", "STAMEN-TERRAIN", "STAMEN-TONER"],
+				options: ["Road Map", "Satellite", "Street View", "Hybrid", "Terrain"],
+				values: ["ROADMAP", "SATELLITE", "STREETVIEW", "HYBRID", "TERRAIN"],
 				label: "Map Type",
 				"default": "ROADMAP",
 				optional: true

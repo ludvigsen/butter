@@ -25,26 +25,6 @@
       "bingCode":"fr"
     },
     {
-      "id":	"hau",
-      "name":	"Hausa",
-      "enableTranslation":"false"
-    },
-    {
-      "id":	"ind",
-      "name":	"Indonesian",
-      "enableTranslation":"false"
-    },
-    {
-      "id":	"kor",
-      "name":	"Korean",
-      "enableTranslation":"false"
-    },
-    {
-      "id":	"por",
-      "name":	"Portugese",
-      "enableTranslation":"false"
-    },
-    {
       "id":	"rus",
       "name":	"Russian",
       "enableTranslation":"true",
@@ -55,16 +35,6 @@
       "name":	"Spanish",
       "enableTranslation":"true",
       "bingCode":"es"
-    },
-    {
-      "id":	"swa",
-      "name":	"Swahili",
-      "enableTranslation":"false"
-    },
-    {
-      "id":	"ukr",
-      "name":	"Ukrainian",
-      "enableTranslation":"false"
     }
   ]
 }

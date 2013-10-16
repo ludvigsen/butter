@@ -36,7 +36,8 @@ define( [ "dialog/dialog","profile/kettlecornfield","profile/account" ],
     this.profile = function() {
     	var kettleCornField = new KettleCornField(butter.cornfield);
     	var account = new Account(kettleCornField);
-    	account.getProfile(function() {
+    	
+      account.getProfile(function() {
         	var dialog = Dialog.spawn("profile", {
         		events: {
         			cancel: function() {

@@ -63,12 +63,14 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
 	    			}
 	    		}
     		} else {
-    			hasProfile = true;
+    			//console.log("getProfile in kettlecornfield.js returns " + response.organization_id + " from the server");
+                hasProfile = true;
     			email = response.email;
     			language_id = response.language_id;
     			organization_id = response.organization_id;
                 translationType=response.translationType;
-    			if (callback) {
+    			
+                if (callback) {
     				callback();
     			}
     		}

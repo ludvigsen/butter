@@ -150,8 +150,21 @@ define(["util/lang",
 	    	_profileHolderElement.style.display = "none";
 	    	_profileHolderElement.innerHTML = '';
 	    }
-	   
+
 	    function showTemplateList() {
+    		console.log("showTemplateList in profile.js");
+    		var organizationId = _account.organization_id;
+    		var gettingStartedElement, templateElement, templateListElement, template, i, num, templateOption, templateImage;
+    		
+    		gettingStartedElement = Lang.domFragment(GETTING_STARTED);
+    		templateListElement = gettingStartedElement.querySelector('ul.template-list');
+    		//num = _templates.length;
+
+    		_templateListHolderElement.appendChild(gettingStartedElement);
+	    	_templateListHolderElement.style.display = '';
+	    }
+	   
+	    function showTemplateListOld() {
     		var organizationId = _account.organziation_id;
     		var gettingStartedElement, templateElement, templateListElement, template, i, num, templateOption, templateImage;
     		

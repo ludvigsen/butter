@@ -149,6 +149,7 @@
         }
 
         function attachFullscreenHandler( option ) {
+          
           option.element.addEventListener( "click", function( e ) {
             var srcElement = e.target,
                 updateOptions = {},
@@ -181,8 +182,22 @@
             trackEvent.update( updateOptions );
           }, false );
         }
+		
+		
+
+		//we originally tried doing this.attachInputChangeHandler( option.element, option.trackEvent, key, updateInfoWindowOpen ); 
         /*
-        function attachDefaultOpenHandler( option ) {
+        function updateInfoWindowOpen(te,prop) {
+          //console.log("updateInfoWindowOpen!!!"); 
+          _cachedValues.infoWindowOpen=prop.infoWindowOpen;
+          _this.updateTrackEventSafe( te, {
+            infoWindowOpen: prop.infoWindowOpen
+          });
+        }
+        */
+
+        //but that doesn't work, so we created a handler.
+        function attachInfoWindowHandler( option ) {
           option.element.addEventListener( "click", function( e ) {
             var srcElement = e.target,
                 updateOptions = {},
@@ -198,12 +213,11 @@
                 infoWindowOpen: false
               };
             }
-            console.log("calling update for dfoh with " + updateOptions.infoWindowOpen);
 
             trackEvent.update( updateOptions );
           }, false );
-        }*/
-
+        }
+        
         function updateLocation( te, prop ) {
           _cachedValues.location = prop.location;
 
@@ -211,13 +225,7 @@
             location: prop.location
           });
         }
-        function updateInfoWindowOpen(te,prop) {
-          console.log("updateInfoWindowOpen!!!"); 
-          _cachedValues.infoWindowOpen=prop.infoWindowOpen;
-          _this.updateTrackEventSafe( te, {
-            infoWindowOpen: prop.infoWindowOpen
-          });
-        }
+        
 
         function updateZoom( te, prop ) {
           var zoom = +prop.zoom;
@@ -260,15 +268,10 @@
             } else if ( key === "zoom" ) {
               _this.attachInputChangeHandler( option.element, option.trackEvent, key, updateZoom );
             }  else if ( key === "infoWindowOpen" ) {
-              console.log("attaching updateInfoWindowOpen " );
-              _this.attachInputChangeHandler( option.element, option.trackEvent, key, updateInfoWindowOpen ); 
-            } 
-            /*
-            else if (key == "infoWindowOpen") {
-              attachDefaultOpenHandler(option);
-            } 
-            */
-            else if ( option.elementType === "input" ) {
+              //console.log("attaching updateInfoWindowOpen " );
+              //_this.attachInputChangeHandler( option.element, option.trackEvent, key, updateInfoWindowOpen ); 
+              attachInfoWindowHandler(option);
+            } else if ( option.elementType === "input" ) {
               //note: it appears that the default change handler, which is this, doesn't
               _this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
             }

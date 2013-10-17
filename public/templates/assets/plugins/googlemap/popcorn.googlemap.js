@@ -162,7 +162,16 @@ var googleCallback;
 		o.thumbnail=trimString(str.substring(i1,i2))
 
 		i1=str.indexOf("openwindow:")+11;
-		o.openWindow=trimString(str.substring(i1))
+		i2=str.indexOf(", showpin",i1);
+		var openWindow=trimString(str.substring(i1,i2))
+		o.openWindow=(openWindow.toLowerCase()=="true");
+		
+		i1=str.indexOf("showpin:")+8;
+		var showPin=trimString(str.substring(i1))
+		console.log("showPin " + showPin);
+		o.showPin=(showPin.toLowerCase()=="true");
+		
+
 		return o;
 	}
 
@@ -299,63 +308,97 @@ var googleCallback;
 			}
 		};
 
+
+		function loadSpreadsheet(lsUrl,lsCallback) {
+			Popcorn.getJSONP(
+				lsUrl,
+				function( data ) {
+					
+					var entries=data.feed.entry;
+					var arr=[];
+					//we ingnore row 0 because it's the header vals
+					for (i=0; i< entries.length; i++) {
+						var o=entries[i];
+						var contentStr=o.content["$t"];
+						var r=parseSpreadsheetLine(contentStr);
+						arr.push(r);
+					}
+					lsCallback(arr);
+				} //end anonymous callback
+			);
+		}	//end loadSpreadsheet
+		
+		function removeExistingMarkersFromMap() {
+			mfs=markersFromSpreadsheet;
+			for (var i=0; i < mfs.length; i++) {
+				var m=mfs[i];
+				m.setMap(null);
+			}
+			mfs=[];
+		}
+
+
+
+		function placeMarkersWhenMapReady(mapDataFromSpreadsheet) {
+			//needs vars _mapCompletelyLoaded, mapDataFromSpreadsheet,map,that
+			if (_mapCompletelyLoaded) {
+				var md=mapDataFromSpreadsheet;
+				for (var i=0; i < md.length; i++) {
+					var ev=md[i];
+					var aMarker= new google.maps.Marker({
+						position: new google.maps.LatLng(ev.lat, ev.lng), 
+						title: 'MARKERTITLE',
+						animation: google.maps.Animation.DROP
+					});
+					
+					if (!ev.showPin) {
+						console.log("hide pin " + i);
+						aMarker.setMap(null);
+					} else {
+						aMarker.setMap(map);	
+					}
+					
+					
+					markersFromSpreadsheet.push(aMarker);
+					aMarker.markerNum=i;
+					google.maps.event.addListener(aMarker, 'click', function() {
+						var cmData=mapDataFromSpreadsheet[this.markerNum]
+						//console.log("go to marker " + this.markerNum + " with time " + cmData.starttime);
+						that.currentTime( cmData.starttime )
+					});
+
+
+				}
+			} else {
+				setTimeout(function () {
+					placeMarkersWhenMapReady(mapDataFromSpreadsheet);
+				}, 50);
+			}
+		}
+
+
+
 		return {
+			
+
+
+
 			_setup: function (options) {
 				
 
-				function loadSpreadsheet(lsUrl,lsCallback) {
-					Popcorn.getJSONP(
-						lsUrl,
-						function( data ) {
-							
-							var entries=data.feed.entry;
-							var arr=[];
-							//we ingnore row 0 because it's the header vals
-							for (i=0; i< entries.length; i++) {
-								var o=entries[i];
-								var contentStr=o.content["$t"];
-								var r=parseSpreadsheetLine(contentStr);
-								arr.push(r);
-							}
-							lsCallback(arr);
-						} //end anonymous callback
-					);
-				}	//end loadSpreadsheet
+				originalZoom=options.zoom;
 				
-				function placeMarkersWhenMapReady() {
-					if (_mapCompletelyLoaded) {
-						var md=mapDataFromSpreadsheet;
-						for (var i=0; i < md.length; i++) {
-							var ev=md[i];
-							var aMarker= new google.maps.Marker({
-								position: new google.maps.LatLng(ev.lat, ev.lng), 
-								title: 'MARKERTITLE',
-								animation: google.maps.Animation.DROP
-							});
-							aMarker.setMap(map);
-							markersFromSpreadsheet.push(aMarker);
-							aMarker.markerNum=i;
-							google.maps.event.addListener(aMarker, 'click', function() {
-								var cmData=mapDataFromSpreadsheet[this.markerNum]
-								//console.log("go to marker " + this.markerNum + " with time " + cmData.starttime);
-								that.currentTime( cmData.starttime )
-							});
-
-						}
-					} else {
-						setTimeout(function () {
-							placeMarkersWhenMapReady(md);
-						}, 50);
-					}
+				if (options.spreadsheetKey) {
+					var loc="https://spreadsheets.google.com/feeds/list/" + options.spreadsheetKey + "/od6/public/values?alt=json-in-script&callback=jsonp";
+					console.log("request spreadsheet from " + loc);
+					loadSpreadsheet(loc,function(lsData) {
+						mapDataFromSpreadsheet=lsData;
+						//create all of our markers and infoWindows
+						placeMarkersWhenMapReady(mapDataFromSpreadsheet);
+						//placeMarkersWhenMapReady(_mapCompletelyLoaded, mapDataFromSpreadsheet,map,that)
+					})
 				}
 
-				originalZoom=options.zoom;
-				var loc="https://spreadsheets.google.com/feeds/list/" + options.spreadsheetKey + "/od6/public/values?alt=json-in-script&callback=jsonp";
-				loadSpreadsheet(loc,function(lsData) {
-					mapDataFromSpreadsheet=lsData;
-					//create all of our markers and infoWindows
-					placeMarkersWhenMapReady();
-				})
 				lastFrameTime=-1;
 				lastPinNum=-1;
 				duration = options.end - options.start;
@@ -496,7 +539,6 @@ var googleCallback;
 						google.maps.event.trigger(map, "resize");
 						map.setCenter(location);
 
-
 						if (options.spreadsheetKey) {
 							pinMode=false;
 							spreadsheetMode=true;
@@ -505,11 +547,12 @@ var googleCallback;
 							spreadsheetMode=false;
 						}
 
-						if (pinMode) {
-							infowindow = new google.maps.InfoWindow({
-								content: formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc)
-							});
+						//we use the same infowindow the entire time, regardless of whether we're in spreadsheet mode or pin mode
+						infowindow = new google.maps.InfoWindow({
+							content: formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc) 
+						});
 
+						if (pinMode) {						
 							marker = new google.maps.Marker({
 								position: location,
 								title: 'MARKERTITLE',
@@ -519,7 +562,6 @@ var googleCallback;
 								infowindow.open(map,marker);
 							});
 							marker.setMap(map);
-							
 							if (options.infoWindowOpen) {
 								infowindow.open(map,marker);
 							}
@@ -542,9 +584,7 @@ var googleCallback;
 						}
 
 						if (options.type === "STREETVIEW") {
-							// Switch this map into streeview mode
 							map.setStreetView(
-								// Pass a new StreetViewPanorama instance into our map
 								sView = new google.maps.StreetViewPanorama(innerdiv, {
 									position: location,
 									pov: {
@@ -556,62 +596,35 @@ var googleCallback;
 								})
 							);
 
-							//  Determines if we should use hardcoded values ( using options.tween ),
-							//  or if we should use a start and end location and let google generate
-							//  the route for us
 							if (options.location && typeof options.tween === "string") {
 
-								//  Creating another variable to hold the streetview map for tweening,
-								//  Doing this because if there was more then one streetview map, the tweening would sometimes appear in other maps
 								var sView2 = sView;
-
-								//  Create an array to store all the lat/lang values along our route
 								var checkpoints = [];
-
-								//  Creates a new direction service, later used to create a route
 								var directionsService = new google.maps.DirectionsService();
-
-								//  Creates a new direction renderer using the current map
-								//  This enables us to access all of the route data that is returned to us
 								var directionsDisplay = new google.maps.DirectionsRenderer(sView2);
-
 								var request = {
 									origin: options.location,
 									destination: options.tween,
 									travelMode: google.maps.TravelMode.DRIVING
 								};
-
-								//  Create the route using the direction service and renderer
 								directionsService.route(request, function (response, status) {
-
 									if (status === google.maps.DirectionsStatus.OK) {
 										directionsDisplay.setDirections(response);
 										showSteps(response, that);
 									}
-
 								});
 
 								var showSteps = function (directionResult) {
-
-									//  Push new google map lat and lng values into an array from our list of lat and lng values
 									var routes = directionResult.routes[0].overview_path;
 									for (var j = 0, k = routes.length; j < k; j++) {
 										checkpoints.push(new google.maps.LatLng(routes[j].lat(), routes[j].lng()));
 									}
-
-									//  Check to make sure the interval exists, if not, set to a default of 1000
 									options.interval = options.interval || 1000;
 									tween(checkpoints, 10);
-
 								};
 							} else if (typeof options.tween === "object") {
-
-								//  Same as the above to stop streetview maps from overflowing into one another
 								var sView3 = sView;
-
 								for (var i = 0, l = options.tween.length; i < l; i++) {
-
-									//  Make sure interval exists, if not, set to 1000
 									options.tween[i].interval = options.tween[i].interval || 1000;
 									tween(options.tween, 10);
 								}
@@ -649,7 +662,6 @@ var googleCallback;
 				//console.log("FRAME " + time); 
 				if (lastFrameTime != time) {
 					//console.log("run frame at " + time);
-					
 					if (mapDataFromSpreadsheet) {	//we may not yet have finished loading the spreadsheet so let's make sure it exists
 						var currentPin=getCurrentPinFromTime(mapDataFromSpreadsheet,time);
 						var percentPlayed=time/duration; 
@@ -660,23 +672,17 @@ var googleCallback;
 								if (thisPin && google) {
 									console.log("GOTO PIN " + currentPin + " lat=" + thisPin.lat + " lng=" + thisPin.lng + " zoom=" + thisPin.zoom + " title " + thisPin.title);
 									var newLocation=new google.maps.LatLng(thisPin.lat, thisPin.lng);
+									//this is coming up NULL at times...why?
 									map.panTo(newLocation);
 									map.setZoom(parseInt(thisPin.zoom));
-									
-									//If we are in spreadsheet mode, we don't create the infowindow early on (yet)
-									if (typeof infowindow == "undefined") {
-										console.log("CREATING NEW EMPTY INFOWINDOW");
-										infowindow = new google.maps.InfoWindow({
-											content: "",
-											pixelOffset: new google.maps.Size(0, -50)
-
-										});
+									if (thisPin.openWindow) {
+										infowindow.setPosition(newLocation);
+										infowindow.setContent(formatInfoWindowString(thisPin.title,thisPin.description)); 
+										infowindow.open(map,markersFromSpreadsheet[currentPin-1]);
+										
+									} else {
+										infowindow.close();
 									}
-									
-									infowindow.setPosition(newLocation);
-									infowindow.open(map,markersFromSpreadsheet[thisPin-1]);
-									infowindow.setContent(formatInfoWindowString(thisPin.title,thisPin.description)); 
-									
 								}
 							} else {
 								map.panTo(location);	//this scenario is if we hit a time period that's not covered by spreadsheet.  Take default location.
@@ -694,16 +700,8 @@ var googleCallback;
 
 		     },
 
-
-			/**
-			 * @member webpage
-			 * The end function will be executed when the currentTime
-			 * of the video reaches the end time provided by the
-			 * options variable
-			 */
 			end: function () {
-				// if the map exists hide it do not delete the map just in
-				// case the user seeks back to time b/w start and end
+				// if the map exists hide it do not delete the map just in // case the user seeks back to time b/w start and end
 				console.log("gMap end");
 				if (map) {
 					outerdiv.classList.remove("on");
@@ -715,7 +713,6 @@ var googleCallback;
 				// the map must be manually removed
 				options._target.removeChild(outerdiv);
 				innerdiv = map = location = null;
-
 				options._map = null;
 			},
 			_update: function (trackEvent, options) {
@@ -727,13 +724,13 @@ var googleCallback;
 					triggerResize = false,
 					ignoreValue = false,
 					clearLocation = false,
-					location,
 					layer,
 					oldType;
 				
 				var newTitle=("infoWindowTitle" in options);
 				var newDesc=("infoWindowDesc" in options); 
 				var newInfoWindowOpen = ("infoWindowOpen" in options); 
+				var newSpreadskeetKey= ("spreadsheetKey" in options); 
 				
 				//if they toggled either the title or description, we have to redraw the bubble's contents
 				if (newTitle || newDesc) {
@@ -758,11 +755,40 @@ var googleCallback;
 						infowindow.close(); 
 					}
 				} 
+
+				//if they added or removed the spreadsheet key, update appropriately
+				if (newSpreadskeetKey) {
+					removeExistingMarkersFromMap()
+					if (options.spreadsheetKey != "") {
+						//in this case, we either added a spreadsheet key when we didn't have one, or we changed the spreadsheet key
+						//reload the spreadsheet then place the markers again
+
+						//get rid of everything currently on the map
+						infowindow.close();
+						if (marker) {
+							marker.setMap(null);
+						}
+
+						var loc="https://spreadsheets.google.com/feeds/list/" + options.spreadsheetKey + "/od6/public/values?alt=json-in-script&callback=jsonp";
+						console.log("request spreadsheet from " + loc);
+						loadSpreadsheet(loc,function(lsData) {
+							mapDataFromSpreadsheet=lsData;
+							placeMarkersWhenMapReady(mapDataFromSpreadsheet);
+						})
+
+					} else {
+						//in this case we removed a spreadsheet key.  we removed all the markers already, let's show the pin if relevant
+
+						marker.setMap(map);
+						marker.setPosition(location);
+						map.panTo(location);
+
+					}
+				} 
 				
 
 				function streetViewSearch(latLng, res, errorMsg, toggleMaps, success) {
 					var streetViewService = new google.maps.StreetViewService();
-
 					streetViewService.getPanoramaByLocation(latLng, res, function (data, status) {
 						if (status === google.maps.StreetViewStatus.OK) {
 							success(data.location.latLng);
@@ -1021,7 +1047,8 @@ var googleCallback;
 				type:"text",
 				label: "Google Spreadsheet Key",
 				group:"advanced",
-				"default":"0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c"
+				"default":""
+				//,tooltip: "0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c"
 			},
 			infoWindowTitle: {
 				elem: "input",
@@ -1042,7 +1069,8 @@ var googleCallback;
 				type: "checkbox",
 				label: "Open Pin Window by Default",
 				group:"advanced",
-				"default": true
+				"default": true,
+				optional: true
 			},
 			transition: {
 				elem: "select",

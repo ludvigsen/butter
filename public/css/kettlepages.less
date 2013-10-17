@@ -1,0 +1,203 @@
+@import "../css/globals.less";
+
+body {
+  font-family: "Open Sans", sans-serif;
+  background: #F4F5F5;
+  color: #888;
+  margin: 0 auto;
+  padding: 0;
+  font-size: .9em;
+  overflow: scroll;
+}
+
+a{
+	color:#f15a29;
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: underline;
+}
+
+h3 a{
+	color:#333;
+}
+h3 a:hover{
+	color:#f15a29;
+}
+
+.project-listing{
+	/*width:300px;*/
+	width:96%;
+	background-color: #FFF;
+	/*margin: 0 0 20px 20px;*/
+	margin: 0;
+	/*padding:10px;*/
+	padding:10px 2%;
+	float: left;
+	border-bottom: solid 1px #d1d3d4; 
+
+
+	margin: 0 1% 20px 1%;
+		-moz-box-shadow:1px 1px 2px 2px #ccc;
+		-webkit-box-shadow: 1px 1px 2px 2px #ccc;
+		box-shadow: 1px 1px 2px 2px #ccc;
+		padding:10px 1%;
+		float: left;
+
+}
+.project-detail h3{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+.project-detail P {
+	color:#888;
+}
+
+.project-author{
+	font-size: .9em;
+}
+.project-update{
+	font-size: .9em;
+}
+.project-description{
+}
+.thumbnail-container{
+	border: 1px solid #d1d3d4;
+	float: left;
+	display: block;
+	width:36%;
+}
+.thumbnail{
+	border: 8px solid #FFF;
+	width: 85%;
+	height: 100px;
+	background-size:cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.description{
+	font-size: .9em;
+	line-height: 1.2em;
+	height: 7em;
+	overflow: hidden;
+	padding:0px;
+	margin: 0 1% 0 0;
+	width:60%;
+	float:right;
+}
+.description p{
+	padding: 0;
+	margin: 0;
+}
+.project-description-text{
+	color:#666;
+}
+.project-link{
+	margin: 10px 1% 0 0;
+	float:right;
+	width:60%;
+	font-size: .9em;
+	font-weight: bold;
+}
+fieldset, fieldset.profile-language-set, fieldset.profile-language-options,fieldset.profile-organization-set { 
+	margin:0px;
+}
+
+
+
+/* body-wrapper required to circumvent this bug in webkit: https://bugs.webkit.org/show_bug.cgi?id=77811 */
+.butter-header-spacing .body-wrapper {
+  position: absolute;
+  left: 0;
+  top: 80px; /* compensate for header */
+  right: 350px;
+  bottom: 0;
+  -webkit-transition: right 0.25s;
+  -moz-transition: right 0.25s;
+  -ms-transition: right 0.25s;
+  -o-transition: right 0.25s;
+  transition: right 0.25s;
+}
+
+
+
+.instructions, .profile, .templates {
+	padding: 0px 0px;
+	
+	.login-join {
+		width: 40%;
+	}
+}
+
+.profile, .templates {
+	.instructions {
+		padding: 0px;
+		font-size: small;
+		color: gray;
+	}
+	
+	fieldset {
+		background-color: @baseLight;
+		
+		>label {
+			background-color: @darkGrey;
+			color: white;
+			font-weight: bold;
+		}
+	}
+	
+	ul {
+		list-style-type: none;
+		
+		li {
+			padding-left: 5px;
+		}
+	}
+}
+
+.templates {
+	
+	ul {
+		list-style-type: none;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		
+		li {
+			padding: 10px;
+			overflow: auto;
+			
+			a {
+				text-decoration: none;
+				color: @baseText;
+			}
+
+			h3 {
+				font: bold 20px/1.5;
+				padding: 0;
+				margin: 0;
+			}
+			
+			img {
+				float: left;
+				margin: 0 15px 0 0;
+				padding: 0;
+			}
+			
+			p {
+				font: 200 12px/1.5;
+				padding: 0;
+				margin: 0;
+			}
+		}
+		
+		li:hover {
+			background: @midGrey;
+			cursor: pointer;
+		}	
+	}
+}

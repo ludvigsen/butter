@@ -427,7 +427,7 @@ app.get('/gallery',filter.isStorageAvailable, function(req, res) {
 					name: sanitizer.escapeHTML(project.name),
 					author: project.author,
 					template: project.template,
-					href: utils.generateIframeUrl(project.id),
+					href: utils.generatePublishUrl(project.id),
 					createdAt: new Date(project.createdAt).toDateString(),
 					updatedAt: new Date(project.updatedAt).toDateString(),
 					description: sanitizer.escapeHTML(project.description),

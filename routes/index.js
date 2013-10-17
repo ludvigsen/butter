@@ -15,15 +15,19 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
   app.put( "/api/image", filter.isImage, api.image );
 
   app.post('/translatePhrase', function(req,res) {
-    var params = { 
-      text: req.body.phrase
-      //, from: 'en'  we leave this blank allow bing to determine the langage
-      , to: req.body.lang
-    };
-    bingTranslationClient.translate(params, function(err, data) {
-      //console.log(data);
-      res.send(200,data); 
-    });
+    if (req.body.lang && req.body.phrase && req.body.lang != "" && req.body.phrase != "") {
+      var params = { 
+        text: req.body.phrase
+        //, from: 'en'  we leave this blank allow bing to determine the langage 
+        , to: req.body.lang
+      };
+      bingTranslationClient.translate(params, function(err, data) {
+        //console.log(data);
+        res.send(200,data); 
+      });
+    } else {
+      res.send(200,"You must select a language in your profile to enable translation"); 
+    }    
   });
 
   app.get( '/api/whoami', function( req, res ) {
@@ -244,9 +248,16 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
   app.post( '/api/profile',
 	filter.isLoggedIn, filter.isStorageAvailable,
 	function (req, res) {
-	  var profileData = req.body;
-	  Profile.update({email: req.session.email, language_id: profileData.language_id, organization_id: profileData.organization_id, translationType:profileData.translationType}, function(err,doc) {
-		  if (err) {
+	  var pd = req.body;
+	  Profile.update({email: req.session.email, language_id: pd.language_id, organization_id: pd.organization_id, translationType:pd.translationType}, function(err,doc) {
+		  /*
+      console.log("here we go");
+      console.log("language_id " + pd.language_id);
+      console.log("organization_id " + pd.organization_id);
+      console.log("translationType " + pd.translationType);
+      console.log("email " + req.session.email);
+      */
+      if (err) {
 			  res.json({error: err}, 500);
 			  metrics.increment('error.profilesave');
 			  return;

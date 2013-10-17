@@ -110,7 +110,7 @@ app.configure( function() {
     .use( express.bodyParser() )
     .use( express.cookieParser() )
     .use( express.cookieSession( config.session ) )
-    //.use( express.csrf() )  //this enables cross site restriction forgery
+    .use( express.csrf() )  //this enables cross site restriction forgery
 
     // for access control issues when loading from s3
     .use (function (req, res, next) {

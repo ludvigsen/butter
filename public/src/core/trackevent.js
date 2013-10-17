@@ -247,16 +247,17 @@ define( [ "./logger", "./eventmanager", "./observer",
       _popcornOptions.start = newStart;
       _popcornOptions.end = newEnd;
 
+
+      //console.log("trackEvent _update");
+
       // if PopcornWrapper exists, it means we're connected properly to a Popcorn instance,
       // and can update the corresponding Popcorn trackevent for this object
       if ( _popcornWrapper && !preventUpdate ) {
         _popcornWrapper.synchronizeEvent( _this, updateOptions );
-        if (updatedProperties.length <= 4) {
+        if (updatedProperties.length <= 4 && updatedProperties.length > 0) { 
         	// if it's more than four properties than it is likely the actual creation and we already track addTrackEvent and removeTrackEvent
-        	
-        	if (_track != null) {  //EDIT: JBF - temporary workaround for certain undo actions not functioning right - just avoid null track
-        		UndoManager.register(this,this.update,[originalOptions],'Undo Action: Update track event properties: ' + updatedProperties.join(','),this,this.update,[updateOptions],'Redo Action: Update track event properties ' + updatedProperties.join(','),_track,_track.addTrackEvent,this);
-        	}
+          //added a check for length > 0 because we don't need that
+        		UndoManager.register(this,this.update,[originalOptions],'Undo Action: Update track event properties: ' + updatedProperties.join(','),this,this.update,[updateOptions],'Redo Action: Update track event properties ' + updatedProperties.join(','));
         }
       }
     };

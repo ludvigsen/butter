@@ -131,7 +131,9 @@
 			function runTranslator() {
 				console.log("RUNNING TRANSLATOR");
 
-				var translateURL="http://oddi.bbg.gov/translation/index.php";
+				//var translateURL="http://oddi.bbg.gov/translation/index.php";
+				var translateURL="/translatePhrase";
+				
 				var currentInstance=0;
 				for ( var i in CKEDITOR.instances ){
 					currentInstance = i;
@@ -179,18 +181,30 @@
 
 				if (translationType == "auto") {
 					preloaderBG.innerHTML="<BR><BR><strong style='font-size:2.0em;'>Translating to " + translationLangName + "</strong>";
-					$.post(translateURL, {phrase:strToTranslate, lang:translationLang},
-						function(data){
-							//translationPreloaderImg.style.display="none";
-							preloaderContainer.style.display="none";
-							var newData="<p>"+data+"</p>";
-							ckinstance.setData(newData);
-							var updateOptions={"text":newData, "text_original":strToTranslate};
-							_trackEvent.update(updateOptions); 
-							pluginOptions["text_original"].element.readOnly=true; 
-							//pluginOptions["text_original"].element.originalTextLabel.value="Original Text"; 
-						}, 
-					"text");
+					
+
+					//var __csrfToken = document.querySelector("meta[name=X-CSRF-Token]").content;
+					$.get("/api/whoami", function( response ) {
+						__csrfToken = response.csrf;
+						console.log("I AM " + __csrfToken);
+						$.ajax({
+							type: "POST",
+							url: translateURL,
+							data: {phrase:strToTranslate, lang:translationLang},
+							headers: {"x-csrf-token":__csrfToken},
+							dataType: "text",
+							success: function(data){
+								//translationPreloaderImg.style.display="none";
+								preloaderContainer.style.display="none";
+								var newData="<p>"+data+"</p>";
+								ckinstance.setData(newData);
+								var updateOptions={"text":newData, "text_original":strToTranslate};
+								_trackEvent.update(updateOptions); 
+								pluginOptions["text_original"].element.readOnly=true; 
+								//pluginOptions["text_original"].element.originalTextLabel.value="Original Text"; 
+							}
+						}); 
+					});
 				} else {
 					preloaderBG.innerHTML="<BR><BR><strong style='font-size:1.5em;'>Translation by hand!<BR><BR></strong></em>";
 					setTimeout(function(){

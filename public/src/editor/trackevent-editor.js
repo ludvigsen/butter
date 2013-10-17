@@ -536,12 +536,10 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
 
         //ADDED BY jflowers@bbg: there is no checkbox handling here so we're adding it
         if ( element.type === "checkbox") {
-           element.addEventListener( "click", function( e ) {
+          element.addEventListener( "click", function( e ) {
+            console.log("in trackevent-editor.js checkbox click");
             var updateOptions = {};
-            updateOptions[propertyName]=false;
-            if ( element.checked ) {
-              updateOptions[propertyName]=true;
-            }
+            updateOptions[propertyName]=(element.checked) ? true : false;
             updateTrackEvent( trackEvent, callback, updateOptions );
             
           }, false );
@@ -623,6 +621,8 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
           hover: false
         });
       }
+
+
     };
 
     extendObject.createStartEndInputs = function( trackEvent, callback ) {
@@ -713,7 +713,31 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
 
       // Grab the element with class 'property-name' to supply the archetype for new manifest entries
       if ( propertyArchetype.querySelector( ".property-name" ) ) {
-        propertyArchetype.querySelector( ".property-name" ).innerHTML = itemLabel;
+        var labelObj=propertyArchetype.querySelector( ".property-name" ) 
+        if (name=="spreadsheetKey") {
+          
+          
+          labelObj.innerHTML = itemLabel + " (ex 0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c)";
+
+          // asdf
+          /*
+          extendObject.createTooltip( e2, {
+          name: "spreadkeyTooltip",
+          element: e2.parentElement,
+          message: "Press Shift+Enter for a new line.",
+          top: "35%",
+          left: "50%",
+          hidden: false,
+          hover: false
+        }); 
+        */
+
+
+
+        } else {
+          propertyArchetype.querySelector( ".property-name" ).innerHTML = itemLabel;
+        }
+        
       }
 
       // If the manifest's 'elem' property is 'select', create a <select> element. Otherwise, create an

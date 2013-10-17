@@ -66,7 +66,7 @@ define(["text!dialog/dialogs/profile.html", "dialog/dialog", "util/xhr", "util/l
 			/////////////////////UPDATE OUR 'ORGANIZATION' DISPLAY
 			var organizationText="Unknown";
 			if (data.account.organization_id && data.account.organization_id != "") {
-				organizationDiv.innerHTML = data.account.organization_id;
+				organizationText = data.account.organization_id;
 			}
 			organizationDiv.innerHTML=organizationText;
 			/////////////////////END UPDATING OUR 'ORGANIZATION' DISPLAY

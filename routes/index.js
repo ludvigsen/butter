@@ -10,7 +10,10 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
 
   app.get( '/healthcheck', api.healthcheck );
   
-  app.get('/templates/:name/*', filter.showLogin);
+  //app.get('/templates/:name/*', filter.showLogin);
+  //POP-167 adjusting the template directory restriction
+  app.get('/templates/:name/*.html', filter.showLogin);
+  app.get('/templates/:name/', filter.showLogin);
 
   app.put( "/api/image", filter.isImage, api.image );
 

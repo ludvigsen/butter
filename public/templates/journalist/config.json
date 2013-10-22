@@ -41,11 +41,13 @@
       },
       {
         "type": "audioKeyframe",
+        "optional": true,
         "displayName": "Audio Keyframe",
         "icon": "{{baseDir}}templates/assets/plugins/audioKeyframe/audioKeyframe-icon.png"
       },
       {
         "type": "sketchfab",
+        "optional": true,
         "displayName": "3d",
         "icon": "{{baseDir}}templates/assets/plugins/sketchfab/sketchfab-icon.png"
       },

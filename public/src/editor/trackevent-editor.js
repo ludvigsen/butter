@@ -716,22 +716,8 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
         var labelObj=propertyArchetype.querySelector( ".property-name" ) 
         if (name=="spreadsheetKey") {
           
-          
-          labelObj.innerHTML = itemLabel + " (ex 0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c)";
-
-          // asdf
-          /*
-          extendObject.createTooltip( e2, {
-          name: "spreadkeyTooltip",
-          element: e2.parentElement,
-          message: "Press Shift+Enter for a new line.",
-          top: "35%",
-          left: "50%",
-          hidden: false,
-          hover: false
-        }); 
-        */
-
+          //labelObj.innerHTML = itemLabel + " (ex 0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c)";
+          labelObj.innerHTML = itemLabel + " (<a target='_blank' href='https://docs.google.com/previewtemplate?id=0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c&mode=public'>Template</a>)";
 
 
         } else {

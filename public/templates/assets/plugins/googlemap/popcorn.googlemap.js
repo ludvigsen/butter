@@ -91,6 +91,31 @@ var googleCallback;
 		return contentString;
 	}
 
+	//http://www.joezimjs.com/javascript/3-ways-to-parse-a-query-string-in-a-url/
+	function parseQueryString ( fullUrl ) {
+		var params = {}, queries, temp, i, l;
+
+		var fullUrlObj=fullUrl.split("?");
+		console.log("parseQuerySTring with " + fullUrl);
+		
+		if (fullUrlObj.length < 2) {
+			return params;
+		}
+		var queryString=fullUrlObj[1];
+		// Split into key/value pairs
+		queries = queryString.split("&");
+
+		// Convert the array of strings into an object
+		for ( i = 0, l = queries.length; i < l; i++ ) {
+			temp = queries[i].split('=');
+			params[temp[0]] = temp[1];
+		}
+
+		return params;
+	};
+
+
+
 	function trimString(str) {
 		return str.replace(/^\s+|\s+$/g, '');
 	};
@@ -116,6 +141,7 @@ var googleCallback;
 
 		//the format returned from google's jsonp is TERRIBLE.  as a result we do some really ugly parsing
 		//I originally had a more elegant solution but when values contain the delimiters (comma or semicolon) it wasn't working
+		console.log("PSL " + str);
 
 		var props=str.split(",");
 		var newstr="";
@@ -154,12 +180,8 @@ var googleCallback;
 		o.lng=trimString(str.substring(i1,i2))
 
 		i1=str.indexOf("zoom:")+5;
-		i2=str.indexOf(", thumbnail",i1);
-		o.zoom=trimString(str.substring(i1,i2))
-
-		i1=str.indexOf("thumbnail:")+10;
 		i2=str.indexOf(", openwindow",i1);
-		o.thumbnail=trimString(str.substring(i1,i2))
+		o.zoom=trimString(str.substring(i1,i2))
 
 		i1=str.indexOf("openwindow:")+11;
 		i2=str.indexOf(", showpin",i1);
@@ -167,9 +189,12 @@ var googleCallback;
 		o.openWindow=(openWindow.toLowerCase()=="true");
 		
 		i1=str.indexOf("showpin:")+8;
-		var showPin=trimString(str.substring(i1))
-		console.log("showPin " + showPin);
+		i2=str.indexOf(", pinlabel",i1);
+		var showPin=trimString(str.substring(i1,i2))
 		o.showPin=(showPin.toLowerCase()=="true");
+		
+		i1=str.indexOf("pinlabel:")+9;
+		o.pinicon=trimString(str.substring(i1))
 		
 
 		return o;
@@ -289,6 +314,8 @@ var googleCallback;
 
 						if (location) {
 							map = buildMap(options, innerdiv, that);
+
+
 						} else {
 							// calls an anonymous google function called on separate thread
 							geocoder.geocode({
@@ -300,6 +327,15 @@ var googleCallback;
 						location = new google.maps.LatLng(options.lat, options.lng);
 						map = map = buildMap(options, innerdiv, that);
 					}
+
+					if (map) {
+						google.maps.event.addDomListener(window, 'resize', function() {
+				          //TODO: add logic here to 'fake' having the info windows be responsive to the width of the browser
+				          //console.log("window resized " + mapDiv.width);
+				          //infowindow.open(map);
+				        });
+					}
+
 				}
 			} else {
 				setTimeout(function () {
@@ -345,19 +381,29 @@ var googleCallback;
 				var md=mapDataFromSpreadsheet;
 				for (var i=0; i < md.length; i++) {
 					var ev=md[i];
-					var aMarker= new google.maps.Marker({
-						position: new google.maps.LatLng(ev.lat, ev.lng), 
-						title: 'MARKERTITLE',
-						animation: google.maps.Animation.DROP
-					});
+					var aMarker;
+
+					if (ev.icon != "" && ev.icon != "default") {
+						aMarker= new google.maps.Marker({
+							position: new google.maps.LatLng(ev.lat, ev.lng), 
+							title: 'MARKERTITLE',
+							animation: google.maps.Animation.DROP,
+							icon: "/templates/assets/images/mapicons/"+ev.pinicon+".png"
+						});
+					} else {
+						aMarker= new google.maps.Marker({
+							position: new google.maps.LatLng(ev.lat, ev.lng), 
+							title: 'MARKERTITLE',
+							animation: google.maps.Animation.DROP
+						});
+					}					
 					
 					if (!ev.showPin) {
 						console.log("hide pin " + i);
 						aMarker.setMap(null);
 					} else {
 						aMarker.setMap(map);	
-					}
-					
+					}				
 					
 					markersFromSpreadsheet.push(aMarker);
 					aMarker.markerNum=i;
@@ -367,7 +413,6 @@ var googleCallback;
 						that.currentTime( cmData.starttime )
 					});
 
-
 				}
 			} else {
 				setTimeout(function () {
@@ -376,26 +421,25 @@ var googleCallback;
 			}
 		}
 
-
-
 		return {
-			
-
-
-
 			_setup: function (options) {
-				
-
+		
 				originalZoom=options.zoom;
 				
 				if (options.spreadsheetKey) {
-					var loc="https://spreadsheets.google.com/feeds/list/" + options.spreadsheetKey + "/od6/public/values?alt=json-in-script&callback=jsonp";
+					var qParams=parseQueryString(options.spreadsheetKey);
+					var keyVal=qParams["key"];
+					if (keyVal == null) {
+						keyVal="";
+					}
+					//https://docs.google.com/spreadsheet/ccc?key=0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c&usp=drive_web#gid=0
+					var loc = "https://spreadsheets.google.com/feeds/list/" + keyVal + "/od6/public/values?alt=json-in-script&callback=jsonp";
 					console.log("request spreadsheet from " + loc);
+					
 					loadSpreadsheet(loc,function(lsData) {
 						mapDataFromSpreadsheet=lsData;
-						//create all of our markers and infoWindows
+						//create all of our markers and infoWindows.  
 						placeMarkersWhenMapReady(mapDataFromSpreadsheet);
-						//placeMarkersWhenMapReady(_mapCompletelyLoaded, mapDataFromSpreadsheet,map,that)
 					})
 				}
 
@@ -549,7 +593,8 @@ var googleCallback;
 
 						//we use the same infowindow the entire time, regardless of whether we're in spreadsheet mode or pin mode
 						infowindow = new google.maps.InfoWindow({
-							content: formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc) 
+							content: formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc),
+							maxWidth:283
 						});
 
 						if (pinMode) {						
@@ -685,10 +730,17 @@ var googleCallback;
 									}
 								}
 							} else {
-								map.panTo(location);	//this scenario is if we hit a time period that's not covered by spreadsheet.  Take default location.
-								console.log("set zoom to " + originalZoom);
+								//this scenario is if we hit a time period that's not covered by spreadsheet.  
+								if (infowindow) {
+									infowindow.close();
+								}
+
+								/*
+								map.panTo(location);	
 								infowindow.close();
 								map.setZoom(originalZoom);
+								*/
+
 							}
 						}
 					}
@@ -769,20 +821,39 @@ var googleCallback;
 							marker.setMap(null);
 						}
 
-						var loc="https://spreadsheets.google.com/feeds/list/" + options.spreadsheetKey + "/od6/public/values?alt=json-in-script&callback=jsonp";
+						var qParams=parseQueryString(options.spreadsheetKey);
+						var keyVal=qParams["key"];
+						if (keyVal == null) {
+							keyVal="";
+						}
+						var loc = "https://spreadsheets.google.com/feeds/list/" + keyVal + "/od6/public/values?alt=json-in-script&callback=jsonp";
 						console.log("request spreadsheet from " + loc);
+					
+
 						loadSpreadsheet(loc,function(lsData) {
 							mapDataFromSpreadsheet=lsData;
 							placeMarkersWhenMapReady(mapDataFromSpreadsheet);
 						})
 
 					} else {
-						//in this case we removed a spreadsheet key.  we removed all the markers already, let's show the pin if relevant
-
+						/* in this case we removed a spreadsheet key while in editor.  
+						   We are thus reverting to whatever is stored for location
+						*/
+						if (marker==null) {
+							marker = new google.maps.Marker({
+								position: location,
+								title: 'MARKERTITLE',
+								animation: google.maps.Animation.DROP
+							});
+							if (trackEvent.infoWindowOpen) {
+								infowindow.open(map,marker);
+							} else {
+								infowindow.close();
+							}
+						}						
 						marker.setMap(map);
 						marker.setPosition(location);
 						map.panTo(location);
-
 					}
 				} 
 				

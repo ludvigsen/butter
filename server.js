@@ -448,7 +448,7 @@ app.get('/gallery',filter.isStorageAvailable, function(req, res) {
 
 app.all(/.*/, function(req, res, next) {
   var host = req.header("host");
-  if (host.match(/^kettlecorn-edit\..*/i)) {
+  if (host.match(/^kettlecorn-edit\..*/i) || host.match(/^dev-kettlecorn-edit\..*/i)) {
     next();
   } else {
     res.redirect(301, "http://kettlecorn-edit.innovation-series.com");

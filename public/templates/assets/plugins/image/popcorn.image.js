@@ -309,7 +309,7 @@
           elem: "input",
           type: "url",
           label: "Source URL",
-          "default": "http://popcorn.innovation-series.com/images/logo_kettlecorn.svg" 
+          "default": "http://kettlecorn-edit.innovation-series.com/images/logo_kettlecorn.svg" 
         },
         linkSrc: {
           elem: "input",

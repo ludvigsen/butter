@@ -35,7 +35,7 @@
 					elem: "input",
 					type: "textarea",
 					label: "Headline1",
-					"default": "The Innovation Series"
+					"default": "Introducing KettleCorn: Forking Popcorn Maker for Journalists"
 				},
 				imageURL1: {
 					elem: "input",
@@ -47,13 +47,13 @@
 					elem: "input",
 					type: "textarea",
 					label: "Link URL1",
-					"default": "http://www.innovation-series.com/"
+					"default": "http://www.innovation-series.com/2013/10/24/introducing-kettlecorn-forking-popcorn-maker-for-journalists/"
 				},
 				headline2: {
 					elem: "input",
 					type: "textarea",
 					label: "Headline2",
-					"default": "Our Block Community Radio"
+					"default": "VOA News App - 40+ languages!"
 				},
 				imageURL2: {
 					elem: "input",
@@ -65,13 +65,13 @@
 					elem: "input",
 					type: "textarea",
 					label: "Link URL2",
-					"default": "http://isourblock.org/"
+					"default": "https://itunes.apple.com/us/app/voa/id632618796?mt=8"
 				},
 				headline3: {
 					elem: "input",
 					type: "textarea",
 					label: "Headline3",
-					"default": "Mozilla Webmaker"
+					"default": "KettleCorn Feature Details"
 				},
 				imageURL3: {
 					elem: "input",
@@ -83,7 +83,7 @@
 					elem: "input",
 					type: "textarea",
 					label: "Link URL3",
-					"default": "https://webmaker.org/"
+					"default": "http://www.innovation-series.com/2013/10/25/kettlecorn-a-journalists-tool-for-enhancing-interactive-audio-and-video-stories/"
 				},
 				
 				zindex: {

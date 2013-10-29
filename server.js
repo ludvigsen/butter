@@ -26,6 +26,8 @@ var express = require('express'),
     VALID_TEMPLATES = config.templates;
 
 
+
+
 var templateConfigs = {};
 
 //create our bing translation client and initialize its token
@@ -442,6 +444,15 @@ app.get('/gallery',filter.isStorageAvailable, function(req, res) {
 			projects: recentProjects
 		});
 	});
+});
+
+app.all(/.*/, function(req, res, next) {
+  var host = req.header("host");
+  if (host.match(/^kettlecorn-edit\..*/i)) {
+    next();
+  } else {
+    res.redirect(301, "http://kettlecorn-edit.innovation-series.com");
+  }
 });
 
 app.listen( config.PORT, function() {

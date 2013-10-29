@@ -18,6 +18,13 @@
   opacity: 0;
 }
 
+
+/*reds: light red: rgb(235, 75, 45) and Dark red: rgb(216, 57, 32) */
+/*oranges: rgb(249, 174, 64) and rgb(245, 146, 30)*/
+
+/*light green: 60c7a5;*/
+/*dark green: 1eb771;*/
+
 #butter-controls {
   color: #F8FDE2;
   position: relative;
@@ -101,9 +108,12 @@
   cursor: pointer;
 }
 
+
+
+
 #controls-progressbar {
   height: 100%;
-  background: #1eb771;
+  background: rgb(216, 57, 32);
   position: absolute;
   border-radius: 0;
 }
@@ -125,7 +135,7 @@
 }
 
 #controls-currenttime {
-  color: #1eb771;
+  color: rgb(216, 57, 32);
   position: relative;
   text-align: left;
   left: auto;
@@ -166,7 +176,7 @@
 
 #controls-volume-progressbar {
   height: 100%;
-  background: #1eb771;
+  background: rgb(216, 57, 32);
   position: absolute;
   border-radius: 0;
 }
@@ -195,7 +205,7 @@
 #controls-play {
   width: 28px;
   height: 28px;
-  background: #1eb771 url( "../resources/controls/controls_icon_playPause.png" ) no-repeat;
+  background: rgb(216, 57, 32) url( "../resources/controls/controls_icon_playPause.png" ) no-repeat;
   padding: 0;
   border-radius: 3px;
   margin-top: 7px;
@@ -204,7 +214,7 @@
 }
 
 #controls-play:hover {
-  background-color: #60c7a5;
+  background-color: rgb(235,75,45);
 }
 
 #controls-mute {
@@ -252,7 +262,7 @@
 }
 
 .controls-right div:hover {
-  background-color: #1eb771;
+  background-color: rgb(216, 57, 32);
 }
 
 #controls-share {

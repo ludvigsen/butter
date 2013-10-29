@@ -61,6 +61,8 @@ Global styles and classes
     border: 1px solid transparent;
   }
 
+
+
   .byline {
     font-style: italic;
     margin-bottom: 0.5em;
@@ -391,7 +393,7 @@ Home styles
 }
 
 #projects .project-items {
-  min-height: 270px;
+  min-height: 230px;
 }
 
 #projects .row:after,
@@ -417,6 +419,7 @@ Home styles
   height: 120px;
   margin-bottom: 12px;
 }
+/*
 
 .thumbnail:hover:after {
   content: "Preview";
@@ -434,6 +437,7 @@ Home styles
   color: #FFF;
   text-align: center;
 }
+*/
 .caption {
   float: left;
   width: 260px;
@@ -445,7 +449,7 @@ Home styles
 
 #projects .span5 {
   padding: 20px;
-  height: 280px;
+  height: 240px;
   background: #FFF;
   border: 1px solid #DDD;
   -webkit-box-sizing: border-box;
@@ -462,3 +466,26 @@ Home styles
   line-height: 15px;
   padding: 5px 10px;
 }
+
+
+/*reds: light red: rgb(235, 75, 45) and Dark red: rgb(216, 57, 32) */
+
+
+/*additions*/
+.btn-green, .btn-green.butter-disabled:hover, .btn-green.butter-disabled:active {
+  background: rgb(216, 57, 32);
+  box-shadow: inset 0 1px 0 rgb(235, 75, 45);
+}
+
+.btn-green:hover{
+  background: rgb(235, 75, 45);
+  box-shadow: inset 0 1px 0 rgb(235, 75, 45);
+}
+
+a {
+  color: #888;
+}
+a:hover{
+  color: #f15a29;
+}
+

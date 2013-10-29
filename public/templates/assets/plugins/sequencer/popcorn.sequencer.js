@@ -62,7 +62,7 @@
         var bigPlay = document.getElementById( "controls-big-play-button" );
         _this.off( "play", options._surpressPlayEvent );
         if ( bigPlay ) {
-          bigPlay.classList.remove( "hide-button" );
+        //  bigPlay.classList.remove( "hide-button" );
         }
         document.querySelector( ".loading-message" ).classList.remove( "show-media" );
       };

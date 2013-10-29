@@ -148,13 +148,15 @@ html
                   div.description
                     if project.author
                       p.project-author By: 
-                        a(href="gallery?author="+project.author)
-                          = project.author
-                        span  (org)
-                        a(href="gallery?org="+project.organization)
-                            br
+                        = project.author
+                        //a(href="gallery?author="+project.author)
+                        //  = project.author
+                        //span  (org)
+                        //a(href="gallery?org="+project.organization)
+                          br
                     p.project-update 
-                      = project.updatedAt + " (lang)"
+                      = project.updatedAt + ""
+                      //= project.updatedAt + " (lang)"
                     br
                     p.project-description-text
                       = project.description

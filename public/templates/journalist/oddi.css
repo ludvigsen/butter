@@ -83,4 +83,21 @@ background: rgb(249, 174, 64)!important;
 background: rgb(245, 146, 30)!important;
 }
 
+.ui-resizable-handle {
+ background: rgb(235, 75, 45);
+ border: 3px solid rgb(216, 57, 32);
+}
+.ui-draggable-grip {
+background: rgb(216, 57, 32);
+box-shadow: -2px -2px 0 2px rgb(235, 75, 45);
+}
+.ui-draggable .title {
+color: rgb(235, 75, 45);
+}
+.butter-track-event[selected="true"] {
+border-color: rgb(235, 75, 45) !important;
+}
+
+/*reds: light red: rgb(235, 75, 45) and Dark red: rgb(216, 57, 32) */
+
 /*you may want to recolor a few icons: media.png, big-loader.gif;*/

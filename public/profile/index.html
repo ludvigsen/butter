@@ -8,39 +8,74 @@
 	
 	<link rel="stylesheet" href="../css/butter.ui.css" data-butter-exclude>
 	<!-- <link rel="stylesheet" href="../css/transitions.css"> -->
-	<link rel="stylesheet" href="../css/kettlepages.css">
+	<link rel="stylesheet" href="../css/kettlesignup.css">
+	<link rel="stylesheet" href="/templates/journalist/oddi.css">
 
 	<script src="../external/require/require.js"></script>
 	<script src="require_config.js"></script>
+
+	<style>
+		/*if we're switching the button color from green to red, should we go ahead and update the class name from .btn-green to .btn-red?*/
+		.btn-green, .btn-green.butter-disabled:hover, .btn-green.butter-disabled:active {
+			background: rgb(216, 57, 32) !important;
+			box-shadow: rgb(235, 75, 45) 0px 1px 0px inset !important;
+			border: 1px solid #900 !important;
+			padding-left:20px;
+			margin-left:20px;
+			margin-right:20px;
+			padding-right:20px;
+			font-size: 1.2em;
+		}
+		td { vertical-align:middle;}
+	</style>
+
+
 </head>
 
-<body class="butter-header-spacing butter-editor-spacing" style="padding-top:0px;">
-	
-	<div class="login-header">
-		<nav id="webmaker-nav"></nav>
-	</div>
+<body>
 
-	<div class="project-listing">
-		<div class="project-container">
-			<div class="project-detail">
-				<div class="butter-header-primary">
-					<div class="butter-logo"></div>
-					<ul class="butter-nav">
-						<li class="butter-breadcrumbs"></li><li class="butter-project-title"><span class="butter-name">Get Started with KettleCorn</span></li>
-					</ul>
-					</div>
-				</div>
-				<div class="instructions">
-					<div class="login-join"><span class="login">Sign in to get started</span></div>  
-				</div>
 	
-				<BR><BR>
+	
+		<!-- <div class="butter-logo"></div>-->
+	<table width="560" id="loginTable" align="center">
+		<tr><td colspan="2"><BR /><BR /></td></tr>
+		<tr>
+			<td width="280" align="right"><span id="loginGetStarted">Get Started </span> <span id="loginWith">with</span> &nbsp;&nbsp; </td>
+			<td width="280" align="left"><img  src="../resources/logo.png"></td>
+		</tr>
+		
+		<tr><td colspan="2"><BR /><BR /><BR /></td></tr>
+
+		<tr>
+			<td colspan="2">
+				<table width="100%">
+					
+					<!-- 
+					<tr>
+						<td width="50%" style="text-align:right"><a class="butter-btn btn-green butter-save-btn" href="#" id="loginSignIn">Sign In</a></td>
+						<td width="50%" style="text-align:left"><a class="butter-btn btn-green butter-save-btn" href="#" id="loginRegisterBtn">Register</a></td>
+					</tr>
+					-->
+					<tr>
+						<td width="100%" style="text-align:center"><a class="butter-btn btn-green butter-save-btn" href="#" id="loginSignIn">Sign In with Persona</a></td>
+					</tr>
+				</table>
+
 				<div class="profile"></div> <!-- this is filled out by profile.js -->
-				
 				<div class="templates"></div> <!-- this is filled out by profile.js -->
+			</td>
+		</tr>
+		<tr><td colspan="2"><BR /><BR /></td></tr>
+	</table>
+
+	
+
+	
+
+			
 			</div>
 		</div>
-	</div>
+	</table>
 
 	
 

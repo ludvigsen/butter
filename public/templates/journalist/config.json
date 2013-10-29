@@ -28,7 +28,8 @@
       },
       {
         "type": "googlemap",
-        "icon": "{{baseDir}}resources/icons/map.png"
+        "displayName": "GoogleMaps+",
+        "icon": "{{baseDir}}templates/assets/plugins/googlemap/mapsplus-icon.png"
       },
       {
         "type": "image",

@@ -21,10 +21,7 @@ define(["util/lang",
 		
 	    var _this = this,
 	    	_cornfield = new KettleCornField(),
-	    	_instructionsElement = document.querySelector(".instructions"),
-	        _headerElement = document.querySelector(".login-header"),
-	        _getStartedElement = _instructionsElement.querySelector(".login"),
-	        _webmakerNavBar = _headerElement.querySelector( "#webmaker-nav" ),
+	        _signInElement = document.querySelector("#loginSignIn"),
 	        _profileHolderElement = document.querySelector(".profile"),
 	        _templateListHolderElement = document.querySelector(".templates"),
 	        _webmakerNav,
@@ -32,54 +29,46 @@ define(["util/lang",
 	        _templates,
 	        _account = new Account(_cornfield);
 	    
-	    /*** Header and Authentication ***/
-	    _webmakerNav = new WebmakerBar({
-	        container: _webmakerNavBar,
-	        onLogin: authenticationRequired,
-	        onLogout: logout
-	    });
-	    
-	    _getStartedElement.addEventListener("click",function(e) {
+	    _signInElement.addEventListener("click",function(e) {
 	    	authenticationRequired();
 	    })
 	    
 	    this.views = {
 	    	login: function(username) {
-	    		_webmakerNav.views.login(username);
-	    		_instructionsElement.style.display = "none";
+	    		//_webmakerNav.views.login(username);
+	    		//_instructionsElement.style.display = "none";
 	    	},
 	    	logout: function() {
-	    		_webmakerNav.views.logout();
-	    		_instructionsElement.style.display = "";
+	    		//_webmakerNav.views.logout();
+	    		//_instructionsElement.style.display = "";
 		    	hideUserProfile();
 		    	hideTemplateList();
 	    	}
 	    }
 	    
 	    function authenticationRequired( successCallback, errorCallback ) {
-	        if ( _cornfield.authenticated() ) {
-	            showUserLoggedIn();
-	            if ( successCallback && typeof successCallback === "function" ) {
-	              successCallback();
-	              return;
-	            }
-	          }
-
-	          _cornfield.login( function( response ) {
-	            if ( response.status === "okay" ) {
-	              showUserLoggedIn();
-	              if ( successCallback && typeof successCallback === "function" ) {
-	                successCallback();
-	                return;
-	              }
-	            } else {
-	              _this.showErrorDialog( "There was an error logging in. Please try again." );
-	                if ( errorCallback && typeof errorCallback === "function" )  {
-	                  errorCallback();
-	                }
-	            }
-	          });
-	    }
+			if ( _cornfield.authenticated() ) {
+				showUserLoggedIn();
+				if ( successCallback && typeof successCallback === "function" ) {
+					successCallback();
+					return;
+				}
+			}
+			_cornfield.login( function( response ) {
+				if ( response.status === "okay" ) {
+					showUserLoggedIn();
+					if ( successCallback && typeof successCallback === "function" ) {
+						successCallback();
+						return;
+					}
+				} else {
+					_this.showErrorDialog( "There was an error logging in. Please try again." );
+					if ( errorCallback && typeof errorCallback === "function" )  {
+						errorCallback();
+					}
+				}
+			});
+		}
 	    
 	    function logout ( callback ) {
 	        _cornfield.logout( function() {
@@ -92,6 +81,9 @@ define(["util/lang",
 	    
 	    /*** User Account and Template List Information ***/
 	    function showUserLoggedIn() {
+	    	window.location="/templates/journalist/";
+
+	    	/*
 	    	_this.views.login( _cornfield.username() );
 	    	// check to see if the user has a profile in the system
 	    	_cornfield.getProfile(function(errorResponse) {
@@ -111,6 +103,7 @@ define(["util/lang",
 	    		}
 	    		showTemplateList();
 	    	})
+			*/
 	    }
 	    
 	    function showUserProfile() {
@@ -152,7 +145,6 @@ define(["util/lang",
 	    }
 
 	    function showTemplateList() {
-    		console.log("showTemplateList in profile.js");
     		var organizationId = _account.organization_id;
     		var gettingStartedElement, templateElement, templateListElement, template, i, num, templateOption, templateImage;
     		

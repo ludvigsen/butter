@@ -720,7 +720,16 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
           labelObj.innerHTML = itemLabel + " (<a target='_blank' href='https://docs.google.com/previewtemplate?id=0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c&mode=public'>Template</a>)";
 
 
-        } else {
+        } else if (name=="headline1") {
+           //propertyArchetype.querySelector( ".property-name" ).innerHTML = "<HR style='margin-top:-5px; color:#000;background-color:#000;'>" + itemLabel
+           propertyArchetype.querySelector( ".property-name" ).innerHTML = "<h3>Promo 1</h3>" + itemLabel
+        }  else if (name=="headline2") {
+           //propertyArchetype.querySelector( ".property-name" ).innerHTML = "<HR style='margin-top:-5px; color:#000;background-color:#000;'>" + itemLabel
+           propertyArchetype.querySelector( ".property-name" ).innerHTML = "<h3>Promo 2</h3>" + itemLabel
+        }  else if (name=="headline3") {
+           //propertyArchetype.querySelector( ".property-name" ).innerHTML = "<HR style='margin-top:-5px; color:#000;background-color:#000;'>" + itemLabel
+           propertyArchetype.querySelector( ".property-name" ).innerHTML = "<h3>Promo 3</h3>" + itemLabel
+        }  else {
           propertyArchetype.querySelector( ".property-name" ).innerHTML = itemLabel;
         }
         

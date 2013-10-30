@@ -34,56 +34,64 @@
 				headline1: {
 					elem: "input",
 					type: "textarea",
-					label: "Headline1",
+					label: "Headline",
 					"default": "Introducing KettleCorn: Forking Popcorn Maker for Journalists"
 				},
 				imageURL1: {
 					elem: "input",
 					type: "textarea",
-					label: "Image URL1",
+					label: "Image URL",
 					"default": "../assets/images/promo_default_left.jpg"
 				},
 				linkURL1: {
 					elem: "input",
 					type: "textarea",
-					label: "Link URL1",
+					label: "Link URL",
 					"default": "http://www.innovation-series.com/2013/10/24/introducing-kettlecorn-forking-popcorn-maker-for-journalists/"
 				},
 				headline2: {
 					elem: "input",
 					type: "textarea",
-					label: "Headline2",
+					label: "Headline",
 					"default": "VOA News App - 40+ languages!"
 				},
 				imageURL2: {
 					elem: "input",
 					type: "textarea",
-					label: "Image URL2",
+					label: "Image URL",
 					"default": "../assets/images/promo_default_middle.jpg"
 				},
 				linkURL2: {
 					elem: "input",
 					type: "textarea",
-					label: "Link URL2",
+					label: "Link URL",
 					"default": "https://itunes.apple.com/us/app/voa/id632618796?mt=8"
 				},
 				headline3: {
 					elem: "input",
-					type: "textarea",
-					label: "Headline3",
+					type: "textarea" ,
+					label: "Headline",
 					"default": "KettleCorn Feature Details"
 				},
 				imageURL3: {
 					elem: "input",
 					type: "textarea",
-					label: "Image URL3",
+					label: "Image URL",
 					"default": "../assets/images/promo_default_right.jpg"
 				},
 				linkURL3: {
 					elem: "input",
 					type: "textarea",
-					label: "Link URL3",
+					label: "Link URL",
 					"default": "http://www.innovation-series.com/2013/10/25/kettlecorn-a-journalists-tool-for-enhancing-interactive-audio-and-video-stories/"
+				},
+				pauseOnStart: {
+					elem: "input",
+					type: "checkbox",
+					label: "Pause Play When Plugin Starts",
+					group:"advanced",
+					"default": true,
+					optional: true
 				},
 				
 				zindex: {
@@ -94,6 +102,7 @@
 		}, //end manifest
 
 		_setup: function( options ) {
+			
 			var DEFAULT_FONT_COLOR = "#000000",
 			DEFAULT_SHADOW_COLOR = "#444444",
 			DEFAULT_BACKGROUND_COLOR = "#888888";
@@ -157,6 +166,12 @@
 			// options.container.innerHTML="HELLO WORLD";
 			var redrawBug;
 			if ( options.promoBackground ) {
+				console.log("PAUSE IT");
+				
+				if (options.pauseOnStart) {
+					this.pause();	
+				}
+				
 				options.promoBackground.classList.add( "on" );
 				options.promoBackground.classList.remove( "off" );
 				

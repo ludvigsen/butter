@@ -83,11 +83,13 @@ var googleCallback;
 	}	//end buildMap
 
 	function formatInfoWindowString (title,description) {
-		var contentString = '<div id="mapInfoWindow">'+
+		var contentString = "";
+		if (title != "" || description != "") {
+			contentString = '<div id="mapInfoWindow">'+
 						'<p class="gmap_infoWindowTitle">' + title + '</p>'+
 						'<p class="gmap_infoWindowDesc">' + description+ '</p>'+
 						'</div>';
-
+		}
 		return contentString;
 	}
 
@@ -96,7 +98,7 @@ var googleCallback;
 		var params = {}, queries, temp, i, l;
 
 		var fullUrlObj=fullUrl.split("?");
-		console.log("parseQuerySTring with " + fullUrl);
+		console.log("parseQueryString with " + fullUrl);
 		
 		if (fullUrlObj.length < 2) {
 			return params;
@@ -583,10 +585,10 @@ var googleCallback;
 						google.maps.event.trigger(map, "resize");
 						map.setCenter(location);
 
-						if (options.spreadsheetKey) {
+						if (options.spreadsheetKey  && trimString(options.spreadsheetKey) != "") {
 							pinMode=false;
 							spreadsheetMode=true;
-						} else if (options.infoWindowTitle || options.infoWindowDesc) {
+						} else  {
 							pinMode=true;
 							spreadsheetMode=false;
 						}
@@ -597,18 +599,26 @@ var googleCallback;
 							maxWidth:283
 						});
 
+						console.log("do we create the pin")
+						console.log("options.spreadsheetKey is " + options.spreadsheetKey + " pinMode is " + pinMode)
 						if (pinMode) {						
+							console.log("creating pin")
 							marker = new google.maps.Marker({
 								position: location,
 								title: 'MARKERTITLE',
 								animation: google.maps.Animation.DROP
 							});
 							google.maps.event.addListener(marker, 'click', function() {
-								infowindow.open(map,marker);
+								
+								if (infowindow.getContent() != "") {
+									infowindow.open(map,marker);
+								}
 							});
 							marker.setMap(map);
 							if (options.infoWindowOpen) {
-								infowindow.open(map,marker);
+								if (infowindow.getContent() != "") {
+									infowindow.open(map,marker);
+								}
 							}
 						}
 
@@ -723,8 +733,10 @@ var googleCallback;
 									if (thisPin.openWindow) {
 										infowindow.setPosition(newLocation);
 										infowindow.setContent(formatInfoWindowString(thisPin.title,thisPin.description)); 
-										infowindow.open(map,markersFromSpreadsheet[currentPin-1]);
 										
+										if (infowindow.getContent() != "") {
+											infowindow.open(map,markersFromSpreadsheet[currentPin-1]);
+										}
 									} else {
 										infowindow.close();
 									}
@@ -802,7 +814,9 @@ var googleCallback;
 				//if they toggled either the checkbox, show or hide the bubble
 				if (newInfoWindowOpen) {
 					if (options.infoWindowOpen) {
-						infowindow.open(map,marker);
+						if (infowindow.getContent() != "") {
+							infowindow.open(map,marker);
+						}
 					} else {
 						infowindow.close(); 
 					}
@@ -846,7 +860,9 @@ var googleCallback;
 								animation: google.maps.Animation.DROP
 							});
 							if (trackEvent.infoWindowOpen) {
-								infowindow.open(map,marker);
+								if (infowindow.getContent() != "") {
+									infowindow.open(map,marker);
+								}
 							} else {
 								infowindow.close();
 							}
@@ -1116,7 +1132,7 @@ var googleCallback;
 			spreadsheetKey: {
 				elem: "input",
 				type:"text",
-				label: "Google Spreadsheet Key",
+				label: "Google Spreadsheet URL",
 				group:"advanced",
 				"default":""
 				//,tooltip: "0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c"
@@ -1126,21 +1142,21 @@ var googleCallback;
 				type:"text",
 				label: "Pin Title",
 				group:"advanced",
-				"default":"Washington, DC"
+				"default":""	//Washington, DC
 			},
 			infoWindowDesc: {
 				elem: "input",
 				type:"text",
 				label: "Pin Description",
 				group:"advanced",
-				"default":"Voice of America HQ"
+				"default":""	//Voice of America HQ
 			},
 			infoWindowOpen: {
 				elem: "input",
 				type: "checkbox",
 				label: "Open Pin Window by Default",
 				group:"advanced",
-				"default": true,
+				"default": false,
 				optional: true
 			},
 			transition: {

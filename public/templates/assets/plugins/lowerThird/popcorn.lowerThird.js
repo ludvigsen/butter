@@ -51,7 +51,6 @@
 					elem:"input",
 					type:"checkbox",
 					label:"Include Entity Logo",
-					group:"advanced",
 					default:true	//a default value of anything other than the empty string will make it checked
 				},
 				
@@ -59,7 +58,6 @@
 					elem:"input",
 					type:"text",
 					label:"Link URL",
-					group:"advanced",
 					default:"notYetSet_linkUrl"
 				},
 				zindex: {

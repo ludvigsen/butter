@@ -1,40 +1,256 @@
 {
   "languages": [
-    {
-      "id":	"ara",
-      "name": "Arabic",
-      "enableTranslation":"true",
-      "bingCode":"ar"
-    },
-    {
-      "id":	"chi",
-      "name":	"Chinese",
-      "enableTranslation":"true",
-      "bingCode":"zh-CHS"
-    },
-    {
-      "id":	"eng",
-      "name":	"English",
-      "enableTranslation":"true",
-      "bingCode":"en"
-    },
-    {
-      "id":	"fre",
-      "name":	"French",
-      "enableTranslation":"true",
-      "bingCode":"fr"
-    },
-    {
-      "id":	"rus",
-      "name":	"Russian",
-      "enableTranslation":"true",
-      "bingCode":"ru"
-    },
-    {
-      "id":	"spa",
-      "name":	"Spanish",
-      "enableTranslation":"true",
-      "bingCode":"es"
-    }
-  ]
+	{
+		"id":	"ar",
+		"name": "Arabic",
+		"enableTranslation": "true",
+		"bingCode": "ar"
+	},
+	{
+		"id":	"bg",
+		"name": "Bulgarian",
+		"enableTranslation": "true",
+		"bingCode": "bg"
+	},
+	{
+		"id":	"ca",
+		"name": "Catalan",
+		"enableTranslation": "true",
+		"bingCode": "ca"
+	},
+	{
+		"id":	"zh-CHS",
+		"name": "Chinese",
+		"enableTranslation": "true",
+		"bingCode": "zh-CHS"
+	},
+	{
+		"id":	"zh-CHT",
+		"name": "Chinese",
+		"enableTranslation": "true",
+		"bingCode": "zh-CHT"
+	},
+	{
+		"id":	"cs",
+		"name": "Czech",
+		"enableTranslation": "true",
+		"bingCode": "cs"
+	},
+	{
+		"id":	"da",
+		"name": "Danish",
+		"enableTranslation": "true",
+		"bingCode": "da"
+},
+		{
+			"id":	"nl",
+			"name": "Dutch",
+			"enableTranslation": "true",
+			"bingCode": "nl"
+		},
+		{
+			"id":	"en",
+			"name": "English",
+			"enableTranslation": "true",
+			"bingCode": "en"
+		},
+		{
+			"id":	"et",
+			"name": "Estonian",
+			"enableTranslation": "true",
+			"bingCode": "et"
+		},
+		{
+			"id":	"fi",
+			"name": "Finnish",
+			"enableTranslation": "true",
+			"bingCode": "fi"
+		},
+		{
+			"id":	"fr",
+			"name": "French",
+			"enableTranslation": "true",
+			"bingCode": "fr"
+		},
+		{
+			"id":	"de",
+			"name": "German",
+			"enableTranslation": "true",
+			"bingCode": "de"
+		},
+		{
+			"id":	"el",
+			"name": "Greek",
+			"enableTranslation": "true",
+			"bingCode": "el"
+		},
+		{
+			"id":	"ht",
+			"name": "Haitian",
+			"enableTranslation": "true",
+			"bingCode": "ht"
+		},
+		{
+			"id":	"he",
+			"name": "Hebrew",
+			"enableTranslation": "true",
+			"bingCode": "he"
+		},
+		{
+			"id":	"hi",
+			"name": "Hindi",
+			"enableTranslation": "true",
+			"bingCode": "hi"
+		},
+		{
+			"id":	"mww",
+			"name": "Hmong",
+			"enableTranslation": "true",
+			"bingCode": "mww"
+		},
+		{
+			"id":	"hu",
+			"name": "Hungarian",
+			"enableTranslation": "true",
+			"bingCode": "hu"
+		},
+		{
+			"id":	"id",
+			"name": "Indonesian",
+			"enableTranslation": "true",
+			"bingCode": "id"
+		},
+		{
+			"id":	"it",
+			"name": "Italian",
+			"enableTranslation": "true",
+			"bingCode": "it"
+		},
+		{
+			"id":	"ja",
+			"name": "Japanese",
+			"enableTranslation": "true",
+			"bingCode": "ja"
+		},
+		{
+			"id":	"ko",
+			"name": "Korean",
+			"enableTranslation": "true",
+			"bingCode": "ko"
+		},
+		{
+			"id":	"lv",
+			"name": "Latvian",
+			"enableTranslation": "true",
+			"bingCode": "lv"
+		},
+		{
+			"id":	"lt",
+			"name": "Lithuanian",
+			"enableTranslation": "true",
+			"bingCode": "lt"
+		},
+		{
+			"id":	"ms",
+			"name": "Malay",
+			"enableTranslation": "true",
+			"bingCode": "ms"
+		},
+		{
+			"id":	"mt",
+			"name": "Maltese",
+			"enableTranslation": "true",
+			"bingCode": "mt"
+		},
+		{
+			"id":	"no",
+			"name": "Norwegian",
+			"enableTranslation": "true",
+			"bingCode": "no"
+		},
+		{
+			"id":	"fa",
+			"name": "Persian",
+			"enableTranslation": "true",
+			"bingCode": "fa"
+		},
+		{
+			"id":	"pl",
+			"name": "Polish",
+			"enableTranslation": "true",
+			"bingCode": "pl"
+		},
+		{
+			"id":	"pt",
+			"name": "Portuguese",
+			"enableTranslation": "true",
+			"bingCode": "pt"
+		},
+		{
+			"id":	"ro",
+			"name": "Romanian",
+			"enableTranslation": "true",
+			"bingCode": "ro"
+		},
+		{
+			"id":	"ru",
+			"name": "Russian",
+			"enableTranslation": "true",
+			"bingCode": "ru"
+		},
+		{
+			"id":	"sk",
+			"name": "Slovak",
+			"enableTranslation": "true",
+			"bingCode": "sk"
+		},
+		{
+			"id":	"sl",
+			"name": "Slovenian",
+			"enableTranslation": "true",
+			"bingCode": "sl"
+		},
+		{
+			"id":	"es",
+			"name": "Spanish",
+			"enableTranslation": "true",
+			"bingCode": "es"
+		},
+		{
+			"id":	"sv",
+			"name": "Swedish",
+			"enableTranslation": "true",
+			"bingCode": "sv"
+		},
+		{
+			"id":	"th",
+			"name": "Thai",
+			"enableTranslation": "true",
+			"bingCode": "th"
+		},
+		{
+			"id":	"tr",
+			"name": "Turkish",
+			"enableTranslation": "true",
+			"bingCode": "tr"
+		},
+		{
+			"id":	"uk",
+			"name": "Ukrainian",
+			"enableTranslation": "true",
+			"bingCode": "uk"
+		},
+		{
+			"id":	"ur",
+			"name": "Urdu",
+			"enableTranslation": "true",
+			"bingCode": "ur"
+		},
+		{
+			"id":	"vi",
+			"name": "Vietnamese",
+			"enableTranslation": "true",
+			"bingCode": "vi"
+		}
+	]
 }

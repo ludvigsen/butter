@@ -35,7 +35,7 @@
 					elem: "input",
 					type: "textarea",
 					label: "Headline",
-					"default": "Introducing KettleCorn: Forking Popcorn Maker for Journalists"
+					"default": "KettleCorn: Create and remix interactive video for journalists"
 				},
 				imageURL1: {
 					elem: "input",
@@ -53,13 +53,13 @@
 					elem: "input",
 					type: "textarea",
 					label: "Headline",
-					"default": "VOA News App - 40+ languages!"
+					"default": "Download the VOA news app for news in over 40 languages"
 				},
 				imageURL2: {
 					elem: "input",
 					type: "textarea",
 					label: "Image URL",
-					"default": "../assets/images/promo_default_middle.jpg"
+					"default": "../assets/images/promo_default_middle_voa.jpg"
 				},
 				linkURL2: {
 					elem: "input",
@@ -71,19 +71,19 @@
 					elem: "input",
 					type: "textarea" ,
 					label: "Headline",
-					"default": "KettleCorn Feature Details"
+					"default": "RFA investigates access to clean drinking water in Asia"
 				},
 				imageURL3: {
 					elem: "input",
 					type: "textarea",
 					label: "Image URL",
-					"default": "../assets/images/promo_default_right.jpg"
+					"default": "../assets/images/promo_default_right_rfa.jpg"
 				},
 				linkURL3: {
 					elem: "input",
 					type: "textarea",
 					label: "Link URL",
-					"default": "http://www.innovation-series.com/2013/10/25/kettlecorn-a-journalists-tool-for-enhancing-interactive-audio-and-video-stories/"
+					"default": "http://www.rfa.org/english/news/special/thewaterproject/home.html"
 				},
 				pauseOnStart: {
 					elem: "input",

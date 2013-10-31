@@ -47,19 +47,20 @@
 		          hidden:true
 		        }, 
 		      
-		        includeLogo: {
-					elem:"input",
-					type:"checkbox",
-					label:"Include Entity Logo",
-					default:true	//a default value of anything other than the empty string will make it checked
-				},
-				
 				linkUrl: {
 					elem:"input",
 					type:"text",
 					label:"Link URL",
 					default:"notYetSet_linkUrl"
 				},
+
+		        includeLogo: {
+					elem:"input",
+					type:"checkbox",
+					label:"Show logo",
+					default:true	//a default value of anything other than the empty string will make it checked
+				},
+				
 				zindex: {
 		          hidden: true
 		        }

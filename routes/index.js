@@ -131,6 +131,7 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
       projectJSON.iframeUrl = utils.generateIframeUrl( doc.id );
       projectJSON.sharePublic = doc.sharePublic;
       projectJSON.remixedFrom = doc.remixedFrom;
+      projectJSON.thumbnail=doc.thumbnail; 
       res.json( projectJSON );
     });
   });

@@ -16,12 +16,12 @@
 			options:{
 				start: {
 					elem: "input",
-					type: "number",
+					type: "text",
 					label: "Start"
 				},
 				end: {
 					elem: "input",
-					type: "number",
+					type: "text",
 					label: "End"
 				},
 				label: {

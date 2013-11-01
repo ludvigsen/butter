@@ -10,7 +10,7 @@ html(lang='en')
     // This is the embed, the [[actual]] content is at the following URL
     link(rel='canonical', href='#{embedShellSrc}')
     if !description
-      description = 'Created with Popcorn Maker - part of the Mozilla Webmaker initiative'
+      description = 'Created with KettleCorn - the BBG fork of Mozilla Popcorn Maker, tailored to the needs of international journalists'
     meta(property='og:description', content='#{description}')
     meta(property='og:title', content='#{title}')
     meta(property='og:type', content='video.other')
@@ -34,7 +34,7 @@ html(lang='en')
           a.embed-logo
           .embed-project
             div
-              .mozpopcorn Popcorn Maker
+              .mozpopcorn KettleCorn
               .embed-title #{title}
               .embed-author #{author}
             .post-roll-description
@@ -58,7 +58,7 @@ html(lang='en')
           a.embed-logo
           .embed-project
             div
-              .mozpopcorn Popcorn Maker
+              .mozpopcorn KettleCorn
               .embed-title #{title}
               .embed-author #{author}
           #share-options.share-options
@@ -97,7 +97,7 @@ html(lang='en')
         span.attribution-text Credits
       #attribution-details.attribution-details
         span.attribution-close
-        div.attribution-mopop mozilla Popcorn
+        div.attribution-mopop KettleCorn
         div.attribution-title #{title}
         if author
           div.attribution-author #{author}

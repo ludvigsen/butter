@@ -106,7 +106,7 @@ define( [ "util/lang", "text!./webmakernav.html" ],
     container.appendChild( root );
     userMenuSetup();
 
-    feedbackBtn.addEventListener( "click", feedbackCallback, false );
+    //feedbackBtn.addEventListener( "click", feedbackCallback, false );
     loginBtn.addEventListener( "click", onLogin, false );
     logoutBtn.addEventListener( "click", onLogout, false );
     profileBtn.addEventListener("click",onProfile,false);

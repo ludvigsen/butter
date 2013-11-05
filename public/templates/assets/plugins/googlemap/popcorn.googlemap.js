@@ -196,8 +196,13 @@ var googleCallback;
 		o.showPin=(showPin.toLowerCase()=="true");
 		
 		i1=str.indexOf("pinlabel:")+9;
-		o.pinicon=trimString(str.substring(i1))
+		i2=str.indexOf(", isrtl", i1);
+		o.pinicon=trimString(str.substring(i1,i2))
 		
+		i1=str.indexOf("isrtl:")+6;
+		o.isRTL=trimString(str.substring(i1))
+		
+
 
 		return o;
 	}
@@ -401,11 +406,12 @@ var googleCallback;
 					}					
 					
 					if (!ev.showPin) {
-						console.log("hide pin " + i);
+						//console.log("hide pin " + i);
 						aMarker.setMap(null);
 					} else {
 						aMarker.setMap(map);	
-					}				
+					}		
+					//console.log("isRTL IS " + aMarker.isRTL);		
 					
 					markersFromSpreadsheet.push(aMarker);
 					aMarker.markerNum=i;

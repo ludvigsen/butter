@@ -253,14 +253,18 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
 	filter.isLoggedIn, filter.isStorageAvailable,
 	function (req, res) {
 	  var pd = req.body;
-	  Profile.update({email: req.session.email, language_id: pd.language_id, organization_id: pd.organization_id, translationType:pd.translationType}, function(err,doc) {
-		  /*
+	 
+
+    Profile.update({email: req.session.email, language_id: pd.language_id, organization_id: pd.organization_id, translationType:pd.translationType}, function(err,doc) {
+		 
+      /*
       console.log("here we go");
       console.log("language_id " + pd.language_id);
       console.log("organization_id " + pd.organization_id);
       console.log("translationType " + pd.translationType);
       console.log("email " + req.session.email);
       */
+     
       if (err) {
 			  res.json({error: err}, 500);
 			  metrics.increment('error.profilesave');

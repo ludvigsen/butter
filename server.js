@@ -260,7 +260,6 @@ app.post( '/api/publish/:id',
         	//be located inside of our split
         	if (plugins[ i ].path) {
 	        	externalAssetURL = utils.pathToURL( APP_HOSTNAME + '/' + plugins[ i ].path.split( '{{baseDir}}' ).pop() );
-	        	console.log("Path is " + plugins[ i ].path);
 	        	externalAssetsString += '\n  <script src="' + externalAssetURL + '"></script>';
         	}
         }

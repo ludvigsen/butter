@@ -159,8 +159,6 @@
 				}
  
 				function runTranslator() {
-					console.log("RUNNING TRANSLATOR");
-
 					//var translateURL="http://oddi.bbg.gov/translation/index.php";
 					var translateURL="/translatePhrase";
 
@@ -214,7 +212,6 @@
 						//var __csrfToken = document.querySelector("meta[name=X-CSRF-Token]").content;
 						$.get("/api/whoami", function( response ) {
 							__csrfToken = response.csrf;
-							console.log("I AM " + __csrfToken);
 							$.ajax({
 								type: "POST",
 								url: translateURL,

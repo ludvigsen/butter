@@ -129,9 +129,6 @@
 			}
 
 			function runTranslator() {
-				console.log("RUNNING TRANSLATOR");
-
-				//var translateURL="http://oddi.bbg.gov/translation/index.php";
 				var translateURL="/translatePhrase";
 				
 				var currentInstance=0;
@@ -146,7 +143,6 @@
 
 				//ckinstance.destroy(); 
 				//TODO: REMOVE THE TOOLTIP
-				console.log("BASIC CONTAINER");
 				basicContainer.insertBefore(preloaderContainer, basicContainer.firstChild);
 				preloaderContainer.style.display="";
 
@@ -186,7 +182,6 @@
 					//var __csrfToken = document.querySelector("meta[name=X-CSRF-Token]").content;
 					$.get("/api/whoami", function( response ) {
 						__csrfToken = response.csrf;
-						console.log("I AM " + __csrfToken);
 						$.ajax({
 							type: "POST",
 							url: translateURL,

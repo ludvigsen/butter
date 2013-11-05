@@ -23,14 +23,13 @@ define(["text!./languages.json", "text!./organizations.json", "text!./translatio
 						var org;
 						if (value != _email) {
 							_email = value;
-							/*
 							org = _this.getOrganizationForEmail(_email);
 							if (org != null) {
 								_organization_id = org.id;
 							} else {
-								_organization_id = null;
+								//_organization_id = null;
+								_organization_id = "";
 							}
-							*/
 						}
 					},
 					enumerable: true
@@ -40,23 +39,28 @@ define(["text!./languages.json", "text!./organizations.json", "text!./translatio
 						return _language_id;
 					},
 					set: function (value) {
-						if (value != _language_id) {
-							var i, num = _languages.length;
-							for (i = 0; i < num; i++) {
-								var language = _languages[i];
-								if (language.id === value) {
-									_language_id = value;
-									invalidate();
-									return;
+						if (value != _language_id) {	
+							if (value == "") { 	//we allow the  empty string for initial account creation
+								_language_id = "";
+								invalidate();
+							} else {
+								var i, num = _languages.length;
+								for (i = 0; i < num; i++) {
+									var language = _languages[i];
+									if (language.id === value) {
+										_language_id = value;
+										invalidate();
+										return;
+									}
 								}
 							}
 						}
+						
 					},
 					enumerable: true
 				},
 				"organization_id": {
 					get: function () {
-						
 						var org = _this.getOrganizationForEmail(_email);
 						if (org != null) {
 							_organization_id = org.id;
@@ -96,10 +100,8 @@ define(["text!./languages.json", "text!./organizations.json", "text!./translatio
 				if (!callback) {
 					callback = function () {};
 				}
-
 				// Don't save if there is nothing new to save.
 				if (!_isDirty) {
-					// console.log("nothing to save in account.js");
 					callback({
 						error: "okay"
 					});
@@ -112,7 +114,6 @@ define(["text!./languages.json", "text!./organizations.json", "text!./translatio
 					organization_id: _organization_id,
 					translationType: _translationType
 				};
-				
 				// Save to db, then publish
 				kettleCornField.saveAccount(accountData, function (e) {
 					if (e.error === "okay") {
@@ -132,9 +133,7 @@ define(["text!./languages.json", "text!./organizations.json", "text!./translatio
 					domain = split[1];
 					for (i = 0; i < num; i++) {
 						var org = _organizations[i];
-						//console.log("getOrganizationForEmail ? " + org.domain)
 						if (org.domain == domain) {
-							//console.log("getOrganizationForEmail -> " + org.domain)
 							return org;
 						}
 					}
@@ -152,8 +151,6 @@ define(["text!./languages.json", "text!./organizations.json", "text!./translatio
 					_this.language_id = kettleCornField.language_id();
 					_this.translationType = kettleCornField.translationType();
 					_this.organization_id = kettleCornField.organization_id();
-					console.log("getProfile returned " + _this.organization_id);
-					
 					if (callback && typeof callback === "function") {
 						callback();
 					}

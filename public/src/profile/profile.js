@@ -28,21 +28,19 @@ define(["util/lang",
 	        _templatesByOrganization = JSON.parse(TEMPLATES),
 	        _templates,
 	        _account = new Account(_cornfield);
-	    
+	        
+	    _signInElement.innerHTML="Sign in with Persona";
+
 	    _signInElement.addEventListener("click",function(e) {
 	    	authenticationRequired();
 	    })
 	    
 	    this.views = {
 	    	login: function(username) {
-	    		//_webmakerNav.views.login(username);
-	    		//_instructionsElement.style.display = "none";
+	    		
 	    	},
 	    	logout: function() {
-	    		//_webmakerNav.views.logout();
-	    		//_instructionsElement.style.display = "";
-		    	hideUserProfile();
-		    	hideTemplateList();
+	    		
 	    	}
 	    }
 	    
@@ -79,13 +77,7 @@ define(["util/lang",
 	        });
 	      };
 	    
-	    /*** User Account and Template List Information ***/
 	    function showUserLoggedIn() {
-	    	window.location="/templates/journalist/";
-
-	    	/*
-	    	_this.views.login( _cornfield.username() );
-	    	// check to see if the user has a profile in the system
 	    	_cornfield.getProfile(function(errorResponse) {
 	    		if (errorResponse) {
 	    			dialog = Dialog.spawn( "error-message", {
@@ -94,18 +86,55 @@ define(["util/lang",
 	    			dialog.open();
 	    			return;
 	    		}
-	    		_account.email = _cornfield.email();
 	    		if (_cornfield.hasProfile()) {
-	    			_account.language_id = _cornfield.language_id();
-	    			hideUserProfile();
+	    			_signInElement.innerHTML="Signed in! Redirecting!";
+	    			window.location="/templates/journalist/";
 	    		} else {
-	    			showUserProfile();
+	    			_account.translationType="bing";
+	    			_account.email = _cornfield.email();	//this automatically sets the org
+	    			_account.language_id = "";
+	    			_account.save(function() {
+	    				_signInElement.innerHTML="Signed in! Redirecting!";
+	    				window.location="/templates/journalist/";
+	    			});
 	    		}
-	    		showTemplateList();
-	    	})
-			*/
+	    		
+	    	});
 	    }
 	    
+	    // start in a logged out state as the default view
+	    this.views.logout();
+	    
+	    // try to autologin
+	    
+	    _cornfield.autologin(function() {
+	    	if (_cornfield.authenticated()) {
+	    		window.location="/templates/journalist/";
+	    		//_this.views.login(_cornfield.username());
+	    		//showUserLoggedIn();
+	    	}
+	    });
+		
+	    
+	}
+	
+	return ProfilePage;
+});
+
+ /*
+
+
+		function hideTemplateList() {
+	    	_templateListHolderElement.style.display = "none";
+	    	_templateListHolderElement.innerHTML = '';
+	    }
+	     function hideUserProfile() {
+	    	//if user profile already created, we don't show it
+	    	_profileHolderElement.style.display = "none";
+	    	_profileHolderElement.innerHTML = '';
+	    }
+
+
 	    function showUserProfile() {
 	    	//this function is called to display a user profile form for data entry if the user profile has NOT been created
 	    	var organization, language, langOption, langInput, langLabel, organizationElement, languagesList,i,num,org,languages;
@@ -137,14 +166,8 @@ define(["util/lang",
 	    	_profileHolderElement.style.display = "";
 	    	
 	    }
-	    
-	    function hideUserProfile() {
-	    	//if user profile already created, we don't show it
-	    	_profileHolderElement.style.display = "none";
-	    	_profileHolderElement.innerHTML = '';
-	    }
 
-	    function showTemplateList() {
+function showTemplateList() {
     		var organizationId = _account.organization_id;
     		var gettingStartedElement, templateElement, templateListElement, template, i, num, templateOption, templateImage;
     		
@@ -186,24 +209,5 @@ define(["util/lang",
     		_templateListHolderElement.appendChild(gettingStartedElement);
 	    	_templateListHolderElement.style.display = '';
 	    }
-	    
-	    function hideTemplateList() {
-	    	_templateListHolderElement.style.display = "none";
-	    	_templateListHolderElement.innerHTML = '';
-	    }
-	    
-	    // start in a logged out state as the default view
-	    this.views.logout();
-	    
-	    // try to autologin
-	    _cornfield.autologin(function() {
-	    	if (_cornfield.authenticated()) {
-	    		_this.views.login(_cornfield.username());
-	    		showUserLoggedIn();
-	    	}
-	    });
-	    
-	}
-	
-	return ProfilePage;
-});
+
+	    */

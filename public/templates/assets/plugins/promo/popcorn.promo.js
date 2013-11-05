@@ -88,7 +88,7 @@
 				pauseOnStart: {
 					elem: "input",
 					type: "checkbox",
-					label: "Pause Play When Plugin Starts",
+					label: "Pause when plugin starts",
 					group:"advanced",
 					"default": true,
 					optional: true
@@ -218,7 +218,7 @@
 				htmlStr+="<td></td>";
 				htmlStr+="<td><a target='_blank' class='promoLink' href='"+linkURL1 + "'><img src='"+imageURL1+"' width='100%'></a></td>";
 				htmlStr+="<td><a target='_blank' class='promoLink' href='"+linkURL2 + "'><img src='"+imageURL2+"' width='100%' ></a></td>";
-				htmlStr+="<td><a target='_blank' class='promoLink' href='"+linkURL2 + "'><img src='"+imageURL3+"' width='100%'></a></td>";
+				htmlStr+="<td><a target='_blank' class='promoLink' href='"+linkURL3 + "'><img src='"+imageURL3+"' width='100%'></a></td>";
 				htmlStr+="<td></td>";
 				htmlStr+="</tr>";
 				htmlStr+="<tr>";

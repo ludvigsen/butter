@@ -82,13 +82,25 @@ var googleCallback;
 		return map;
 	}	//end buildMap
 
-	function formatInfoWindowString (title,description) {
+	function formatInfoWindowString (title,description, isRTL) {
 		var contentString = "";
+		
 		if (title != "" || description != "") {
-			contentString = '<div id="mapInfoWindow">'+
-						'<p class="gmap_infoWindowTitle">' + title + '</p>'+
-						'<p class="gmap_infoWindowDesc">' + description+ '</p>'+
-						'</div>';
+			var rtlClass="";
+
+			if (!isRTL) {
+			
+				contentString = '<div id="mapInfoWindow">'+
+							'<p class="gmap_infoWindowTitle">' + title + '</p>'+
+							'<p class="gmap_infoWindowDesc">' + description+ '</p>'+
+							'</div>';
+			} else {
+				//console.log("we have an rtl string for title " + title);
+				contentString = '<div id="mapInfoWindow mapRTL">'+
+							'<p class="gmap_infoWindowTitle mapRTL">' + title + '</p>'+
+							'<p class="gmap_infoWindowDesc mapRTL">' + description+ '</p>'+
+							'</div>';
+			}
 		}
 		return contentString;
 	}
@@ -98,7 +110,7 @@ var googleCallback;
 		var params = {}, queries, temp, i, l;
 
 		var fullUrlObj=fullUrl.split("?");
-		console.log("parseQueryString with " + fullUrl);
+		//console.log("parseQueryString with " + fullUrl);
 		
 		if (fullUrlObj.length < 2) {
 			return params;
@@ -143,7 +155,7 @@ var googleCallback;
 
 		//the format returned from google's jsonp is TERRIBLE.  as a result we do some really ugly parsing
 		//I originally had a more elegant solution but when values contain the delimiters (comma or semicolon) it wasn't working
-		console.log("PSL " + str);
+		//console.log("PSL " + str);
 
 		var props=str.split(",");
 		var newstr="";
@@ -200,7 +212,8 @@ var googleCallback;
 		o.pinicon=trimString(str.substring(i1,i2))
 		
 		i1=str.indexOf("isrtl:")+6;
-		o.isRTL=trimString(str.substring(i1))
+		var isRTL=trimString(str.substring(i1));
+		o.isRTL=(isRTL.toLowerCase()=="true");
 		
 
 
@@ -442,7 +455,7 @@ var googleCallback;
 					}
 					//https://docs.google.com/spreadsheet/ccc?key=0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c&usp=drive_web#gid=0
 					var loc = "https://spreadsheets.google.com/feeds/list/" + keyVal + "/od6/public/values?alt=json-in-script&callback=jsonp";
-					console.log("request spreadsheet from " + loc);
+					//console.log("request spreadsheet from " + loc);
 					
 					loadSpreadsheet(loc,function(lsData) {
 						mapDataFromSpreadsheet=lsData;
@@ -454,7 +467,7 @@ var googleCallback;
 				lastFrameTime=-1;
 				lastPinNum=-1;
 				duration = options.end - options.start;
-				console.log("gMap setup");
+				//console.log("gMap setup");
 				if (!target) {
 					target = that.media.parentNode;
 				}
@@ -511,7 +524,7 @@ var googleCallback;
 			 * options variable
 			 */
 			start: function (event, options) {
-				console.log("gMap start");
+				//console.log("gMap start");
 				var that = this,
 					sView,
 					redrawBug,
@@ -601,14 +614,11 @@ var googleCallback;
 
 						//we use the same infowindow the entire time, regardless of whether we're in spreadsheet mode or pin mode
 						infowindow = new google.maps.InfoWindow({
-							content: formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc),
+							content: formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc,false),
 							maxWidth:283
 						});
 
-						console.log("do we create the pin")
-						console.log("options.spreadsheetKey is " + options.spreadsheetKey + " pinMode is " + pinMode)
 						if (pinMode) {						
-							console.log("creating pin")
 							marker = new google.maps.Marker({
 								position: location,
 								title: 'MARKERTITLE',
@@ -731,14 +741,14 @@ var googleCallback;
 							if (currentPin != -1) {
 								var thisPin=mapDataFromSpreadsheet[currentPin-1];
 								if (thisPin && google) {
-									console.log("GOTO PIN " + currentPin + " lat=" + thisPin.lat + " lng=" + thisPin.lng + " zoom=" + thisPin.zoom + " title " + thisPin.title);
+									//console.log("GOTO PIN " + currentPin + " lat=" + thisPin.lat + " lng=" + thisPin.lng + " zoom=" + thisPin.zoom + " title " + thisPin.title);
 									var newLocation=new google.maps.LatLng(thisPin.lat, thisPin.lng);
 									//this is coming up NULL at times...why?
 									map.panTo(newLocation);
 									map.setZoom(parseInt(thisPin.zoom));
 									if (thisPin.openWindow) {
 										infowindow.setPosition(newLocation);
-										infowindow.setContent(formatInfoWindowString(thisPin.title,thisPin.description)); 
+										infowindow.setContent(formatInfoWindowString(thisPin.title,thisPin.description,thisPin.isRTL)); 
 										
 										if (infowindow.getContent() != "") {
 											infowindow.open(map,markersFromSpreadsheet[currentPin-1]);
@@ -772,14 +782,14 @@ var googleCallback;
 
 			end: function () {
 				// if the map exists hide it do not delete the map just in // case the user seeks back to time b/w start and end
-				console.log("gMap end");
+				//console.log("gMap end");
 				if (map) {
 					outerdiv.classList.remove("on");
 					outerdiv.classList.add("off");
 				}
 			},
 			_teardown: function (options) {
-				console.log("gMap _teardown");
+				//console.log("gMap _teardown");
 				// the map must be manually removed
 				options._target.removeChild(outerdiv);
 				innerdiv = map = location = null;
@@ -788,7 +798,7 @@ var googleCallback;
 			_update: function (trackEvent, options) {
 				//update fires when you change a value in the editor pane
 				//NOTE: Options in THIS function only contains properties that have CHANGED
-				console.log("the update function in google map plugin is firing");
+				//console.log("the update function in google map plugin is firing");
 				var updateLocation = false,
 					map = trackEvent._map,
 					triggerResize = false,
@@ -814,7 +824,7 @@ var googleCallback;
 						iDesc=options.infoWindowDesc;
 						trackEvent.infoWindowDesc=options.infoWindowDesc;
 					}
-					infowindow.setContent(formatInfoWindowString(iTitle,iDesc)); 
+					infowindow.setContent(formatInfoWindowString(iTitle,iDesc,"false")); 
 				}
 
 				//if they toggled either the checkbox, show or hide the bubble
@@ -847,7 +857,7 @@ var googleCallback;
 							keyVal="";
 						}
 						var loc = "https://spreadsheets.google.com/feeds/list/" + keyVal + "/od6/public/values?alt=json-in-script&callback=jsonp";
-						console.log("request spreadsheet from " + loc);
+						//console.log("request spreadsheet from " + loc);
 					
 
 						loadSpreadsheet(loc,function(lsData) {

@@ -93,7 +93,7 @@ var googleCallback;
 							'<p class="gmap_infoWindowTitle" mapLTR>' + title + '</p>'+
 							'<p class="gmap_infoWindowDesc" mapLTR>' + description+ '</p>'+
 							'</div>';
-			} else {
+			} else { 
 				
 
 				//console.log("we have an rtl string for title " + title);

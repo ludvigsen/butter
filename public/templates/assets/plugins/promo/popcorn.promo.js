@@ -93,11 +93,17 @@
 					"default": true,
 					optional: true
 				},
-				
+				isRTL: {
+					elem: "input",
+					type: "checkbox",
+					label: "Right to Left Text",
+					group:"advanced",
+					"default": false,
+					optional: true
+				},				
 				zindex: {
 		          hidden: true
 		        }
-
 			} //end options
 		}, //end manifest
 
@@ -184,16 +190,7 @@
 				var htmlStr="";
 				var titleStr="theTitle"
 				var descStr="theDesc";
-				
-				/*
-				var linkStr="<a id='promoLink' href='"+linkURL+"'>"+linkTitle+"</a>";
-				htmlStr+="<div id='promoBackground'>";
-				htmlStr+="<div id='promoTitle'>" + titleStr  + "</div>";
-				htmlStr+="<div id='promoDescription'>" + descStr + "</div><hr id='promoHR' />";
-				htmlStr+=linkStr;
-				htmlStr+="</div>"; //end lowerThirdBG
-				*/
-				
+								
 				var promoLabel=newlineToBreak(options.label);
 				
 				var headline1=newlineToBreak(options.headline1);
@@ -207,11 +204,16 @@
 				var headline3=newlineToBreak(options.headline3);
 				var imageURL3=newlineToBreak(options.imageURL3);
 				var linkURL3=newlineToBreak(options.linkURL3);
+
+				var directionClass="LTR";
+				if (options.isRTL) {
+					directionClass="RTL"
+				}
 				
 				htmlStr+="<table  id='promoTable' width='100%' cellpadding='10'>";
 				htmlStr+="<tr>";
 				htmlStr+="<td></td>";
-				htmlStr+="<td colspan='3' class='promoLabel'>" + promoLabel + "</td>";
+				htmlStr+="<td colspan='3' class='promoLabel " + directionClass + "'>" + promoLabel + "</td>";
 				htmlStr+="<td></td>";
 				htmlStr+="</tr>";
 				htmlStr+="<tr>";
@@ -223,9 +225,9 @@
 				htmlStr+="</tr>";
 				htmlStr+="<tr>";
 				htmlStr+="<td width='6.5%'></td>";
-				htmlStr+="<td width='29%'><a target='_blank' class='promoLink' href='"+linkURL1 + "'>"+headline1+"</a></td>";
-				htmlStr+="<td width='29%'><a target='_blank' class='promoLink' href='"+linkURL2 + "'>"+headline2+"</a></td>";
-				htmlStr+="<td width='29%'><a target='_blank' class='promoLink' href='"+linkURL3 + "'>"+headline3+"</a></td>";
+				htmlStr+="<td width='29%' class=' " + directionClass + "'><a target='_blank' class='promoLink' href='"+linkURL1 + "'>"+headline1+"</a></td>";
+				htmlStr+="<td width='29%' class=' " + directionClass + "'><a target='_blank' class='promoLink' href='"+linkURL2 + "'>"+headline2+"</a></td>";
+				htmlStr+="<td width='29%' class=' " + directionClass + "'><a target='_blank' class='promoLink' href='"+linkURL3 + "'>"+headline3+"</a></td>";
 				htmlStr+="<td width='6.5%'></td>";
 				htmlStr+="</tr>";
 				htmlStr+="</table>";

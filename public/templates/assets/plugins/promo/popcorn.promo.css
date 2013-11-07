@@ -26,3 +26,12 @@
 }
 
 
+.RTL {
+	text-align: right;
+	direction: rtl;
+
+}
+.LTR {
+	text-align: left;
+	direction: ltr;
+}

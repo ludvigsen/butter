@@ -211,7 +211,7 @@ var googleCallback;
 		i2=str.indexOf(", isrtl", i1);
 		o.pinicon=trimString(str.substring(i1,i2))
 		
-		i1=str.indexOf("isrtl:")+6;
+		i1=str.indexOf("righttolefttext:")+16;
 		var isRTL=trimString(str.substring(i1));
 		o.isRTL=(isRTL.toLowerCase()=="true");
 		

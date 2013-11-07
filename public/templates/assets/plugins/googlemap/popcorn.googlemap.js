@@ -208,7 +208,7 @@ var googleCallback;
 		o.showPin=(showPin.toLowerCase()=="true");
 		
 		i1=str.indexOf("pinlabel:")+9;
-		i2=str.indexOf(", isrtl", i1);
+		i2=str.indexOf(", righttolefttext", i1);
 		o.pinicon=trimString(str.substring(i1,i2))
 		
 		i1=str.indexOf("righttolefttext:")+16;

@@ -60,6 +60,14 @@
 					label:"Show logo",
 					default:true	//a default value of anything other than the empty string will make it checked
 				},
+				isRTL: {
+					elem: "input",
+					type: "checkbox",
+					label: "Right to Left Text",
+					group:"advanced",
+					"default": false,
+					optional: true
+				},	
 				
 				zindex: {
 		          hidden: true
@@ -143,7 +151,7 @@
 				var htmlStr="";
 				var titleStr=options.title;
 				var descStr=options.description;
-				var linkStr="<a id='lowerThirdLink' href='"+linkUrl+"'>"+linkTitle+"</a>";
+				var linkStr="<div id='lowerThirdLinkDiv'><a id='lowerThirdLink' href='"+linkUrl+"'>"+linkTitle+"</a></div>";
 				
 				var imgStyle="";
 				var imgDivStr="";
@@ -156,16 +164,31 @@
 					}
 					
 				}
-				htmlStr+="<table width='100%' height='50%'><tr  height='100%'><td width='80%'>"; 
-				htmlStr+="<div id='lowerThirdGradientBG'>";
+				var directionClass="LTR";
+				if (options.isRTL) {
+					directionClass="RTL";
+				}
+				var gradientID="lowerThirdGradientBG_"+directionClass;
+
+				htmlStr+="<table width='100%' height='50%'><tr  height='100%'>"; 
 				
-				htmlStr+="<div id='lowerThirdTitle'>" + titleStr  + "</div>";
-				htmlStr+="<div id='lowerThirdDescription'>" + descStr + "</div><hr id='lowerThirdHR'>";
+				if (options.isRTL) {
+					htmlStr+="<td width='20%' height='100%'>"+imgDivStr+"</td>";
+				}
+				//SHOW THE CONTENT
+				htmlStr+="<td width='80%'>";
+				htmlStr+="<div class='"+directionClass+"' id='"+ gradientID + "'>";
+				htmlStr+="<div class='"+directionClass+"' id='lowerThirdTitle'>" + titleStr  + "</div>";
+				htmlStr+="<div class='"+directionClass+"' id='lowerThirdDescription'>" + descStr + "</div><hr id='lowerThirdHR'>";
 				htmlStr+=linkStr; 
+				htmlStr+="</td>";
+
+				if (!options.isRTL) {
+					htmlStr+="<td width='20%' height='100%'>"+imgDivStr+"</td>";
+				}
+
 				htmlStr+="</div>"; //end lowerThirdGradientBG
-				htmlStr+="</td><td width='20%' height='100%'>"+imgDivStr+"</td></tr></table>";
-				//htmlStr+=imgDivStr;
-								
+				htmlStr+="</tr></table>";
 				options._container.innerHTML=htmlStr;
 			}
 		},	//end 'start' func

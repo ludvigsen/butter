@@ -6,9 +6,13 @@ We have a robust backlog of features, plugins and fixes we'd like to build into 
 
 **Transcripts/subtitles plugin:** Enable the creator to import a 'transcript' with timecodes that automatically styles and positions the text as a subtitle. We're primarily thinking about importing a google spreadsheet with timecodes. Secondarily, we'd like to support importing an actual transcript text file. Users should be able to set the subtitles positioning (top/bottom) and style (white on black or black text on white) from the plugin menu. 
 
-**Support audio-based projects on iOS:** Currently the events fire at the appropriate times but there's no audio playing.
+**Audio keyframes plugin:** Enable creators to change volume for individual media sources over time. The suggested/requested use case here is to enable creators to quickly dub/sub translation audio.
 
-**Audio keyframes:** Enable creators to change volume for individual media sources over time. The suggested/requested use case here is to enable creators to quickly dub/sub translation audio.
+**Drawing plugin:** Enable creators to add and style simple canvas-based (or SVG) shapes and drawings to a project. Draw an oval/circle, rectangle/square, lines and freeform shape; and set the line weight, line color and fill.
+
+**Data viz plugin:** Enable creators to import data and select the output (pie, bar, line etc). Potentially the ability to synchronize the graphic with the video (highlights/selection)?
+
+**Support audio-based projects on iOS:** Currently the events fire at the appropriate times but there's no audio playing.
 
 **Incorporate analytics:** Track usage of the KettleCorn editor, projects, plugins, and the evolution of projects through remixing.
 

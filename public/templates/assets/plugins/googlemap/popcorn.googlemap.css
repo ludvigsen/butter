@@ -13,6 +13,11 @@
 	margin-bottom:1%;
 }
 
+.mapLTR {
+	direction:ltr;
+	text-align: left;
+}
+
 .mapRTL {
 	direction:rtl;
 	text-align: right;

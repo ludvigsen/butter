@@ -83,18 +83,19 @@ var googleCallback;
 	}	//end buildMap
 
 	function formatInfoWindowString (title,description, isRTL) {
-		var contentString = "";
 		
+		var contentString = "";
 		if (title != "" || description != "") {
 			var rtlClass="";
-
 			if (!isRTL) {
-			
-				contentString = '<div id="mapInfoWindow">'+
-							'<p class="gmap_infoWindowTitle">' + title + '</p>'+
-							'<p class="gmap_infoWindowDesc">' + description+ '</p>'+
+				
+				contentString = '<div id="mapInfoWindow" mapLTR>'+
+							'<p class="gmap_infoWindowTitle" mapLTR>' + title + '</p>'+
+							'<p class="gmap_infoWindowDesc" mapLTR>' + description+ '</p>'+
 							'</div>';
 			} else {
+				
+
 				//console.log("we have an rtl string for title " + title);
 				contentString = '<div id="mapInfoWindow mapRTL">'+
 							'<p class="gmap_infoWindowTitle mapRTL">' + title + '</p>'+
@@ -614,9 +615,15 @@ var googleCallback;
 
 						//we use the same infowindow the entire time, regardless of whether we're in spreadsheet mode or pin mode
 						infowindow = new google.maps.InfoWindow({
-							content: formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc,false),
+							content: "",
 							maxWidth:283
 						});
+
+						google.maps.event.addListener(infowindow, 'domready', function() {
+							console.log("infowindow load");
+						});
+
+						infowindow.setContent(formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc,false))
 
 						if (pinMode) {						
 							marker = new google.maps.Marker({
@@ -824,7 +831,7 @@ var googleCallback;
 						iDesc=options.infoWindowDesc;
 						trackEvent.infoWindowDesc=options.infoWindowDesc;
 					}
-					infowindow.setContent(formatInfoWindowString(iTitle,iDesc,"false")); 
+					infowindow.setContent(formatInfoWindowString(iTitle,iDesc,false)); 
 				}
 
 				//if they toggled either the checkbox, show or hide the bubble

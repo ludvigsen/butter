@@ -537,7 +537,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
         //ADDED BY jflowers@bbg: there is no checkbox handling here so we're adding it
         if ( element.type === "checkbox") {
           element.addEventListener( "click", function( e ) {
-            console.log("in trackevent-editor.js checkbox click");
+           // console.log("in trackevent-editor.js checkbox click");
             var updateOptions = {};
             updateOptions[propertyName]=(element.checked) ? true : false;
             updateTrackEvent( trackEvent, callback, updateOptions );

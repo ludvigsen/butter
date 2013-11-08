@@ -217,6 +217,26 @@
             trackEvent.update( updateOptions );
           }, false );
         }
+        function attachInfoWindowRTLHander( option ) {
+          option.element.addEventListener( "click", function( e ) {
+            var srcElement = e.target,
+                updateOptions = {},
+                popcornOptions = _trackEvent.popcornOptions;
+
+            if ( srcElement.checked ) {
+              updateOptions = {
+                infoWindowIsRTL: true
+              };
+
+            } else {
+              updateOptions = {
+                infoWindowIsRTL: false
+              };
+            }
+
+            trackEvent.update( updateOptions );
+          }, false );
+        }
         
         function updateLocation( te, prop ) {
           _cachedValues.location = prop.location;
@@ -271,7 +291,12 @@
               //console.log("attaching updateInfoWindowOpen " );
               //_this.attachInputChangeHandler( option.element, option.trackEvent, key, updateInfoWindowOpen ); 
               attachInfoWindowHandler(option);
-            } else if ( option.elementType === "input" ) {
+            } else if ( key === "infoWindowIsRTL" ) {
+              //console.log("attaching updateInfoWindowOpen " );
+              //_this.attachInputChangeHandler( option.element, option.trackEvent, key, updateInfoWindowOpen ); 
+              attachInfoWindowRTLHander(option);
+            }  
+            else if ( option.elementType === "input" ) {
               //note: it appears that the default change handler, which is this, doesn't
               _this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
             }

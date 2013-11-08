@@ -623,7 +623,10 @@ var googleCallback;
 							console.log("infowindow load");
 						});
 
-						infowindow.setContent(formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc,false))
+						//infoWindowIsRTL, 
+
+						console.log("options1 is " + options.infoWindowIsRTL);
+						infowindow.setContent(formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc,options.infoWindowIsRTL));
 
 						if (pinMode) {						
 							marker = new google.maps.Marker({
@@ -818,11 +821,13 @@ var googleCallback;
 				var newDesc=("infoWindowDesc" in options); 
 				var newInfoWindowOpen = ("infoWindowOpen" in options); 
 				var newSpreadskeetKey= ("spreadsheetKey" in options); 
+				var newInfoWindowIsRTL = ("infoWindowIsRTL" in options); 
 				
 				//if they toggled either the title or description, we have to redraw the bubble's contents
-				if (newTitle || newDesc) {
+				if (newTitle || newDesc || newInfoWindowIsRTL) {
 					var iTitle=trackEvent.infoWindowTitle;
 					var iDesc=trackEvent.infoWindowDesc;
+					var iInfoWindowIsRTL=trackEvent.infoWindowIsRTL;
 					if (newTitle) {
 						iTitle=options.infoWindowTitle;
 						trackEvent.infoWindowTitle=options.infoWindowTitle;	
@@ -831,7 +836,13 @@ var googleCallback;
 						iDesc=options.infoWindowDesc;
 						trackEvent.infoWindowDesc=options.infoWindowDesc;
 					}
-					infowindow.setContent(formatInfoWindowString(iTitle,iDesc,false)); 
+					if (newInfoWindowIsRTL) {
+						iInfoWindowIsRTL=options.infoWindowIsRTL;
+						trackEvent.infoWindowIsRTL=options.infoWindowIsRTL;
+					}
+					//console.log("options2 is " + iInfoWindowIsRTL);
+					
+					infowindow.setContent(formatInfoWindowString(iTitle,iDesc,iInfoWindowIsRTL)); 
 				}
 
 				//if they toggled either the checkbox, show or hide the bubble
@@ -1160,6 +1171,7 @@ var googleCallback;
 				"default":""
 				//,tooltip: "0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c"
 			},
+
 			infoWindowTitle: {
 				elem: "input",
 				type:"text",
@@ -1178,6 +1190,14 @@ var googleCallback;
 				elem: "input",
 				type: "checkbox",
 				label: "Open Pin Window by Default",
+				group:"advanced",
+				"default": false,
+				optional: true
+			},
+			infoWindowIsRTL: {
+				elem: "input",
+				type: "checkbox",
+				label: "Right to Left Text",
 				group:"advanced",
 				"default": false,
 				optional: true

@@ -619,13 +619,9 @@ var googleCallback;
 							maxWidth:283
 						});
 
-						google.maps.event.addListener(infowindow, 'domready', function() {
-							console.log("infowindow load");
-						});
-
+						
 						//infoWindowIsRTL, 
 
-						console.log("options1 is " + options.infoWindowIsRTL);
 						infowindow.setContent(formatInfoWindowString(options.infoWindowTitle,options.infoWindowDesc,options.infoWindowIsRTL));
 
 						if (pinMode) {						

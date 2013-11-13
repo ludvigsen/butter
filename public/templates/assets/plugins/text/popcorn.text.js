@@ -169,6 +169,20 @@
 					},
 					group: "advanced"
 				},
+				jumpTime: {
+		          elem: "input",
+		          label: "Jump to Time on Click", 
+		          "default": "",
+		          group: "advanced"
+		        },
+		        pauseOnStart: {
+					elem: "input",
+					type: "checkbox",
+					label: "Pause when plugin starts",
+					group:"advanced",
+					"default": false,
+					optional: true
+				},
 				zindex: {
 					hidden: true
 				}
@@ -191,7 +205,8 @@
 				linkUrl = options.linkUrl,
 				shadowColor = options.shadowColor || DEFAULT_SHADOW_COLOR,
 				backgroundColor = options.backgroundColor || DEFAULT_BACKGROUND_COLOR,
-				context = this;
+				context = this,
+				that=this;
 
 			if (!target) {
 				target = this.media.parentNode;
@@ -213,6 +228,21 @@
 			innerContainer.appendChild(innerSpan);
 			container.appendChild(innerContainer);
 			target.appendChild(container);
+
+			if (options.jumpTime) {
+		    	innerContainer.style.cursor="pointer";	
+		    }
+
+		     innerDiv.onclick =  function(evt) {
+					console.log("innerDivClick!");
+					if (options.jumpTime) {
+						//console.log("popup click!!");
+						var newtime=parseInt(options.jumpTime);
+						console.log("send it to time " + newtime); 
+						that.currentTime(parseInt(newtime));
+						that.play();
+					}
+				};
 
 			// Add transition class
 			// There is a special case where popup has to be added to the innerDiv, not the outer container.
@@ -296,6 +326,10 @@
 		start: function (event, options) {
 			var transitionContainer = options._transitionContainer,
 				redrawBug;
+
+			 if (options.pauseOnStart) {
+					this.pause();	
+				} 
 
 			if (transitionContainer) {
 				transitionContainer.classList.add("on");

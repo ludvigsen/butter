@@ -10,6 +10,7 @@
       FILL_STYLE = "rgb(255, 255, 255)",
       STROKE_STYLE = "#999",
       innerDivTriangles = {},
+      textContainer,
       DEFAULT_FONT = "Tangerine";
 
   // Set up speech innerDiv triangles
@@ -198,6 +199,20 @@
           "default": 30,
           group: "advanced"
         },
+        jumpTime: {
+          elem: "input",
+          label: "Jump to Time on Click", 
+          "default": "",
+          group: "advanced"
+        },
+        pauseOnStart: {
+					elem: "input",
+					type: "checkbox",
+					label: "Pause when plugin starts",
+					group:"advanced",
+					"default": false,
+					optional: true
+				},
         transition: {
           elem: "select",
           options: [ "None", "Pop", "Fade", "Slide Up", "Slide Down" ],
@@ -250,9 +265,10 @@
 
     _setup: function( options ) {
 
-      var target = document.getElementById( options.target ),
+    	var target = document.getElementById( options.target ),
           container = document.createElement( "div" ),
           context = this,
+          that=this,
           audio,
           width = options.width + "%",
           top = options.top + "%",
@@ -261,7 +277,7 @@
           originalFamily = options.fontFamily,
           flip = options.flip ? " flip" : "",
           innerDiv = document.createElement( "div" ),
-          textContainer = document.createElement( "div" ),
+          //textContainer = document.createElement( "div" ), //moved to a plugin-wide variable so that we could maniuplate its onclick event in _update
           link = document.createElement( "a" ),
           img,
           TRIANGLE_WIDTH = 40,
@@ -390,6 +406,24 @@
       }
       textContainer.style.fontWeight = options.fontDecorations.bold ? "bold" : "normal";
 
+
+      if (options.jumpTime) {
+      	textContainer.style.cursor="pointer";	
+      }
+      
+       
+        textContainer.onclick =  function(evt) {
+					if (options.jumpTime) {
+						//console.log("popup click!!");
+						var newtime=parseInt(options.jumpTime);
+						//console.log("send it to time " + newtime); 
+						that.currentTime(parseInt(newtime));
+						that.play();
+					}
+				};
+
+			
+
       if ( linkUrl ) {
 
         if ( !linkUrl.match( /^http(|s):\/\// ) ) {
@@ -400,6 +434,7 @@
         link.href = linkUrl;
         link.target = "_blank";
         link.innerHTML = text;
+
 
         link.addEventListener( "click", function() {
           context.media.pause();
@@ -493,6 +528,10 @@
           container = options._container,
           redrawBug;
 
+        if (options.pauseOnStart) {
+					this.pause();	
+				}
+
       if ( container ) {
         container.classList.add( "on" );
         container.classList.remove( "off" );
@@ -517,6 +556,31 @@
         }
       }
     },
+    /*
+    _update:function(event,options) {
+			//this event fires when something changed in the editor pane. 'options' only has updated properties.
+			
+			var newJumpTime = ("jumpTime" in options); 
+
+			if (newJumpTime) {
+				if (options.jumpTime == "") {
+					//if we have an event listener we need to remove
+					textContainer.onclick =  null;
+					/* function(evt) {
+						console.log("popup click!!");
+						that.currentTime(options.jumpTime);
+					}; 
+				} else {
+						textContainer.onclick = function(evt) {
+							console.log("popup click!!");
+							that.currentTime(paseInt(options.jumpTime));
+						}; 
+				}
+				console.log("newJumpTime is " + options.jumpTime);
+			}
+
+		},
+		*/
 
     end: function( event, options ) {
       if ( options._container ) {

@@ -112,7 +112,8 @@
       var _target,
           _container,
           _flickrCallback,
-          _this = this;
+          _this = this,
+          that = this;
 
       options._target = _target = Popcorn.dom.find( options.target );
       options._container = _container = document.createElement( "div" );
@@ -125,6 +126,19 @@
       _container.style.zIndex = +options.zindex;
       _container.classList.add( options.transition );
       _container.classList.add( "off" );
+      
+      if (options.jumpTime) {
+        _container.style.cursor="pointer"; 
+      }
+      _container.onclick =  function(evt) {
+          if (options.jumpTime) {
+            //console.log("popup click!!");
+            var newtime=parseInt(options.jumpTime);
+        //    console.log("send it to time " + newtime); 
+            that.currentTime(parseInt(newtime));
+            that.play();
+          }
+        };
 
       if ( _target ) {
 
@@ -262,6 +276,10 @@
       var container = options._container,
           redrawBug;
 
+          if (options.pauseOnStart) {
+          this.pause(); 
+        }
+
       if ( container ) {
         if ( options._updateImage ) {
           this.on( "timeupdate", options._updateImage );
@@ -338,6 +356,7 @@
           "default": 3,
           MAX_COUNT: 20
         },
+
         top: {
           elem: "input",
           type: "number",
@@ -372,6 +391,7 @@
             "units": "%",
             group: "advanced"
           },
+          
         transition: {
           elem: "select",
           options: [ "None", "Pop", "Slide Up", "Slide Down", "Fade" ],
@@ -385,13 +405,27 @@
           type: "text",
           label: "Start",
           units: "seconds"
-        },
+        }, 
         end: {
           elem: "input",
           type: "text",
           label: "End",
           units: "seconds"
         },
+        jumpTime: {
+          elem: "input",
+          label: "Jump to Time on Click", 
+          "default": "",
+          group: "advanced"
+        },
+         pauseOnStart: {
+          elem: "input",
+          type: "checkbox",
+          label: "Pause when plugin starts",
+          group:"advanced",
+          "default": false,
+          optional: true
+        }, 
         zindex: {
           hidden: true
         }

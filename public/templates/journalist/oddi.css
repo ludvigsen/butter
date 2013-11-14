@@ -101,3 +101,9 @@ border-color: rgb(235, 75, 45) !important;
 /*reds: light red: rgb(235, 75, 45) and Dark red: rgb(216, 57, 32) */
 
 /*you may want to recolor a few icons: media.png, big-loader.gif;*/
+
+
+
+p[dir="rtl"] {
+  text-align:right; 
+}

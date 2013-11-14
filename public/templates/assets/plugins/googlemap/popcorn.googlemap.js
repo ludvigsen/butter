@@ -1159,14 +1159,7 @@ var googleCallback;
 				"default": 10,
 				optional: true
 			},
-			spreadsheetKey: {
-				elem: "input",
-				type:"text",
-				label: "Google Spreadsheet URL",
-				group:"advanced",
-				"default":""
-				//,tooltip: "0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c"
-			},
+			
 
 			infoWindowTitle: {
 				elem: "input",
@@ -1197,6 +1190,14 @@ var googleCallback;
 				group:"advanced",
 				"default": false,
 				optional: true
+			},
+			spreadsheetKey: {
+				elem: "input",
+				type:"text",
+				label: "Google Spreadsheet URL",
+				group:"advanced",
+				"default":""
+				//,tooltip: "0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c"
 			},
 			transition: {
 				elem: "select",

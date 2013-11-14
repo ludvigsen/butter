@@ -153,8 +153,11 @@
 
       if ( !cachedArticles[ _query ] ) {
         // gets the mobile format, so that we don't load unwanted images when the respose is turned into a documentFragment
-        Popcorn.getScript( _href + "api.php?action=parse&prop=text&redirects&page=" +
-          window.escape( _title ) + "&noimages=1&mobileformat=html&format=json&callback=" + _guid );
+        //var fetchURL=_href + "api.php?action=parse&prop=text&redirects&page=" + window.escape( _title ) + "&noimages=1&mobileformat=html&format=json&callback=" + _guid;
+        //arabic search example: الغة_عربية
+        var fetchURL=_href + "api.php?action=parse&prop=text&redirects&page=" + encodeURI( _title )  + "&noimages=1&mobileformat=html&format=json&callback=" + _guid;
+        console.log("fetching url " + fetchURL);
+        Popcorn.getScript( fetchURL );
       } else {
         buildArticle( cachedArticles[ _query ] );
       }

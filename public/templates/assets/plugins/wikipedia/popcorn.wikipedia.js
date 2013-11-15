@@ -281,51 +281,8 @@
   };
 
   // Language codes: http://stats.wikimedia.org/EN/TablesDatabaseWikiLinks.htm
-
-  allWikiLangLinks = ( "en,ja,es,de,ru,fr,it,pt,pl,zh,nl,tr,ar,sv,id,cs,fi,ko,th,fa,hu,he,no,vi,uk,da,ro" +
-                         ",bg,hr,ca,el,sk,ms,sr,lt,sl,simple,eo,tl,et,hi,kk,sh,nn,ta,az,bs,af,eu,ka,lv,gl" +
-                         ",zh_yue,tpi,mk,mr,la,ml,sq,be,cy,br,is,an,bn,war,oc,hy,arz,te,jv,ceb,sw" +
-                         ",lb,als,ur,vo,fy,kn,gan,mg,ang,vec,gd,gu,ast,io,uz,qu,wuu,su,ku,yo,ga" +
-                         ",tt,scn,bar,nds,se,ht,ne,ia,sco,lmo,mn,cv,ckb,diq,my,pnb,new,pms,zh-min-nan,yi,am" +
-                         ",bpy,li,si,os,mt,nah,ps,fo,hsb,ilo,nap,wa,gv,ky,pam,sah,co,tg,ba,bcl" +
-                         ",hif,km,sa,vls,or,mzn,ig,so,bo,kl,ksh,as,mi,szl,mwl,nrm,dsb,fiu-vro,dv,stq" +
-                         ",tk,roa-rup,bug,mhr,kw,fur,sc,lad,csb,pa,rue,frr,gn,rm,ace,nv,bjn,arc,krc,ext,ug,nov" +
-                         ",frp,crh,ab,lij,jbo,kv,ay,ce,ln,pdc,udm,eml,ie,mrj,xal,bh,hak,lo,wo" +
-                         ",glk,myv,sn,chr,pag,rw,pcd,pap,zea,lbe,vep,koi,na,haw,cu,to,pi,av,zu,lez,kab,mdf," +
-                         "tet,kaa,za,bm,rmy,kbd,iu,bi,kg,pih,ss,chy,ee,om,cr,cdo,srn,got,ha,bxr,ch,ty,sm,ltg," +
-                         "pnt,ak,dz,st,sd,ik,ts,nso,y,tn,ki,ff,rn,xh,sg,ve,tw,ks,tum,fj,ti,lg" ).split( "," );
-
-  allWikiLangNames = ( "English,Japanese,Spanish,German,Russian,French,Italian,Portuguese,Polish," +
-                           "Chinese,Dutch,Turkish,Arabic,Swedish,Indonesian,Czech,Finnish,Korean,Thai," +
-                           "Persian,Hungarian,Hebrew,Norwegian,Vietnamese,Ukrainian,Danish,Romanian," +
-                           "Bulgarian,Croatian,Catalan,Greek,Slovak,Malay,Serbian,Lithuanian,Slovene," +
-                           "Simple English,Esperanto,Tagalog,Estonian,Hindi,Kazakh,Serbo-Croatian,Nynorsk," +
-                           "Tamil,Azeri,Bosnian,Afrikaans,Basque,Georgian,Latvian,Galician,Cantonese," +
-                           "Tok Pisin,Macedonian,Marathi,Latin,Malayalam,Albanian,Welsh,Breton," +
-                           "Icelandic,Aragonese,Bengali,Waray-Waray,Occitan,Armenian,Egyptian Arabic," +
-                           "Belarusian,Telugu,Javanese,Cebuano,Swahili,Luxembourgish,Alemannic,Urdu," +
-                           "Volapuk,Frisian,Kannada,Gan,Malagasy,Anglo Saxon,Venetian," +
-                           "Scots Gaelic,Gujarati,Asturian,Ido,Uzbek,Quechua,Wu,Sundanese,Kurdish,Yoruba," +
-                           "Irish,Tatar,Sicilian,Bavarian,Low Saxon,Northern Sami,Haitian,Nepali," +
-                           "Interlingua,Scots,Lombard,Mongolian,Chuvash,Sorani,Zazaki,Burmese,Western Panjabi" +
-                           ",Nepal Bhasa,Piedmontese,Min Nan,Yiddish,Amharic,Bishnupriya Manipuri,Limburgish," +
-                           "Sinhala,Ossetic,Maltese,Nahuatl,Pashto,Faroese,Upper Sorbian,Ilokano,Neapolitan," +
-                           "Walloon,Manx,Kirghiz,Kapampangan,Sakha,Corsican,Tajik,Bashkir," +
-                           "Central Bicolano,Fiji Hindi,Khmer,Sanskrit,West Flemish,Oriya,Mazandarani," +
-                           "Igbo,Somali,Tibetan,Greenlandic,Ripuarian,Assamese,Maori,Silesian," +
-                           "Mirandese,Norman,Lower Sorbian,Voro,Divehi,Saterland Frisian,Turkmen,Aromanian," +
-                           "Buginese,Eastern Mari,Cornish,Friulian,Sardinian,Ladino,Cassubian,Punjabi,Rusyn," +
-                           "North Frisian,Guarani,Romansh,Acehnese,Navajo,Banjar,Aramaic,Karachay-Balkar," +
-                           "Extremaduran,Uyghur,Novial,Arpitan,Crimean Tatar,Abkhazian,Ligurian," +
-                           "Lojban,Komi,Aymara,Chechen,Lingala,Pennsylvania German,Udmurt,Emilian-Romagnol," +
-                           "Interlingue,Western Mari,Kalmyk,Bihari,Hakka,Laotian,Wolof,Gilaki," +
-                           "Erzya,Shona,Cherokee,Pangasinan,Kinyarwanda,Picard,Papiamentu,Zealandic,Lak," +
-                           "Vepsian,Komi Permyak,Nauruan,Hawai'ian,Old Church Slavonic,Tongan,Pali,Avar," +
-                           "Zulu,Lezgian,Kabyle,Moksha,Tetum,Karakalpak,Zhuang,Bambara,Romani,Karbadian," +
-                           "Inuktitut,Bislama,Kongo,Norfolk,Siswati,Cheyenne,Ewe,Oromo,Cree,Min Dong," +
-                           "Sranan,Gothic,Hausa,Buryat,Chamorro,Tahitian,Samoan,Latgalian,Pontic,Akan," +
-                           "Dzongkha,Sesotho,Sindhi,Inupiak,Tsonga,Northern Sotho,Chichewa,Setswana,Kikuyu," +
-                           "Fulfulde,Kirundi,Xhosa,Sangro,Venda,Twi,Kashmiri,Tumbuka,Fijian,Tigrinya,Ganda" ).split( "," );
+  allWikiLangLinks=("ab,ace,af,ak,sq,als,am,ang,ar,is,arc,oc,roa-rup,frp,as,ast,av,ay,az,bm,bjn,ba,eu,bar,arz,an,bh,bpy,bi,bs,cy,bug,bg,my,bxr,zh_yue,csb,ca,ceb,bcl,ch,ce,chr,chy,y,zh,cv,kw,co,cr,crh,hr,cs,da,dv,nl,dz,mhr,hy,eml,en,myv,eo,et,ee,ext,fo,hif,fj,fi,fr,fy,fur,ff,gl,gan,lg,ka,de,glk,got,el,kl,gn,gu,ht,hak,ha,haw,he,hi,hu,br,io,ig,ilo,id,ia,ie,iu,ik,ga,it,ja,jv,kab,xal,kn,pam,krc,kaa,kbd,ks,kk,km,ki,rw,ky,rn,kv,koi,kg,ko,ku,lad,lbe,lo,ltg,la,lv,lez,lij,li,ln,lt,jbo,lmo,nds,dsb,lb,mk,mg,ms,ml,mt,gv,mi,mr,mzn,cdo,zh-min-nan,mwl,mdf,mn,nah,na,nv,nap,new,ne,pih,nrm,frr,se,nso,no,nov,nn,war,cu,or,om,os,pi,pag,pap,ps,pdc,fa,pcd,pms,pl,pnt,pt,pa,qu,ksh,rmy,ro,rm,ru,rue,sah,sm,sg,sa,sc,stq,sco,gd,sr,sh,st,tn,sn,scn,szl,simple,sd,si,ss,sk,sl,so,ckb,es,srn,su,sw,sv,tl,ty,tg,ta,tt,te,tet,th,bo,ti,tpi,to,ts,tum,tr,tk,tw,udm,uk,hsb,ur,ug,uz,ve,vec,vep,vi,vo,fiu-vro,wa,bn,be,vls,mrj,pnb,wo,wuu,xh,yi,yo,diq,zea,za,zu").split(",");                          
+  allWikiLangNames=("Abkhazian,Acehnese,Afrikaans,Akan,Albanian,Alemannic,Amharic,Anglo Saxon,Arabic,Aragonese,Aramaic,Armenian,Aromanian,Arpitan,Assamese,Asturian,Avar,Aymara,Azeri,Bambara,Banjar,Bashkir,Basque,Bavarian,Belarusian,Bengali,Bihari,Bishnupriya Manipuri,Bislama,Bosnian,Breton,Buginese,Bulgarian,Burmese,Buryat,Cantonese,Cassubian,Catalan,Cebuano,Central Bicolano,Chamorro,Chechen,Cherokee,Cheyenne,Chichewa,Chinese,Chuvash,Cornish,Corsican,Cree,Crimean Tatar,Croatian,Czech,Danish,Divehi,Dutch,Dzongkha,Eastern Mari,Egyptian Arabic,Emilian-Romagnol,English,Erzya,Esperanto,Estonian,Ewe,Extremaduran,Faroese,Fiji Hindi,Fijian,Finnish,French,Frisian,Friulian,Fulfulde,Galician,Gan,Ganda,Georgian,German,Gilaki,Gothic,Greek,Greenlandic,Guarani,Gujarati,Haitian,Hakka,Hausa,Hawai'ian,Hebrew,Hindi,Hungarian,Icelandic,Ido,Igbo,Ilokano,Indonesian,Interlingua,Interlingue,Inuktitut,Inupiak,Irish,Italian,Japanese,Javanese,Kabyle,Kalmyk,Kannada,Kapampangan,Karachay-Balkar,Karakalpak,Karbadian,Kashmiri,Kazakh,Khmer,Kikuyu,Kinyarwanda,Kirghiz,Kirundi,Komi,Komi Permyak,Kongo,Korean,Kurdish,Ladino,Lak,Laotian,Latgalian,Latin,Latvian,Lezgian,Ligurian,Limburgish,Lingala,Lithuanian,Lojban,Lombard,Low Saxon,Lower Sorbian,Luxembourgish,Macedonian,Malagasy,Malay,Malayalam,Maltese,Manx,Maori,Marathi,Mazandarani,Min Dong,Min Nan,Mirandese,Moksha,Mongolian,Nahuatl,Nauruan,Navajo,Neapolitan,Nepal Bhasa,Nepali,Norfolk,Norman,North Frisian,Northern Sami,Northern Sotho,Norwegian,Novial,Nynorsk,Occitan,Old Church Slavonic,Oriya,Oromo,Ossetic,Pali,Pangasinan,Papiamentu,Pashto,Pennsylvania German,Persian,Picard,Piedmontese,Polish,Pontic,Portuguese,Punjabi,Quechua,Ripuarian,Romani,Romanian,Romansh,Russian,Rusyn,Sakha,Samoan,Sangro,Sanskrit,Sardinian,Saterland Frisian,Scots,Scots Gaelic,Serbian,Serbo-Croatian,Sesotho,Setswana,Shona,Sicilian,Silesian,Simple English,Sindhi,Sinhala,Siswati,Slovak,Slovene,Somali,Sorani,Spanish,Sranan,Sundanese,Swahili,Swedish,Tagalog,Tahitian,Tajik,Tamil,Tatar,Telugu,Tetum,Thai,Tibetan,Tigrinya,Tok Pisin,Tongan,Tsonga,Tumbuka,Turkish,Turkmen,Twi,Udmurt,Ukrainian,Upper Sorbian,Urdu,Uyghur,Uzbek,Venda,Venetian,Vepsian,Vietnamese,Volapuk,Voro,Walloon,Waray-Waray,Welsh,West Flemish,Western Mari,Western Panjabi,Wolof,Wu,Xhosa,Yiddish,Yoruba,Zazaki,Zealandic,Zhuang,Zulu").split(",");
 
   Popcorn.plugin( "wikipedia", WikipediaDefinition, {
     about:{

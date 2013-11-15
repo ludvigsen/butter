@@ -56,6 +56,7 @@
   function setupWiki( options, instance ) {
     // declare needed variables
     // get a guid to use for the global wikicallback function
+
     var _title,
         _titleDiv,
         _titleTextArea,
@@ -74,30 +75,40 @@
 
     options._inner = _inner = create( "div" );
     _inner.classList.add( "wikipedia-inner-container" );
+    var tDirection="ltr";
+    console.log("setupwiki rtl is " + options.isRTL);
+    var classSuffix=""
+    if (options.isRTL) {
+      tDirection="rtl";
+      classSuffix="-rtl"
+    }
 
+
+    /* create title div, title text area, merge them */
     _titleDiv = create( "div" );
-    _titleDiv.classList.add( "wikipedia-title" );
-
+     _titleDiv.classList.add( "wikipedia-title"+classSuffix );
     _titleTextArea = create( "div" );
-    _titleTextArea.classList.add( "wikipedia-title-text" );
+    _titleTextArea.classList.add( "wikipedia-title-text"+classSuffix );
     _titleTextArea.classList.add( "wikipedia-ellipsis" );
-
     _titleDiv.appendChild( _titleTextArea );
 
+
+
+    /* create main content div, wikipedia content div, merge them */
     _mainContentDiv = create( "div" );
-    _mainContentDiv.classList.add( "wikipedia-main-content" );
-
+    _mainContentDiv.classList.add( "wikipedia-main-content"+classSuffix );
     _contentArea = create( "div" );
-    _contentArea.classList.add( "wikipedia-content" );
-
+    _contentArea.classList.add( "wikipedia-content"+classSuffix );
     _mainContentDiv.appendChild( _contentArea );
 
+    /* create the toWikipedia div - for the arrow */
     _toWikipedia = create( "a" );
-    _toWikipedia.classList.add( "wikipedia-to-wiki" );
-
+    _toWikipedia.classList.add( "wikipedia-to-wiki"+classSuffix );
+    
     _inner.appendChild( _titleDiv );
     _inner.appendChild( _mainContentDiv );
     _inner.appendChild( _toWikipedia );
+    _inner.style.direction=tDirection; 
 
     options._container.appendChild( _inner );
     options._target.appendChild( options._container );
@@ -147,14 +158,14 @@
     if ( options.src ) {
 
       _query = options.src + options.lang;
-      _href = "//" + window.escape( options.lang ) + ".wikipedia.org/w/";
+      _href = "//" + encodeURI( options.lang ) + ".wikipedia.org/w/";
       _title = options.src.slice( options.src.lastIndexOf( "/" ) + 1 );
-      options._link = "//" + window.escape( options.lang + ".wikipedia.org/wiki/" + _title );
+      options._link = "//" + encodeURI( options.lang + ".wikipedia.org/wiki/" + _title );
 
       if ( !cachedArticles[ _query ] ) {
         // gets the mobile format, so that we don't load unwanted images when the respose is turned into a documentFragment
         //var fetchURL=_href + "api.php?action=parse&prop=text&redirects&page=" + window.escape( _title ) + "&noimages=1&mobileformat=html&format=json&callback=" + _guid;
-        //POP-214: changed window.escape to encodeURL.  Fixes Aratic.  Arabic search example: الغة_عربية
+        //POP-214: changed window.escape to encodeURL.  Fixes Arabic.  Arabic search example: الغة_عربية
         var fetchURL=_href + "api.php?action=parse&prop=text&redirects&page=" + encodeURI( _title )  + "&noimages=1&mobileformat=html&format=json&callback=" + _guid;
         console.log("fetching url " + fetchURL);
         Popcorn.getScript( fetchURL );
@@ -179,6 +190,8 @@
       _outer.classList.add( "wikipedia-outer-container" );
       _outer.classList.add( options.transition );
       _outer.classList.add( "off" );
+
+
 
       _outer.style.width = validateDimension( options.width, "100" ) + "%";
       _outer.style.height = validateDimension( options.height, "100" ) + "%";
@@ -258,7 +271,12 @@
         trackEvent.height = options.height;
         trackEvent._container.style.height = trackEvent.height + "%";
       }
-
+      //var newInfoWindowOpen = ("infoWindowOpen" in options); 
+      
+      if ("isRTL" in options) {
+          trackEvent.isRTL = options.isRTL;
+          setupWiki( trackEvent, this );         
+      }
     }
   };
 
@@ -342,6 +360,7 @@
         label: "Article Link/Title",
         "default": "Popcorn.js"
       },
+
       top: {
         elem: "input",
         type: "number",
@@ -376,6 +395,14 @@
           "units": "%",
           group: "advanced"
         },
+        isRTL: {
+          elem: "input",
+          type: "checkbox",
+          label: "Right to Left Text",
+          group:"advanced",
+          "default": false,
+          optional: true
+        },  
       target: {
         hidden: true
       },

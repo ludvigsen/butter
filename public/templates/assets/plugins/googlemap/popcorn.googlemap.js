@@ -433,8 +433,11 @@ var googleCallback;
 						var cmData=mapDataFromSpreadsheet[this.markerNum]
 						//console.log("go to marker " + this.markerNum + " with time " + cmData.starttime);
 						
-						if (infowindow != null && infowindow.getContent() != "") {
-							infowindow.open(map,aMarker);
+						if (cmData.title != "" || cmData.description) {
+							if (infowindow != null) {
+								infowindow.setContent(formatInfoWindowString(cmData.title,cmData.description,cmData.isRTL)); 
+								infowindow.open(map,aMarker);
+							}
 						}
 
 						that.currentTime( cmData.starttime )

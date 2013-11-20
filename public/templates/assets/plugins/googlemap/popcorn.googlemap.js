@@ -435,6 +435,9 @@ var googleCallback;
 						
 						if (cmData.title != "" || cmData.description != "") {
 							if (infowindow != null) {
+								console.log("setting data for marker " + this.markerNum);
+								console.log("going... " + cmData.title);
+								console.log("desc... " + cmData.description);
 								infowindow.setContent(formatInfoWindowString(cmData.title,cmData.description,cmData.isRTL)); 
 								infowindow.open(map,aMarker);
 							}

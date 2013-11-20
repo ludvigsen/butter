@@ -107,3 +107,6 @@ border-color: rgb(235, 75, 45) !important;
 p[dir="rtl"] {
   text-align:right; 
 }
+p.subtitles[dir="rtl"] {
+  text-align:center; 
+} 

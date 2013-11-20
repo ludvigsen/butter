@@ -99,6 +99,7 @@ define( [ "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/edito
         from: data.from || 0,
         title: data.title,
         duration: data.duration,
+        linkback: data.linkback,
         hidden: data.hidden
       },
       start: function() {
@@ -161,6 +162,7 @@ define( [ "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/edito
           from: data.from || 0,
           title: data.title,
           duration: data.duration,
+          linkback: data.linkback,
           hidden: data.hidden || false
         };
 

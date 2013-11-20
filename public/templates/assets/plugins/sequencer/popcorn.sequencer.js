@@ -623,7 +623,11 @@
         duration: {
           hidden: true,
           "default": 0
-        }
+        },
+        linkback: {
+           hidden: true,
+           "default": ""
+          }
       }
     }
   });

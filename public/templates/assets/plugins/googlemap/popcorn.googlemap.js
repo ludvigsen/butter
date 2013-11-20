@@ -432,6 +432,11 @@ var googleCallback;
 					google.maps.event.addListener(aMarker, 'click', function() {
 						var cmData=mapDataFromSpreadsheet[this.markerNum]
 						//console.log("go to marker " + this.markerNum + " with time " + cmData.starttime);
+						
+						if (infowindow != null && infowindow.getContent() != "") {
+							infowindow.open(map,aMarker);
+						}
+
 						that.currentTime( cmData.starttime )
 					});
 

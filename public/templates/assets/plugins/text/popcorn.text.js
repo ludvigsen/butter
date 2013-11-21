@@ -14,6 +14,40 @@
 		DEFAULT_SHADOW_COLOR = "#444444",
 		DEFAULT_BACKGROUND_COLOR = "#888888";
 
+	/* toSeconds can be found in util time library  */
+   
+  function toSeconds( time ) {
+    var splitTime,
+        seconds,
+        minutes,
+        hours,
+        isNegative = 1;
+
+    if ( typeof time === "number" ) {
+      return time;
+    }
+
+    if ( typeof time !== "string" ) {
+      return 0;
+    }
+
+    time = time.trim();
+    if ( time.substring( 0, 1 ) === "-" ) {
+      time = time.replace( "-", "" );
+      isNegative = -1;
+    }
+
+    splitTime = time.split( ":" );
+    seconds = +splitTime[ splitTime.length - 1 ] || 0;
+    minutes = +splitTime[ splitTime.length - 2 ] || 0;
+    hours = +splitTime[ splitTime.length - 3 ] || 0;
+
+    seconds += hours * 3600;
+    seconds += minutes * 60;
+
+    return seconds * isNegative;
+  }
+
 	function newlineToBreak(string) {
 		// Deal with both \r\n and \n
 		return string.replace(/\r?\n/gm, "<br>");
@@ -173,7 +207,8 @@
 		          elem: "input",
 		          label: "Jump to Time on Click", 
 		          "default": "",
-		          group: "advanced"
+		          group: "advanced",
+		          "units": "seconds"
 		        },
 		        pauseOnStart: {
 					elem: "input",
@@ -237,7 +272,7 @@
 					console.log("innerDivClick!");
 					if (options.jumpTime) {
 						//console.log("popup click!!");
-						var newtime=parseInt(options.jumpTime);
+						var newtime=parseInt(toSeconds(options.jumpTime));
 						console.log("send it to time " + newtime); 
 						that.currentTime(parseInt(newtime));
 						that.play();

@@ -12,6 +12,43 @@
       jsonBits = "&format=json&jsoncallback=flickr",
       FLICKR_SINGLE_CHECK = "flickr.com/photos/";
 
+
+   /* toSeconds can be found in util time library  */
+
+  function toSeconds( time ) {
+    var splitTime,
+        seconds,
+        minutes,
+        hours,
+        isNegative = 1;
+
+    if ( typeof time === "number" ) {
+      return time;
+    }
+
+    if ( typeof time !== "string" ) {
+      return 0;
+    }
+
+    time = time.trim();
+    if ( time.substring( 0, 1 ) === "-" ) {
+      time = time.replace( "-", "" );
+      isNegative = -1;
+    }
+
+    splitTime = time.split( ":" );
+    seconds = +splitTime[ splitTime.length - 1 ] || 0;
+    minutes = +splitTime[ splitTime.length - 2 ] || 0;
+    hours = +splitTime[ splitTime.length - 3 ] || 0;
+
+    seconds += hours * 3600;
+    seconds += minutes * 60;
+
+    return seconds * isNegative;
+  }
+
+
+
   function searchImagesFlickr( tags, count, userId, ready ) {
     var uri = searchPhotosCmd + APIKEY + "&per_page=" + count + "&";
     if ( userId && typeof userId !== "function" ) {
@@ -133,7 +170,7 @@
       _container.onclick =  function(evt) {
           if (options.jumpTime) {
             //console.log("popup click!!");
-            var newtime=parseInt(options.jumpTime);
+            var newtime=parseInt(toSeconds(options.jumpTime));
         //    console.log("send it to time " + newtime); 
             that.currentTime(parseInt(newtime));
             that.play();
@@ -416,7 +453,8 @@
           elem: "input",
           label: "Jump to Time on Click", 
           "default": "",
-          group: "advanced"
+          group: "advanced",
+          "units": "seconds"
         },
          pauseOnStart: {
           elem: "input",

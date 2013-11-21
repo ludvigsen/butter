@@ -17,6 +17,40 @@
   innerDivTriangles.speech = document.createElement( "canvas" );
   innerDivTriangles.thought = document.createElement( "canvas" );
 
+  /* toSeconds can be found in util time library  */
+   
+  function toSeconds( time ) {
+    var splitTime,
+        seconds,
+        minutes,
+        hours,
+        isNegative = 1;
+
+    if ( typeof time === "number" ) {
+      return time;
+    }
+
+    if ( typeof time !== "string" ) {
+      return 0;
+    }
+
+    time = time.trim();
+    if ( time.substring( 0, 1 ) === "-" ) {
+      time = time.replace( "-", "" );
+      isNegative = -1;
+    }
+
+    splitTime = time.split( ":" );
+    seconds = +splitTime[ splitTime.length - 1 ] || 0;
+    minutes = +splitTime[ splitTime.length - 2 ] || 0;
+    hours = +splitTime[ splitTime.length - 3 ] || 0;
+
+    seconds += hours * 3600;
+    seconds += minutes * 60;
+
+    return seconds * isNegative;
+  }
+
   // Creates a triangle for a speech innerDiv
   function drawSpeech( canvas, lineWidth ) {
     var ctx  = canvas.getContext( "2d" );
@@ -203,7 +237,8 @@
           elem: "input",
           label: "Jump to Time on Click", 
           "default": "",
-          group: "advanced"
+          group: "advanced",
+          "units": "seconds"
         },
         pauseOnStart: {
 					elem: "input",
@@ -415,7 +450,7 @@
         textContainer.onclick =  function(evt) {
 					if (options.jumpTime) {
 						//console.log("popup click!!");
-						var newtime=parseInt(options.jumpTime);
+						var newtime=parseInt(toSeconds(options.jumpTime));
 						//console.log("send it to time " + newtime); 
 						that.currentTime(parseInt(newtime));
 						that.play();

@@ -5,10 +5,11 @@
 function init() {
 
   var stateClasses = [
-    "embed-playing",
-    "embed-paused",
-    "embed-dialog-open"
-  ];
+        "embed-playing",
+        "embed-paused",
+        "embed-dialog-open"
+      ],
+      fullScreenedElem;
 
   // Sometimes we want to show the info div when we pause, sometimes
   // we don't (e.g., when we open the share dialog).
@@ -38,14 +39,58 @@ function init() {
     elem.style.display = "block";
   }
 
+  function fullScreenEnabled() {
+    var container = document.querySelector( ".video" ),
+        controls;
+
+    container.classList.add( "full-screen" );
+
+    if ( fullScreenedElem.requestFullscreen ) {
+      fullScreenedElem.removeEventListener( "fullscreenchange", fullScreenEnabled, false );
+      fullScreenedElem.addEventListener( "fullscreenchange", fullScreenDisabled, false );
+    } else if ( fullScreenedElem.mozRequestFullScreen ) {
+      fullScreenedElem.removeEventListener( "mozfullscreenchange", fullScreenEnabled, false );
+      fullScreenedElem.addEventListener( "mozfullscreenchange", fullScreenDisabled, false );
+    } else if ( fullScreenedElem.webkitRequestFullscreen ) {
+      fullScreenedElem.removeEventListener( "webkitfullscreenchange", fullScreenEnabled, false );
+      fullScreenedElem.addEventListener( "webkitfullscreenchange", fullScreenDisabled, false );
+    }
+
+    // OSX has a nice fancy animation that delays the fullscreen transition, but our event still fires.
+    // Because of this, we recieve a "premature" innerHeight value.
+    setTimeout(function() {
+      controls = document.querySelector( "#controls" );
+      container.style.height = window.innerHeight - controls.offsetHeight + "px";
+    }, 1000 );
+  }
+
+  function fullScreenDisabled() {
+    var container = document.querySelector( ".video" );
+
+    container.classList.remove( "full-screen" );
+    container.style.height = "";
+    if ( fullScreenedElem.requestFullscreen ) {
+      fullScreenedElem.removeEventListener( "fullscreenchange", fullScreenDisabled, false );
+    } else if ( fullScreenedElem.mozRequestFullScreen ) {
+      fullScreenedElem.removeEventListener( "mozfullscreenchange", fullScreenDisabled, false );
+    } else if ( fullScreenedElem.webkitRequestFullscreen ) {
+      fullScreenedElem.removeEventListener( "webkitfullscreenchange", fullScreenDisabled, false );
+    }
+
+    fullScreenedElem = null;
+  }
+
   function requestFullscreen( elem ) {
+    fullScreenedElem = elem;
+
     if ( elem.requestFullscreen ) {
+      elem.addEventListener( "fullscreenchange", fullScreenEnabled, false );
       elem.requestFullscreen();
-    } else if ( elem.mozRequestFullscreen ) {
-      elem.mozRequestFullscreen();
     } else if ( elem.mozRequestFullScreen ) {
+      elem.addEventListener( "mozfullscreenchange", fullScreenEnabled, false );
       elem.mozRequestFullScreen();
     } else if ( elem.webkitRequestFullscreen ) {
+      elem.addEventListener( "webkitfullscreenchange", fullScreenEnabled, false );
       elem.webkitRequestFullscreen();
     }
   }
@@ -90,9 +135,8 @@ function init() {
   }
 
   function fullscreenClick() {
-    var container = document.getElementById( "container" );
     if( !isFullscreen() ) {
-      requestFullscreen( container );
+      requestFullscreen( document.body );
     } else {
       cancelFullscreen();
     }
@@ -117,8 +161,8 @@ function init() {
       width = shareSize[ 0 ],
       height = shareSize[ 1 ];
 
-    return '<iframe src="' + src + '" width="' + width + '" height="' + height +
-           '" frameborder="0" mozallowfullscreen webkitallowfullscreen allowfullscreen></iframe>';
+    return "<iframe src='" + src + "' width='" + width + "' height='" + height +
+           "' frameborder='0' mozallowfullscreen webkitallowfullscreen allowfullscreen></iframe>";
   }
 
   // We put the embed's cannoncial URL in a <link rel="cannoncial" href="...">
@@ -160,7 +204,7 @@ function init() {
 
   function setupEventHandlers( popcorn, config ) {
     var sizeOptions = document.querySelectorAll( ".option" ),
-        i, l;
+        i, l, messages;
 
     $( "#share-close" ).addEventListener( "click", function() {
       hide( "#share-container" );
@@ -193,12 +237,95 @@ function init() {
       } else {
         setStateClass( "embed-paused" );
       }
+      window.parent.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "pause"
+      }, "*" );
+    });
+
+    popcorn.on( "play", function() {
+      window.parent.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "play"
+      }, "*" );
+    });
+
+    if ( document.querySelector( ".embed" ).getAttribute( "data-state-waiting" ) ) {
+      popcorn.on( "sequencesReady", function() {
+        window.parent.postMessage({
+          type: "loadedmetadata"
+        }, "*" );
+      });
+    } else {
+      popcorn.on( "loadedmetadata", function() {
+        window.parent.postMessage({
+          type: "loadedmetadata"
+        }, "*" );
+      });
+    }
+
+    popcorn.on( "timeupdate", function() {
+      window.parent.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "timeupdate"
+      }, "*" );
     });
 
     popcorn.on( "playing", function() {
       hide( "#share-container" );
       setStateClass( "embed-playing" );
     });
+
+    function buildOptions( data, manifest ) {
+      var options = {};
+
+      for( var option in manifest ) {
+        if ( manifest.hasOwnProperty( option ) ) {
+          options[ option ] = data[ option ];
+        }
+      }
+
+      return options;
+    }
+
+    popcorn.on( "trackstart", function( e ) {
+      window.parent.postMessage({
+        plugin: e.plugin,
+        type: e.type,
+        options: buildOptions( e, e._natives.manifest.options )
+      }, "*" );
+    });
+
+    popcorn.on( "trackend", function( e ) {
+      window.parent.postMessage({
+        plugin: e.plugin,
+        type: e.type,
+        options: buildOptions( e, e._natives.manifest.options )
+      }, "*" );
+    });
+
+    messages = {
+      play: function( data ) {
+        popcorn.play( data.currentTime );
+      },
+      pause: function( data ) {
+        popcorn.pause( data.currentTime );
+      },
+      currentTime: function( data ) {
+        popcorn.currentTime( data.currentTime );
+      }
+    };
+
+    function onMessage( e ) {
+      var data = e.data,
+          type = data.type,
+          message = messages[ type ];
+      if ( message ) {
+        message( data );
+      }
+    }
+
+    window.addEventListener( "message", onMessage, false );
 
     function onCanPlay() {
       if ( config.autoplay ) {
@@ -214,43 +341,6 @@ function init() {
     }
   }
 
-  function setupAttribution( popcorn ) {
-    var icon = $( ".media-icon" ),
-        src = $( ".attribution-media-src" ),
-        toggler = $( ".attribution-logo" ),
-        closeBtn = $( ".attribution-close" ),
-        container = $( ".attribution-info" ),
-        extraAttribution = $( ".attribution-extra" ),
-        classes = {
-          html5: "html5-icon",
-          youtube: "youtube-icon",
-          vimeo: "vimeo-icon",
-          soundcloud: "soundcloud-icon",
-          baseplayer: "html5-icon"
-        },
-        youtubeRegex = /(?:http:\/\/www\.|http:\/\/|www\.|\.|^)youtu/,
-        type;
-
-    type = popcorn.media._util ? popcorn.media._util.type.toLowerCase() : "html5";
-
-    extraAttribution.innerHTML = Popcorn.manifest.googlemap.about.attribution;
-
-    // YouTube currently won't have a popcorn.media._util this is a fallback check for YT
-    if ( type === "html5" ) {
-      type = youtubeRegex.test( src.href ) ? "youtube" : type;
-    }
-
-    icon.classList.add( classes[ type ] );
-
-    toggler.addEventListener( "click", function() {
-      container.classList.toggle( "attribution-on" );
-    }, false );
-
-    closeBtn.addEventListener( "click", function() {
-      container.classList.toggle( "attribution-on" );
-    }, false );
-  }
-
   var require = requirejs.config({
     baseUrl: "/src",
     paths: {
@@ -261,11 +351,18 @@ function init() {
   define("embed-main",
     [
       "util/uri",
+      "util/lang",
       "ui/widget/controls",
       "ui/widget/textbox",
+      "ui/resizeHandler",
+      "util/mediatypes",
+      "text!layouts/attribution.html",
+      "util/accepted-ua",
       "popcorn"
     ],
-    function( URI, Controls, TextboxWrapper ) {
+    function( URI, LangUtil, Controls, TextboxWrapper, ResizeHandler, MediaUtil, DEFAULT_LAYOUT_SNIPPETS ) {
+
+      var __defaultLayouts = LangUtil.domFragment( DEFAULT_LAYOUT_SNIPPETS );
       /**
        * Expose Butter so we can get version info out of the iframe doc's embed.
        * This "butter" is never meant to live in a page with the full "butter".
@@ -275,6 +372,7 @@ function init() {
             version: "Butter-Embed-@VERSION@"
           },
           popcorn,
+          resizeHandler = new ResizeHandler(),
           config,
           qs = URI.parse( window.location.href ).queryKey,
           container = document.querySelectorAll( ".container" )[ 0 ];
@@ -321,6 +419,9 @@ function init() {
         showinfo: qs.showinfo === "0" ? false : true
       };
 
+      resizeHandler.resize();
+      window.addEventListener( "resize", resizeHandler.resize, false );
+
       Controls.create( "controls", {
         onShareClick: function() {
           shareClick( popcorn );
@@ -366,7 +467,110 @@ function init() {
             $( "#share-url" ).value = getCanonicalURL();
           }
 
-          setupAttribution( popcorn );
+          var sequencerEvents = popcorn.data.trackEvents.where({ type: "sequencer" }),
+              imageEvents = popcorn.data.trackEvents.where({ type: "image" }),
+              mapEvents = popcorn.data.trackEvents.where({ type: "googlemap" }),
+              attributionContainer = document.querySelector( ".attribution-details" ),
+              attributionMedia = document.querySelector( ".attribution-media" ),
+              toggler = $( ".attribution-logo" ),
+              closeBtn = $( ".attribution-close" ),
+              container = $( ".attribution-info" );
+
+          // Backwards compat for old layout. Removes the null media that's shown there.
+          if ( attributionMedia ) {
+            attributionContainer.removeChild( attributionMedia );
+          }
+
+          toggler.addEventListener( "click", function() {
+            container.classList.toggle( "attribution-on" );
+          }, false );
+
+          closeBtn.addEventListener( "click", function() {
+            container.classList.toggle( "attribution-on" );
+          }, false );
+
+          if ( sequencerEvents.length ) {
+            var clipsContainer = __defaultLayouts.querySelector( ".attribution-media" ).cloneNode( true ),
+                clipCont,
+                clip,
+                source,
+                type;
+
+            for ( var i = 0; i < sequencerEvents.length; i++ ) {
+              clip = sequencerEvents[ i ];
+              clipCont = __defaultLayouts.querySelector( ".data-container.media" ).cloneNode( true );
+              source = clip.source[ 0 ];
+              type = MediaUtil.checkUrl( source );
+
+              if ( type === "Archive" ) {
+                source = clip.linkback;
+              }
+
+              clipCont.querySelector( "span" ).classList.add( type.toLowerCase() + "-icon" );
+              clipCont.querySelector( "a" ).href = source;
+              clipCont.querySelector( "a" ).innerHTML = clip.title;
+
+              clipsContainer.appendChild( clipCont );
+            }
+
+            attributionContainer.appendChild( clipsContainer );
+          }
+
+          if ( imageEvents.length ) {
+            var imagesContainer = __defaultLayouts.querySelector( ".attribution-images" ).cloneNode( true ),
+                imgCont,
+                img,
+                imgPrefix = "/resources/icons/",
+                foundMatch = false;
+
+            for ( var k = 0; k < imageEvents.length; k++ ) {
+              img = imageEvents[ k ];
+              imgCont = __defaultLayouts.querySelector( ".data-container.image" ).cloneNode( true );
+
+              var href = img.photosetId || img.src || "http://www.flickr.com/search/?m=tags&q=" + img.tags,
+                  text = img.src || img.photosetId || img.tags,
+                  icon = document.createElement( "img" );
+
+              icon.classList.add( "media-icon" );
+
+              imgCont.querySelector( "a" ).href = href;
+              imgCont.querySelector( "a" ).innerHTML = text;
+
+              // We have a slight edgecase where "default" image events have all attributes
+              // to support better user experience when trying different options in the image
+              // plugin editor. In this scenario, they didn't change past the default single image.
+              if ( img.tags && img.photosetId && img.src ) {
+                img.tags = img.photosetId = "";
+              }
+
+              if ( img.tags || img.photosetId || MediaUtil.checkUrl( img.src ) === "Flickr" ) {
+                foundMatch = true;
+                icon.src += imgPrefix + "flickr-black.png";
+                imgCont.insertBefore( icon, imgCont.firstChild );
+                imagesContainer.appendChild( imgCont );
+              } else if ( img.src.indexOf( "giphy" ) !== -1 ) {
+                foundMatch = true;
+                icon.src += imgPrefix + "giphy.png";
+                imgCont.insertBefore( icon, imgCont.firstChild );
+                imagesContainer.appendChild( imgCont );
+              } else {
+                imgCont = null;
+              }
+            }
+
+            // We only care about attributing Flickr and Giphy images
+            if ( foundMatch ) {
+              attributionContainer.appendChild( imagesContainer );
+            }
+          }
+
+          // We only need to know if a maps event exists in some fashion.
+          if ( mapEvents.length ) {
+            var extraAttribution = __defaultLayouts.querySelector( ".attribution-extra" ).cloneNode( true );
+
+            extraAttribution.querySelector( ".data-container" ).innerHTML = Popcorn.manifest.googlemap.about.attribution;
+            attributionContainer.appendChild( extraAttribution );
+          }
         },
         preload: config.preload
       });

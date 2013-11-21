@@ -1110,7 +1110,9 @@ var googleCallback;
 			version: "0.1",
 			author: "@annasob, Matthew Schranz @mjschranz",
 			website: "annasob.wordpress.com, http://github.com/mjschranz",
-			attribution: "Map tiles by <a target=\"_blank\" href=\"http://stamen.com\">Stamen Design</a>," + "under <a target=\"_blank\" href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a>. " + "Data by <a target=\"_blank\" href=\"http://openstreetmap.org\">OpenStreetMap</a>, " + "under <a target=\"_blank\" href=\"http://creativecommons.org/licenses/by-sa/3.0\">CC BY SA</a>."
+			//attribution: "Map tiles by <a target=\"_blank\" href=\"http://stamen.com\">Stamen Design</a>," + "under <a target=\"_blank\" href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a>. " + "Data by <a target=\"_blank\" href=\"http://openstreetmap.org\">OpenStreetMap</a>, " + "under <a target=\"_blank\" href=\"http://creativecommons.org/licenses/by-sa/3.0\">CC BY SA</a>."
+			//this attribution is displayed when you click  the quotes in an embedded kettlecorn project
+			attribution: "Map data from <a target\"_blank\" href=\"http://maps.google.com\">Google</a>"
 		},
 		options: {
 			start: {

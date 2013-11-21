@@ -1,17 +1,13 @@
-// GLOBALS
-.transition(@transition1) {
-  -webkit-transition: @transition1;
-  -moz-transition: @transition1;
-  -o-transition: @transition1;
-  -ms-transition: @transition1;
-  transition: @transition1;
-}
+@import "globals";
+@import "ui-states";
 
 @creditsLogoSize: 25px;
 @red: #CB3E21;
-@attributionZIndex: 3;
-@postRollZIndex: 2;
+@attributionZIndex: 4;
+@postRollZIndex: 3;
 @videoZIndex: 1;
+@thumbnailZIndex: 2;
+@thumbnailZIndexPreload: @thumbnailZIndex + 1000;
 
 html {
   height: 100%;
@@ -41,23 +37,35 @@ body {
   cursor: pointer;
 }
 
+.show-loading #controls-big-play-button {
+  display: none;
+}
+
 .embed {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 .container {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 41px;
   z-index: @videoZIndex;
 }
 
-.video {
+#video {
   position: relative;
   width: 100%;
   padding-bottom: 56.25%;
   height: 0;
+
+  &.full-screen {
+    padding: 0;
+    height: 100%;
+  }
 }
 
 .video > div video,
@@ -69,6 +77,36 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+#thumbnail-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  z-index: @thumbnailZIndex;
+  background-color: #FFFFFF;
+
+  > .project-thumbnail {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 100%;
+    max-width: 100%;
+    margin: auto;
+  }
+
+  &.preload {
+    z-index: @thumbnailZIndexPreload;
+  }
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .embed-overlay {
@@ -105,13 +143,17 @@ body {
 
 .attribution-info {
   font-family: "Meta", "Open Sans", "Helvetica Neue", sans-serif;
-  z-index: @attributionZIndex;
+  z-index: @attributionZIndex - 3;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 1%;
   font-size: 14px;
+
+  &.show {
+    z-index: @attributionZIndex;
+  }
 
   a,
   a:visited {
@@ -225,37 +267,34 @@ body {
 
 
 .attribution-media,
+.attribution-images,
 .attribution-extra {
   margin-top: 0.5em;
-  font-size: 0.8em;
-  height: 1.4em;
-  &:before {
+  font-size: 0.7em;
+  width: 100%;
+  float: left;
+  clear: left;
+
+  >.container-label {
     display: block;
     float: left;
-    content: "Media";
     text-transform: uppercase;
     font-size: 0.8em;
     font-weight: 700;
     margin-right: 2em;
   }
-  .media-btn {
-    float: left;
+  .data-container {
+    width: 90%;
+    float: right;
   }
   .attribution-media-src {
     float: left;
     white-space: nowrap;
     text-decoration: none;
     color: #555;
-    max-width: 70%;
+    max-width: 85%;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-}
-.attribution-extra {
-  color: #555;
-  &:before {
-    color: #000;
-    content: "Maps"
   }
 }
 
@@ -285,6 +324,7 @@ body {
 // State: attribution-on
 // when the logo is clicked, show the credits
 .attribution-on {
+  z-index: @attributionZIndex;
   .attribution-logo {
     opacity: 1;
      .attribution-text {
@@ -321,16 +361,9 @@ body {
   &.soundcloud-icon {
     background-position: -48px 0;
   }
-   &.archive-icon {
-     background-position: -64px 0;
-   }
-}
-
-.attribution-close {
-  background-image: url( "../resources/icons/glyphiconshalflings-alt.png" );
-  width: 14px;
-  height: 14px;
-  background-position: -432px -24px;
+  &.archive-icon {
+    background-position: -64px 0;
+  }
 }
 
 

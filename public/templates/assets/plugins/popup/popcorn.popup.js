@@ -149,7 +149,7 @@
           options: [ "Arrow down", "Arrow left", "Arrow right", "Arrow up",
                      "Audio",
                      "Facebook", "Fact check: true", "Fact check: false", "Globe", "Graphic", "Idea", "Image",
-                     "Interactive", "Map pin", "Popcorn", "Thumbs down", "Thumbs up", "Time", "Twitter", "Video",
+                     "Interactive", "Map pin", "Popcorn", "Quotation", "Thumbs down", "Thumbs up", "Time", "Twitter", "Video",
                      "None", 
                      "----ENTITY ICONS----", 
                      "VOA", "Alhurra", "RFA", "RFE", "BBG"
@@ -157,7 +157,7 @@
           values: [ "arrowDown", "arrowLeft", "arrowRight", "arrowUp",
                      "audio",
                      "facebook", "checkMark", "xMark", "globe", "graphic", "idea", "image",
-                     "interactive", "map", "popcorn", "thumbsDown", "thumbsUp", "clock", "twitter", "video",
+                     "interactive", "map", "popcorn", "quotation", "thumbsDown", "thumbsUp", "clock", "twitter", "video",
                      "none",
                      "none",
                      "icon_voa", "icon_alhurra", "icon_rfa", "icon_rfe", "icon_bbg"

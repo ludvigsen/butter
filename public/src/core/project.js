@@ -68,6 +68,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         set: function( value ) {
           if ( value !== _name ) {
             _name = value;
+            document.title = _name + " - KettleCorn";
             invalidate();
           }
         },
@@ -254,6 +255,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         // templating rules being applied to project metadata, with
         // their plain form counterparts ("&", etc).
         _name = Sanitizer.reconstituteHTML( json.name );
+        document.title = _name + " - KettleCorn";
       }
 
       if ( json.template ) {

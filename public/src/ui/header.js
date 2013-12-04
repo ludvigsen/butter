@@ -306,7 +306,17 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "ui/user-data
      * @returns boolean value representing whether or not the current project name is valid
      */
     function checkProjectName( name ) {
-      return !!name && name !== _projectTitlePlaceHolderText;
+      /* this used to be
+      return !!name && name !== _projectTitlePlaceHolderText; b
+      but the value of placeholder text was 'my cool remix' so we're just hardcoding those 2 vals
+      */
+
+      var returnVal=false;
+      if (name && name != "My Cool Remix" && name != "New Journalist Project") {
+        returnVal=true;
+      }
+      return returnVal;      
+      
     }
 
     function nameError() {

@@ -121,10 +121,14 @@
 			
 			//CREATE OUR CONTAINER AND STYLE IT
 			var container = options._container = document.createElement( "div" );
+			var innerContainer = options._innerContainer = document.createElement("div");
 			container.style.zIndex = +options.zindex;
 			container.setAttribute("id", "lowerThirdContainer");
-			
+			container.appendChild(innerContainer);
+
 			target.appendChild( container ); 
+
+
 			  
 			options._transitionContainer=container;
 			options._transitionContainer.classList.add( "off" );
@@ -157,7 +161,7 @@
 				var imgDivStr="";
 				if (options.includeLogo) {
 					if (options.logo) {
-						imgStyle=" style=\"background-image:url('../assets/images/lowerthird_logo_"+options.logo+".png')\" ";
+						imgStyle=" style=\"background-image: url('../assets/images/lowerthird_logo_"+options.logo+".png')\" ";
 						imgDivStr+="<div id='lowerThirdPromoImageContainer' "  + imgStyle + "  >";
 						//imgDivStr+="<img src=\"../assets/images/1_1_borderFix.png\" id=\"logoLowerThird\" " + imgStyle+">";
 						imgDivStr+="</span>";
@@ -170,7 +174,7 @@
 				}
 				var gradientID="lowerThirdGradientBG_"+directionClass;
 
-				htmlStr+="<table width='100%' height='50%'><tr  height='100%'>"; 
+				htmlStr+="<div style='height:100%; display:table-cell; vertical-align:bottom;'><table width='100%' height='25%'><tr  height='100%'>"; 
 				
 				if (options.isRTL) {
 					htmlStr+="<td width='20%' height='100%'>"+imgDivStr+"</td>";
@@ -188,8 +192,9 @@
 				}
 
 				htmlStr+="</div>"; //end lowerThirdGradientBG
-				htmlStr+="</tr></table>";
-				options._container.innerHTML=htmlStr;
+				htmlStr+="</tr>";
+				htmlStr += "<tr><td height='10%' colspan='2'>&nbsp;</td></tr></table></div>"; 
+				options._innerContainer.innerHTML=htmlStr;
 			}
 		},	//end 'start' func
 		end: function( event, options ) {

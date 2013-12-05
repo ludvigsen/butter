@@ -151,12 +151,24 @@
 			var context = this;
 			
 			//CREATE OUR CONTAINER AND STYLE IT
+			var promoContainer = document.createElement( "div" );
+			promoContainer.style.width="100%";
+			promoContainer.style.top="0";
+			promoContainer.style.position="absolute";
+			promoContainer.style.bottom="0";
+			promoContainer.style.overflow="hidden";
+			promoContainer.setAttribute("id", "promoContainer");
+
+
 			var promoBackground = document.createElement( "div" );
 			promoBackground.setAttribute("id", "promoBackground");
 			promoBackground.classList.add( "off" );
-			options.promoBackground=promoBackground
-			target.appendChild( promoBackground ); 
-			options._container=promoBackground; 	//we have to add that line so that editor gets access
+			options.promoBackground=promoBackground;
+
+			promoContainer.appendChild(promoBackground);
+
+			target.appendChild( promoContainer ); 
+			options._container=promoContainer; 	//we have to add that line so that editor gets access
 			options.toString = function() {
 			   //this is the value that shows up in the track editor text
 				var str="Promo-label";

@@ -15,6 +15,8 @@ define(["text!dialog/dialogs/profile.html", "dialog/dialog", "util/xhr", "util/l
 				translationType,
 				savingDiv = rootElement.querySelector('#saving'),
 				organizationDiv = rootElement.querySelector('#organization'),
+				displayNameDiv=rootElement.querySelector('#displayName'),
+				twitterHandleDiv=rootElement.querySelector('#twitterHandle'),
 				translationTypeSelectElement=rootElement.querySelector('.profile-translationType-select');
 
 			/////////////////////STANDARD DIALOG CODE
@@ -70,6 +72,24 @@ define(["text!dialog/dialogs/profile.html", "dialog/dialog", "util/xhr", "util/l
 			}
 			organizationDiv.innerHTML=organizationText;
 			/////////////////////END UPDATING OUR 'ORGANIZATION' DISPLAY
+
+			/////////////////////UPDATE OUR 'twitterHandle' DISPLAY
+			var twitterHandle="";
+			if (data.account.twitterHandle && data.account.twitterHandle != "") {
+				twitterHandle = data.account.twitterHandle;
+			}
+			twitterHandleDiv.innerHTML=twitterHandle; 
+			/////////////////////END UPDATING OUR 'twitterHandle' DISPLAY
+
+			/////////////////////UPDATE OUR 'twitterHandle' DISPLAY
+			var displayName="";
+			if (data.account.displayName && data.account.displayName != "") {
+				displayName = data.account.displayName;
+			}
+			displayNameDiv.innerHTML=displayName;
+			/////////////////////END UPDATING OUR 'twitterHandle' DISPLAY
+
+
 			
 			/////////////////////CREATE OUR 'translationTypeSelectElement' DROPDOWN
 			//SEQUELIZE isn't making it easy for us to specify a default value for translationType
@@ -89,11 +109,29 @@ define(["text!dialog/dialogs/profile.html", "dialog/dialog", "util/xhr", "util/l
 			translationTypeSelectElement.addEventListener("change", function (e) {
 				var newTranslationType=e.target.value;
 				// translation type as " + newTranslationType;
-				console.log("saving translationType as " + newTranslationType);
 				savingDiv.innerHTML = "SAVING";
 				savingDiv.style.display = "";
 				data.account.translationType = newTranslationType;
 				saveAccount();
 			});
+
+			//make sure not to put this inside the languages loop, as it will end up getting called once per lang!
+			displayNameDiv.addEventListener("change", function (e) {
+				var displayName=e.target.value;
+				// translation type as " + newTranslationType;
+				savingDiv.innerHTML = "SAVING";
+				savingDiv.style.display = "";
+				data.account.displayName = displayName;
+				saveAccount();
+			});
+			twitterHandleDiv.addEventListener("change", function (e) {
+				var twitterHandle=e.target.value;
+				// translation type as " + newTranslationType;
+				savingDiv.innerHTML = "SAVING";
+				savingDiv.style.display = "";
+				data.account.twitterHandle = twitterHandle;
+				saveAccount();
+			});
+
 		});
 	});

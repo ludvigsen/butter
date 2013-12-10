@@ -21,6 +21,8 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
         organization_id = "",
         language_id = "",
         translationType,
+        twitterHandle,
+        displayName,
         self = this,
         _email,
         _authenticated,
@@ -63,12 +65,13 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
 	    			}
 	    		}
     		} else {
-    			//console.log("getProfile in kettlecornfield.js returns " + response.organization_id + " from the server");
-                hasProfile = true;
+    			hasProfile = true;
     			email = response.email;
     			language_id = response.language_id;
     			organization_id = response.organization_id;
                 translationType=response.translationType;
+                twitterHandle=response.twitterHandle;
+                displayName=response.displayName;
     			
                 if (callback) {
     				callback();
@@ -164,6 +167,12 @@ define( [ "util/xhr","cornfield/module","./account" ], function( xhr, Cornfield,
     }
     this.translationType=function() {
         return translationType;
+    }
+    this.twitterHandle=function() {
+        return twitterHandle;
+    }
+    this.displayName=function() {
+        return displayName;
     }
 
 

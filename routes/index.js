@@ -25,7 +25,6 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
         , to: req.body.lang
       };
       bingTranslationClient.translate(params, function(err, data) {
-        //console.log(data);
         res.send(200,data); 
       });
     } else {
@@ -245,7 +244,7 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
 			  res.json( { error: "404: profile not found" }, 404 );
 			  return;
 		  }
-		  res.json( result );
+      res.json( result );
 	  });
   });
   
@@ -254,11 +253,8 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
 	function (req, res) {
 	  var pd = req.body;
 	 
-
-    Profile.update({email: req.session.email, language_id: pd.language_id, organization_id: pd.organization_id, translationType:pd.translationType}, function(err,doc) {
-		 
+    Profile.update({email: req.session.email, language_id: pd.language_id, organization_id: pd.organization_id, translationType:pd.translationType, twitterHandle:pd.twitterHandle,displayName:pd.displayName}, function(err,doc) {
       /*
-      console.log("here we go");
       console.log("language_id " + pd.language_id);
       console.log("organization_id " + pd.organization_id);
       console.log("translationType " + pd.translationType);

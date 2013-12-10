@@ -4,6 +4,7 @@ define(["text!./languages.json", "text!./organizations.json", "text!./translatio
 		function Account(kettleCornField) {
 			var _this = this,
 				_email, _language_id, _organization_id, _translationType,
+				_twitterHandle,_displayName,
 				_isDirty = false,
 				_languages = JSON.parse(LanguagesData).languages,
 				_organizations = JSON.parse(OrganizationsData).organizations,
@@ -72,6 +73,28 @@ define(["text!./languages.json", "text!./organizations.json", "text!./translatio
 					},
 					enumerable: true
 				},
+				"displayName": {
+					get: function () {
+						return _displayName;
+					},
+					set: function (value) {
+						if (value != _displayName) {
+							_displayName=value;
+						}
+					},
+					enumerable: true
+				},
+				"twitterHandle": {
+					get: function () {
+						return _twitterHandle;
+					},
+					set: function (value) {
+						if (value != _displayName) {
+							_twitterHandle=value;
+						}
+					},
+					enumerable: true
+				},
 				"translationType": {
 					get: function () {
 						return _translationType;
@@ -112,7 +135,9 @@ define(["text!./languages.json", "text!./organizations.json", "text!./translatio
 					email: _email,
 					language_id: _language_id,
 					organization_id: _organization_id,
-					translationType: _translationType
+					translationType: _translationType, 
+					displayName: _displayName,
+					twitterHandle: _twitterHandle
 				};
 				// Save to db, then publish
 				kettleCornField.saveAccount(accountData, function (e) {
@@ -151,6 +176,8 @@ define(["text!./languages.json", "text!./organizations.json", "text!./translatio
 					_this.language_id = kettleCornField.language_id();
 					_this.translationType = kettleCornField.translationType();
 					_this.organization_id = kettleCornField.organization_id();
+					_this.twitterHandle=kettleCornField.twitterHandle();
+					_this.displayName=kettleCornField.displayName();
 					if (callback && typeof callback === "function") {
 						callback();
 					}

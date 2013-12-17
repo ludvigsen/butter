@@ -12,6 +12,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
     var _this = this,
         _id, _name, _template, _author, _description, _dataObject,
         _publishUrl, _iframeUrl, _remixedFrom, _sharePublic,
+        _language_id="en",
 
         // Whether or not a save to server is required (project data has changed)
         _isDirty = false,
@@ -108,6 +109,18 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         set: function( value ) {
           if ( value !== _description ) {
             _description = value;
+            invalidate();
+          }
+        },
+        enumerable: true
+      },
+       "language_id": {
+        get: function() {
+          return _language_id;
+        },
+        set: function( value ) {
+          if ( value !== _language_id ) {
+            _language_id = value;
             invalidate();
           }
         },
@@ -289,6 +302,9 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
       if ( json.sharePublic ) {
     	  _sharePublic = json.sharePublic;
       } 
+      if (json.language_id) {
+        _language_id=json.language_id;
+      }
 
       targets = json.targets;
       if ( targets && Array.isArray( targets ) ) {
@@ -354,6 +370,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
       data.thumbnail = _thumbnail;
       data.backupDate = Date.now();
       data.sharePublic = _sharePublic;
+      data.language_id = _language_id;
       try {
         __butterStorage.setItem( "butter-backup-project", JSON.stringify( data ) );
         _needsBackup = false;
@@ -394,7 +411,8 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         thumbnail: _thumbnail,
         remixedFrom: _remixedFrom,
         sharePublic: _sharePublic,
-        data: _this.data
+        data: _this.data,
+        language_id: _language_id
       };
 
       // Save to local storage first in case network is down.

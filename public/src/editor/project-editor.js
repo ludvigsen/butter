@@ -5,8 +5,10 @@
 define([ "editor/editor", "editor/base-editor",
           "text!layouts/project-editor.html",
           "util/social-media", "ui/widget/textbox",
-          "ui/widget/tooltip" ],
-  function( Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip ) {
+          "ui/widget/tooltip",
+          
+          "util/lang","text!profile/languages.json", "text!profile/language_select_option.html" ],
+  function( Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, Lang, LANGUAGES, LANGUAGE_SELECT_OPTION) {
 
   Editor.register( "project-editor", LAYOUT_SRC, function( rootElement, butter ) {
     var _rootElement = rootElement,
@@ -33,7 +35,9 @@ define([ "editor/editor", "editor/base-editor",
         _descriptionTimeout,
         _project,
         _projectTab,
-        _idx;
+        _idx,
+        _languages = JSON.parse(LANGUAGES).languages,
+        languagesSelectElement = rootElement.querySelector('.project-language-select');
 
     _authorInput.value = butter.project.author ? butter.project.author : "";
     _descriptionInput.value = butter.project.description ? butter.project.description : "";
@@ -52,6 +56,36 @@ define([ "editor/editor", "editor/base-editor",
     });
 
     _descriptionToolTip = ToolTip.get( "description-tooltip" );
+
+
+    /////////////////////CREATE OUR 'LANGUAGES' DROPDOWN
+      for (i = 0; i < _languages.length; i++) {
+        language = _languages[i];
+
+        if (_languages[i].enableTranslation == "true") {
+					langSelectOption = Lang.domFragment(LANGUAGE_SELECT_OPTION);
+					langSelectInput = langSelectOption.querySelector('option');
+         
+          if (language.id == butter.project.language_id) {
+            langSelectInput.setAttribute("selected", true);
+          }
+          
+          langSelectInput.value = language.id;
+
+          langSelectInput.innerHTML = language.name;
+          languagesSelectElement.appendChild(langSelectInput);
+        }
+      }
+    //make sure not to put this inside the languages loop, as it will end up getting called once per lang!
+		languagesSelectElement.addEventListener("change", function (e) {
+			var language_id = e.target.value;
+			_project.language_id=language_id;
+      _project.save(function() {
+        butter.editor.openEditor( "project-editor" );
+        checkDescription();
+      });
+		});  
+
 
     function checkDescription() {
       if ( _descriptionInput.value ) {

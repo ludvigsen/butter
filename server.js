@@ -252,6 +252,11 @@ app.post( '/api/publish/:id',
       templateScripts = data.substring( headStartTagIndex, headEndTagIndex );
       startString = data.substring( 0, headStartTagIndex );
 
+      // #POP-229 HTML title of project pages
+      titleStartTagIndex = templateScripts.indexOf( '<title>' ) + 7;
+      titleEndTagIndex = templateScripts.indexOf( '</title>' );
+      templateScripts = templateScripts.substring(1,titleStartTagIndex) + project.name + templateScripts.substring(titleEndTagIndex);
+
       // If the template has custom plugins defined in it's config, add them to our exported page
       if ( templateConfig.plugin && templateConfig.plugin.plugins ) {
         var plugins = templateConfig.plugin.plugins;

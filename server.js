@@ -327,43 +327,73 @@ app.post( '/api/publish/:id',
         }
       }
 
-      function publishEmbedShell() {
-        // Write out embed shell HTML
-        writeEmbedShell( idBase36, publishUrl,
-                         {
-                           author: project.author,
-                           projectName: project.name,
-                           description: project.description,
-                           embedShellSrc: publishUrl,
-                           embedSrc: iframeUrl,
-                           baseHref: APP_HOSTNAME,
-                           thumbnail: project.thumbnail
-                         },
-                         finished );
-      }
+    function formatAuthorName(profile, makeTwitterLink) {
+		var authorName="";
+    	if (profile.displayName && profile.displayName != "") {
+			authorName += profile.displayName + " ";
+		}
+		if (profile.twitterHandle && profile.twitterHandle != "") {
+			var twitterHandleStr="";
+			if (profile.twitterHandle.indexOf("@") == -1) {
+				twitterHandleStr = "@" + profile.twitterHandle;
+			} else {
+				twitterHandleStr =  profile.twitterHandle; 
+			}
+			if (makeTwitterLink) {
+				//in the embed page, the quotes seems to escape the text, so the link doesn't work, so taking this out
+				//twitterHandleStr = "<a target='_blank' href='http://twitter.com/" + twitterHandleStr + "'>"+twitterHandleStr+"</a>";
+			}
+			authorName += twitterHandleStr;
+		}
+		if (authorName == "") {
+			authorName = "kettleUser_" + profile.id;
+		}
+		return authorName;
+    }
 
+    function publishEmbedShell() {
+    	// Write out embed shell HTML
+    	Profile.find( req.session.email, function( err, profile ) {
+			
+			writeEmbedShell( idBase36, publishUrl,
+				{
+					author: formatAuthorName(profile, false),
+					projectName: project.name,
+					description: project.description,
+					embedShellSrc: publishUrl,
+					embedSrc: iframeUrl,
+					baseHref: APP_HOSTNAME,
+					thumbnail: project.thumbnail
+				},
+			finished );
+
+		});
+	}
+
+		Profile.find( req.session.email, function( err, profile ) {
       // This is a query string-only URL because of the <base> tag
-      var remixUrl = "?savedDataUrl=/api/remix/" + project.id,
-          mediaUrl = projectData.media[ 0 ].url,
-          attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
+		      var remixUrl = "?savedDataUrl=/api/remix/" + project.id,
+		          mediaUrl = projectData.media[ 0 ].url,
+		          attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
 
-      writeEmbed( idBase36 + utils.constants().EMBED_SUFFIX, iframeUrl,
-                  {
-                    id: id,
-                    author: project.author,
-                    title: project.name,
-                    description: project.description,
-                    mediaSrc: attribURL,
-                    embedShellSrc: publishUrl,
-                    baseHref: baseHref,
-                    remixUrl: remixUrl,
-                    templateScripts: templateScripts,
-                    externalAssets: externalAssetsString,
-                    popcorn: popcornString,
-                    thumbnail: project.thumbnail
-                  },
-                  publishEmbedShell );
-
+		      console.log("writeEmbed with " + formatAuthorName(profile));
+		      writeEmbed( idBase36 + utils.constants().EMBED_SUFFIX, iframeUrl,
+		                  {
+		                    id: id,
+		                    author: formatAuthorName(profile,true),
+		                    title: project.name,
+		                    description: project.description,
+		                    mediaSrc: attribURL,
+		                    embedShellSrc: publishUrl,
+		                    baseHref: baseHref,
+		                    remixUrl: remixUrl,
+		                    templateScripts: templateScripts,
+		                    externalAssets: externalAssetsString,
+		                    popcorn: popcornString,
+		                    thumbnail: project.thumbnail
+		                  },
+		                  publishEmbedShell );
+		});
     });
   });
 });

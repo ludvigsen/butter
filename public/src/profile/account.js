@@ -89,7 +89,7 @@ define(["text!./languages.json", "text!./organizations.json", "text!./translatio
 						return _twitterHandle;
 					},
 					set: function (value) {
-						if (value != _displayName) {
+						if (value != _twitterHandle) {
 							_twitterHandle=value;
 						}
 					},

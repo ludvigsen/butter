@@ -450,7 +450,11 @@ app.get( '/dashboard', filter.isStorageAvailable, function( req, res ) {
 });
 
 app.get('/gallery',filter.isStorageAvailable, function(req, res) {
-	options = {
+
+    res.redirect(301, "http://oddi.bbg.gov/showcase");
+  
+	/*
+  options = {
 		limit: 30,
 		published: true
 	};
@@ -478,6 +482,7 @@ app.get('/gallery',filter.isStorageAvailable, function(req, res) {
 			projects: recentProjects
 		});
 	});
+*/
 });
 
 app.all(/.*/, function(req, res, next) {

@@ -1,0 +1,130 @@
+.popcorn-text {
+  color: #FFF;
+  font-size: 22.5em;
+}
+
+.popcorn-text.off {
+  visibility: hidden;
+}
+
+.text-inner-div a {
+  text-decoration: none;
+  color:#F8ED31;
+}
+.text-inner-div a:after {
+  content: "";
+  display: inline-block;
+  opacity: 0.6;
+  background-position: -336px -96px;
+  background-image: url( "../../../../resources/icons/glyphiconshalflings-green.png" );
+  width: 14px;
+  height: 14px;
+}
+.text-inner-div a:hover {
+  text-decoration: underline;
+}
+.text-inner-div a:hover:after {
+  opacity: 1;
+}
+.text-inner-div a:visited {
+  color: #F8ED31;
+}
+
+
+.text-fixed {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+.text-fixed > div {
+  display: table;
+  vertical-align: middle; 
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.text-fixed > div > span {
+  display: table-cell;
+  /*padding: 20px;*/
+  padding: 0px;
+  line-height: 1;
+}
+
+.text-fixed > div > span > div {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.center > span {
+  text-align: center;
+}
+
+.middle > span {
+  vertical-align: middle; 
+}
+
+.right > span {
+  text-align: right;
+}
+
+.left > span {
+  text-align: left;
+}
+
+.bottom > span {
+  vertical-align: bottom;
+}
+
+.top > span {
+  vertical-align: top;
+}
+
+.text-custom {
+  display: inline-block;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.text-custom > div > span {
+  display: block;
+  width: 100%;
+  line-height: 1;
+  cursor: default;
+}
+
+.text-inner-div > span > p,
+.text-inner-div > span > div,
+.text-inner-div > span > div > p {
+	margin: 0;
+	padding: 0;
+}
+
+.text-inner-div > span > p + p,
+.text-inner-div > span > div + p,
+.text-inner-div > span > div > p + p {
+	margin-top: 1em;
+}
+
+[contenteditable="true"]:focus {
+  outline: none;
+}
+
+.popcorn-subtitles > div > span > div{
+background: rgb(25, 25, 25);
+background: rgba(25, 25, 25, .7);
+color: #FFF;
+font-family: open sans;
+font-weight: normal;
+font-size: .5em;
+/*padding: 20px 40px !important;*/
+padding: 20px 5px !important;
+text-align: center;
+}
+
+.RTL {
+  direction: rtl;
+}

@@ -13,7 +13,8 @@
     "wikipedia": "{{baseDir}}templates/assets/editors/wikipedia/wikipedia-editor.js",
     "lowerThird": "{{baseDir}}templates/assets/editors/lowerThird/lowerThird-editor.js",
     "audioKeyframe": "{{baseDir}}templates/assets/editors/audioKeyframe/audioKeyframe-editor.js",
-    "sketchfab": "{{baseDir}}templates/assets/editors/sketchfab/sketchfab-editor.js"
+    "sketchfab": "{{baseDir}}templates/assets/editors/sketchfab/sketchfab-editor.js",
+    "subtitles": "{{baseDir}}templates/assets/editors/subtitles/subtitles-editor.js"
 
   },
   "plugin": {
@@ -51,6 +52,12 @@
         "optional": true,
         "displayName": "3d",
         "icon": "{{baseDir}}templates/assets/plugins/sketchfab/sketchfab-icon.png"
+      },
+       {
+        "type": "subtitles",
+        "displayName": "Subtitles",
+        "optional": true,
+        "icon": "{{baseDir}}templates/assets/plugins/subtitles/subtitles-icon.png"
       },
        {
         "type": "promo",

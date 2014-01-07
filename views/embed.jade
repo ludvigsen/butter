@@ -99,10 +99,24 @@ html(lang='en')
         span.attribution-close
         div.attribution-mopop KettleCorn
         div.attribution-title #{title}
+        div.attribution-author-displayname 
+          span.container-label BY
+          div.data-container 
+            a.authorNameLink(href='http://oddi.bbg.gov/showcase/?userID=#{authorUserID}', target='_blank') #{authorDisplayName}
+            if authorTwitterHandle != ""
+              | &nbsp; 
+              a.authorTwitterLink(href='http://twitter.com/#{authorTwitterHandle}/', target='_blank') (#{authorTwitterHandle})
         if author
-          div.attribution-author #{author}
+          // div.attribution-author #{author}
         div.attribution-media
           span.media-icon
           a.attribution-media-src(href='#{mediaSrc}', target='_blank') #{mediaSrc}
         div.attribution-extra
+        if remixedFromName != ""
+          div.attribution-remix
+            span.container-label REMIX OF
+            div.data-container 
+              span.remixedProjectName #{remixedFromName}
+              | &nbsp; by &nbsp;
+              a.remixAuthorNameLink(href='http://oddi.bbg.gov/showcase/?userID=#{remixedFromUserID}', target='_blank') #{remixedFromAuthorName}
     #controls.controls

@@ -12,7 +12,7 @@ var express = require('express'),
     requirejsMiddleware = require( 'requirejs-middleware' ),
     config = require( './lib/config' ),
     DB = require('./lib/models/index')(config.database),
-    Project = require( './lib/project' )( DB.models.project ),
+    Project = require( './lib/project' )( DB.models.project, DB.models.profile ),
     Profile = require( './lib/profile' )( DB.models.profile ),
     filter = require( './lib/filter' )( DB.isDBOnline ),
     sanitizer = require( './lib/sanitizer' ),
@@ -24,9 +24,6 @@ var express = require('express'),
     APP_HOSTNAME = config.hostname,
     WWW_ROOT = path.resolve( __dirname, config.dirs.wwwRoot ),
     VALID_TEMPLATES = config.templates;
-
-
-
 
 var templateConfigs = {};
 
@@ -168,7 +165,7 @@ function writeEmbedShell( embedPath, url, data, callback ) {
 }
 
 function writeEmbed( embedPath, url, data, callback ) {
-  if( !writeEmbed.templateFn ) {
+  if( !writeEmbed.templateFn ) { 
     writeEmbed.templateFn = jade.compile( fs.readFileSync( path.resolve( __dirname, 'views/embed.jade' ), 'utf8' ),
                                           { filename: 'embed.jade', pretty: true } );
   }
@@ -327,29 +324,7 @@ app.post( '/api/publish/:id',
         }
       }
 
-    function formatAuthorName(profile, makeTwitterLink) {
-		var authorName="";
-    	if (profile.displayName && profile.displayName != "") {
-			authorName += profile.displayName + " ";
-		}
-		if (profile.twitterHandle && profile.twitterHandle != "") {
-			var twitterHandleStr="";
-			if (profile.twitterHandle.indexOf("@") == -1) {
-				twitterHandleStr = "@" + profile.twitterHandle;
-			} else {
-				twitterHandleStr =  profile.twitterHandle; 
-			}
-			if (makeTwitterLink) {
-				//in the embed page, the quotes seems to escape the text, so the link doesn't work, so taking this out
-				//twitterHandleStr = "<a target='_blank' href='http://twitter.com/" + twitterHandleStr + "'>"+twitterHandleStr+"</a>";
-			}
-			authorName += twitterHandleStr;
-		}
-		if (authorName == "") {
-			authorName = "kettleUser_" + profile.id;
-		}
-		return authorName;
-    }
+    
 
     function publishEmbedShell() {
     	// Write out embed shell HTML
@@ -357,7 +332,7 @@ app.post( '/api/publish/:id',
 			
 			writeEmbedShell( idBase36, publishUrl,
 				{
-					author: formatAuthorName(profile, false),
+					author: project.author,
 					projectName: project.name,
 					description: project.description,
 					embedShellSrc: publishUrl,
@@ -371,28 +346,76 @@ app.post( '/api/publish/:id',
 	}
 
 		Profile.find( req.session.email, function( err, profile ) {
-      // This is a query string-only URL because of the <base> tag
-		      var remixUrl = "?savedDataUrl=/api/remix/" + project.id,
-		          mediaUrl = projectData.media[ 0 ].url,
-		          attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
+			// This is a query string-only URL because of the <base> tag
+			var remixUrl = "?savedDataUrl=/api/remix/" + project.id,
+				mediaUrl = projectData.media[ 0 ].url,
+				attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
 
-		      console.log("writeEmbed with " + formatAuthorName(profile));
-		      writeEmbed( idBase36 + utils.constants().EMBED_SUFFIX, iframeUrl,
-		                  {
-		                    id: id,
-		                    author: formatAuthorName(profile,true),
-		                    title: project.name,
-		                    description: project.description,
-		                    mediaSrc: attribURL,
-		                    embedShellSrc: publishUrl,
-		                    baseHref: baseHref,
-		                    remixUrl: remixUrl,
-		                    templateScripts: templateScripts,
-		                    externalAssets: externalAssetsString,
-		                    popcorn: popcornString,
-		                    thumbnail: project.thumbnail
-		                  },
-		                  publishEmbedShell );
+				var remixedFromID="", 
+					remixedFromAuthorName="", 
+					remixedFromName="",
+					remixedFromUserID="",
+					authorDisplayName="",
+					authorTwitterHandle="",
+					authorUserID="";
+
+				if (typeof project.remixedFrom != 'undefined') {
+					remixedFromID=project.remixedFrom;
+				}
+				if (typeof project.remixedFromAuthorName != 'undefined') {
+					remixedFromAuthorName=project.remixedFromAuthorName;
+				}
+				if (typeof project.remixedFromName != 'undefined') {
+					remixedFromName=project.remixedFromName;
+				}
+				if (typeof project.remixedFromUserID != 'undefined') {
+					remixedFromUserID=project.remixedFromUserID;
+				}
+				if (typeof profile.displayName != 'undefined') {
+					authorDisplayName=profile.displayName;
+				}
+				if (typeof profile.twitterHandle != 'undefined') {
+					authorTwitterHandle=profile.twitterHandle;
+					if (authorTwitterHandle != "" && authorTwitterHandle.indexOf("@") == -1) {
+						authorTwitterHandle = "@" + authorTwitterHandle;
+					}
+				}
+				if (typeof profile.id != 'undefined') {
+					authorUserID=profile.id;
+				}
+
+				//sub in kettleuser-x for empty display names
+				if (authorDisplayName == "" && authorUserID != "") {
+					authorDisplayName = "kettleUser-" + authorUserID;
+				} 
+				if (remixedFromAuthorName == "" && remixedFromUserID != "") {
+					remixedFromAuthorName = "kettleUser-" + remixedFromUserID;
+				} 
+
+
+			writeEmbed( idBase36 + utils.constants().EMBED_SUFFIX, iframeUrl,
+				{
+					id: id,
+					author: project.author,
+					remixedFromID: remixedFromID,
+					remixedFromAuthorName: remixedFromAuthorName,
+					remixedFromName: remixedFromName,
+					remixedFromUserID:remixedFromUserID,
+					authorDisplayName: authorDisplayName,
+					authorTwitterHandle: authorTwitterHandle,
+					authorUserID: authorUserID,
+					title: project.name,
+					description: project.description,
+					mediaSrc: attribURL,
+					embedShellSrc: publishUrl,
+					baseHref: baseHref,
+					remixUrl: remixUrl,
+					templateScripts: templateScripts,
+					externalAssets: externalAssetsString,
+					popcorn: popcornString,
+					thumbnail: project.thumbnail				
+				},
+				publishEmbedShell );
 		});
     });
   });
@@ -450,39 +473,8 @@ app.get( '/dashboard', filter.isStorageAvailable, function( req, res ) {
 });
 
 app.get('/gallery',filter.isStorageAvailable, function(req, res) {
-
     res.redirect(301, "http://oddi.bbg.gov/showcase");
-  
-	/*
-  options = {
-		limit: 30,
-		published: true
-	};
-	Project.findRecentlyCreated(options, function (err,docs) {
-		var recentProjects = [];
-		docs.forEach(function(project) {
-			if (project.template && VALID_TEMPLATES[project.template]) {
-				recentProjects.push({
-					_id: String(project.id),
-					name: sanitizer.escapeHTML(project.name),
-					author: project.author,
-					template: project.template,
-					href: utils.generatePublishUrl(project.id),
-					createdAt: new Date(project.createdAt).toDateString(),
-					updatedAt: new Date(project.updatedAt).toDateString(),
-					description: sanitizer.escapeHTML(project.description),
-					thumbnail: project.thumbnail,
-					remixedFrom: project.remixedFrom,
-					remixHref: utils.pathToURL(path.relative(WWW_ROOT, templateConfigs[project.template].template) + "?savedDataUrl=/api/remix/" + project.id)
-				});
-			}
-		});
-		
-		res.render('gallery.jade', {
-			projects: recentProjects
-		});
-	});
-*/
+    //if you're interested it seeing how the gallery was originally built, look at old versions of this function in github
 });
 
 app.all(/.*/, function(req, res, next) {

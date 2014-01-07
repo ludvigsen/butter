@@ -714,12 +714,12 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
       // Grab the element with class 'property-name' to supply the archetype for new manifest entries
       if ( propertyArchetype.querySelector( ".property-name" ) ) {
         var labelObj=propertyArchetype.querySelector( ".property-name" ) 
-        if (name=="spreadsheetKey") {
-          
+        if (name=="spreadsheetKey" && trackEvent.popcornTrackEvent._natives.plugin == "subtitles") {
+          //labelObj.innerHTML = itemLabel + " (ex 0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c)";
+          labelObj.innerHTML = itemLabel + " (<a target='_blank' href='https://drive.google.com/previewtemplate?id=0AiJKIpWZPRwSdEFVTk5NaEwyOGJTR29jQWs0WXplZWc&mode=public'>Template</a>)";
+        } else if (name=="spreadsheetKey" && trackEvent.popcornTrackEvent._natives.plugin == "googlemap") {
           //labelObj.innerHTML = itemLabel + " (ex 0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c)";
           labelObj.innerHTML = itemLabel + " (<a target='_blank' href='https://docs.google.com/previewtemplate?id=0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c&mode=public'>Template</a>)";
-
-
         } else if (name=="headline1") {
            //propertyArchetype.querySelector( ".property-name" ).innerHTML = "<HR style='margin-top:-5px; color:#000;background-color:#000;'>" + itemLabel
            propertyArchetype.querySelector( ".property-name" ).innerHTML = "<h3>Promo 1</h3>" + itemLabel

@@ -8,6 +8,7 @@ var googleCallback;
 	// We'll need to watch for this. NOTE: if you change the location of this file, the path
 	// below needs to reflect that change.
 	var STAMEN_BUTTER_CACHED_URL = "/external/stamen/tile.stamen-1.2.0.js";
+	var SHEET_NAME_NOT_FOUND = "SHEET_NAME_NOT_FOUND";
 
 	var _mapFired = false,
 		_mapLoaded = false,
@@ -108,9 +109,10 @@ var googleCallback;
 
 	//http://www.joezimjs.com/javascript/3-ways-to-parse-a-query-string-in-a-url/
 	function parseQueryString ( fullUrl ) {
+		console.log("paraseQueryString! " + fullUrl);
 		var params = {}, queries, temp, i, l;
 
-		var fullUrlObj=fullUrl.split("?");
+		var fullUrlObj=fullUrl.split("?"); 
 		//console.log("parseQueryString with " + fullUrl);
 		
 		if (fullUrlObj.length < 2) {
@@ -384,6 +386,33 @@ var googleCallback;
 				} //end anonymous callback
 			);
 		}	//end loadSpreadsheet
+		function getWorksheetIDFromSheetName(gwidUrl,sheetName,gwidCallback) {
+			Popcorn.getJSONP(
+				gwidUrl,
+				function( data ) {
+					var entries=data.feed.entry;
+					var wsID=SHEET_NAME_NOT_FOUND;
+					//If we only have a single sheet name, we ignore whatever the user has entered as the name and just grab the first
+					if(entries.length==1) {
+						var o=entries[0];
+						var idStr= o.id["$t"];
+						var idArray=idStr.split("/");
+						wsID=idArray[idArray.length-1];
+					} else {
+						for (i=0; i< entries.length; i++) {
+							var o=entries[i];
+							var sheetTitle=o.title["$t"];
+							if (sheetTitle.toLowerCase() == sheetName.toLowerCase()) {
+								var idStr= o.id["$t"];
+								var idArray=idStr.split("/");
+								wsID=idArray[idArray.length-1];
+							}
+						}
+					}
+					gwidCallback(wsID);
+				} //end anonymous callback
+			);
+		}	//end getWorksheetIDFromSheetName
 		
 		function removeExistingMarkersFromMap() {
 			mfs=markersFromSpreadsheet;
@@ -465,15 +494,27 @@ var googleCallback;
 					if (keyVal == null) {
 						keyVal="";
 					}
-					//https://docs.google.com/spreadsheet/ccc?key=0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c&usp=drive_web#gid=0
-					var loc = "https://spreadsheets.google.com/feeds/list/" + keyVal + "/od6/public/values?alt=json-in-script&callback=jsonp";
-					//console.log("request spreadsheet from " + loc);
-					
-					loadSpreadsheet(loc,function(lsData) {
-						mapDataFromSpreadsheet=lsData;
-						//create all of our markers and infoWindows.  
-						placeMarkersWhenMapReady(mapDataFromSpreadsheet);
-					})
+
+					//0ArATI2avgxwzdEdkUl9hdDNMUVR5eHlxcXl4ZG5KeUE
+					//https://docs.google.com/spreadsheet/pub?key=0ArATI2avgxwzdEdkUl9hdDNMUVR5eHlxcXl4ZG5KeUE&output=html
+					var sheetListURL="http://spreadsheets.google.com/feeds/worksheets/"+ keyVal + "/public/basic?alt=json-in-script";
+					var sheetName="Sheet1";
+					if ("spreadsheetWorksheetName" in options) {
+						sheetName=options.spreadsheetWorksheetName;
+					}
+					//console.log("making the gwid call from setup");
+					getWorksheetIDFromSheetName(sheetListURL,sheetName,function(wsID) {
+						if (wsID ==  SHEET_NAME_NOT_FOUND) {
+							//console.log("sheet " + sSheetName + " not found"); 
+						} else {
+							//console.log("we found " + sSheetName + " with id " + wsID);
+							var loc = "https://spreadsheets.google.com/feeds/list/" + keyVal + "/" + wsID+"/public/values?alt=json-in-script&callback=jsonp";
+							loadSpreadsheet(loc,function(lsData) {
+								mapDataFromSpreadsheet=lsData;
+								placeMarkersWhenMapReady(mapDataFromSpreadsheet);
+							})
+						}
+					});
 				}
 
 				lastFrameTime=-1;
@@ -829,6 +870,7 @@ var googleCallback;
 				var newInfoWindowOpen = ("infoWindowOpen" in options); 
 				var newSpreadskeetKey= ("spreadsheetKey" in options); 
 				var newInfoWindowIsRTL = ("infoWindowIsRTL" in options); 
+				var newSpreadsheetWorksheetName = ("spreadsheetWorksheetName" in options); 
 				
 				//if they toggled either the title or description, we have to redraw the bubble's contents
 				if (newTitle || newDesc || newInfoWindowIsRTL) {
@@ -864,9 +906,24 @@ var googleCallback;
 				} 
 
 				//if they added or removed the spreadsheet key, update appropriately
-				if (newSpreadskeetKey) {
+				if (newSpreadskeetKey || newSpreadsheetWorksheetName) {
 					removeExistingMarkersFromMap()
-					if (options.spreadsheetKey != "") {
+
+					var sKey=trackEvent.spreadsheetKey;
+					if (newSpreadskeetKey) {
+						sKey=options.spreadsheetKey;
+						trackEvent.spreadsheetKey = options.spreadsheetKey;
+					}
+
+					var sSheetName="Sheet1";
+					if ("spreadsheetWorksheetName" in options) {
+						sSheetName = options.spreadsheetWorksheetName;
+						trackEvent.spreadsheetWorksheetName=options.spreadsheetWorksheetName; 
+					} else if ("spreadsheetWorksheetName" in trackEvent) {
+						sSheetName=trackEvent.spreadsheetWorksheetName;
+					} 
+					
+					if (sKey != "" && sSheetName != "" ) {
 						//in this case, we either added a spreadsheet key when we didn't have one, or we changed the spreadsheet key
 						//reload the spreadsheet then place the markers again
 
@@ -876,20 +933,26 @@ var googleCallback;
 							marker.setMap(null);
 						}
 
-						var qParams=parseQueryString(options.spreadsheetKey);
+						var qParams=parseQueryString(sKey);
 						var keyVal=qParams["key"];
 						if (keyVal == null) {
 							keyVal="";
 						}
-						var loc = "https://spreadsheets.google.com/feeds/list/" + keyVal + "/od6/public/values?alt=json-in-script&callback=jsonp";
-						//console.log("request spreadsheet from " + loc);
-					
 
-						loadSpreadsheet(loc,function(lsData) {
-							mapDataFromSpreadsheet=lsData;
-							placeMarkersWhenMapReady(mapDataFromSpreadsheet);
-						})
-
+						//0ArATI2avgxwzdEdkUl9hdDNMUVR5eHlxcXl4ZG5KeUE
+						//https://docs.google.com/spreadsheet/pub?key=0ArATI2avgxwzdEdkUl9hdDNMUVR5eHlxcXl4ZG5KeUE&output=html
+						var sheetListURL="http://spreadsheets.google.com/feeds/worksheets/"+ keyVal + "/public/basic?alt=json-in-script";
+						getWorksheetIDFromSheetName(sheetListURL,sSheetName,function(wsID) {
+							if (wsID.toLowerCase() ==  SHEET_NAME_NOT_FOUND.toLowerCase()) {
+							} else {
+								var loc = "https://spreadsheets.google.com/feeds/list/" + keyVal + "/" + wsID+"/public/values?alt=json-in-script&callback=jsonp";
+								loadSpreadsheet(loc,function(lsData) {
+									mapDataFromSpreadsheet=lsData;
+									placeMarkersWhenMapReady(mapDataFromSpreadsheet);
+								})
+							}
+						});
+						
 					} else {
 						/* in this case we removed a spreadsheet key while in editor.  
 						   We are thus reverting to whatever is stored for location
@@ -1112,7 +1175,7 @@ var googleCallback;
 			website: "annasob.wordpress.com, http://github.com/mjschranz",
 			//attribution: "Map tiles by <a target=\"_blank\" href=\"http://stamen.com\">Stamen Design</a>," + "under <a target=\"_blank\" href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a>. " + "Data by <a target=\"_blank\" href=\"http://openstreetmap.org\">OpenStreetMap</a>, " + "under <a target=\"_blank\" href=\"http://creativecommons.org/licenses/by-sa/3.0\">CC BY SA</a>."
 			//this attribution is displayed when you click  the quotes in an embedded kettlecorn project
-			attribution: "Map data from <a target\"_blank\" href=\"http://maps.google.com\">Google</a>"
+			attribution: "Map data from Google"
 		},
 		options: {
 			start: {
@@ -1210,6 +1273,14 @@ var googleCallback;
 				label: "Google Spreadsheet URL",
 				group:"advanced",
 				"default":""
+				//,tooltip: "0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c"
+			},
+			spreadsheetWorksheetName: {
+				elem: "input",
+				type:"text",
+				label: "Worksheet ID (example: Sheet1)",
+				group:"advanced",
+				"default":"Sheet1"
 				//,tooltip: "0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c"
 			},
 			transition: {

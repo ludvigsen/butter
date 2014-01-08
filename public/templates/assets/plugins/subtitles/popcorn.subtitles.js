@@ -13,6 +13,7 @@
 	var DEFAULT_FONT_COLOR = "#000000",
 		DEFAULT_SHADOW_COLOR = "#444444",
 		DEFAULT_BACKGROUND_COLOR = "#888888";
+	var SHEET_NAME_NOT_FOUND = "SHEET_NAME_NOT_FOUND";	
 
 	/* toSeconds can be found in util time library  */
    
@@ -69,6 +70,7 @@ function getCurrentSubtitle(time) {
 
 //Loading the spreadsheet
 	function loadSpreadsheet(lsUrl,lsCallback) {
+		console.log("loadSpreadsheet " + lsUrl);
 		Popcorn.getJSONP(
 			lsUrl,
 			function( data ) {
@@ -86,9 +88,37 @@ function getCurrentSubtitle(time) {
 			} //end anonymous callback
 		);
 	}	//end loadSpreadsheet
+	function getWorksheetIDFromSheetName(gwidUrl,sheetName,gwidCallback) {
+		console.log("loadSpreadsheet " + gwidUrl);
+		Popcorn.getJSONP(
+			gwidUrl,
+			function( data ) {
+				var entries=data.feed.entry;
+				var wsID=SHEET_NAME_NOT_FOUND;
+				//If we only have a single sheet name, we ignore whatever the user has entered as the name and just grab the first
+				if(entries.length==1) {
+					var o=entries[0];
+					var idStr= o.id["$t"];
+					var idArray=idStr.split("/");
+					wsID=idArray[idArray.length-1];
+				} else {
+					for (i=0; i< entries.length; i++) {
+						var o=entries[i];
+						var sheetTitle=o.title["$t"];
+						if (sheetTitle.toLowerCase() == sheetName.toLowerCase()) {
+							var idStr= o.id["$t"];
+							var idArray=idStr.split("/");
+							wsID=idArray[idArray.length-1];
+						}
+					}
+				}
+				gwidCallback(wsID);
+			} //end anonymous callback
+		);
+	}	//end getWorksheetIDFromSheetName
 
-//Parse spreadsheet
-function parseSpreadsheetLine(str) {
+	//Parse spreadsheet
+	function parseSpreadsheetLine(str) {
 
 		//the format returned from google's jsonp is TERRIBLE.  as a result we do some really ugly parsing
 		//I originally had a more elegant solution but when values contain the delimiters (comma or semicolon) it wasn't working
@@ -97,63 +127,7 @@ function parseSpreadsheetLine(str) {
 		//var props=str.split(",");
 		var newstr="";
 		var o={};
-		
-		//endtime,title,description,lat,lng,zoom,thumbnail,openWindow
 
-		/*
-		i1=str.indexOf("starttime:")+10;
-		i2=str.indexOf(", endtime",i1);
-		o.starttimeString=trimString(str.substring(i1,i2))
-
-		o.starttime=parseTimeStr(o.starttimeString);
-
-
-
-		i1=str.indexOf("endtime:")+8;
-		i2=str.indexOf(", title",i1);
-		o.endtimeString=trimString(str.substring(i1,i2))
-		o.endtime=parseTimeStr(o.endtimeString);
-
-		
-		i1=str.indexOf("title:")+6;
-		i2=str.indexOf(", description",i1);
-		o.title=trimString(str.substring(i1,i2))
-
-		i1=str.indexOf("description:")+12;
-		i2=str.indexOf(", lat",i1);
-		o.description=trimString(str.substring(i1,i2))
-
-		i1=str.indexOf("lat:")+4;
-		i2=str.indexOf(", lng",i1);
-		o.lat=trimString(str.substring(i1,i2))
-		
-		i1=str.indexOf("lng:")+4;
-		i2=str.indexOf(", zoom",i1);
-		o.lng=trimString(str.substring(i1,i2))
-
-		i1=str.indexOf("zoom:")+5;
-		i2=str.indexOf(", openwindow",i1);
-		o.zoom=trimString(str.substring(i1,i2))
-
-		i1=str.indexOf("openwindow:")+11;
-		i2=str.indexOf(", showpin",i1);
-		var openWindow=trimString(str.substring(i1,i2))
-		o.openWindow=(openWindow.toLowerCase()=="true");
-		
-		i1=str.indexOf("showpin:")+8;
-		i2=str.indexOf(", pinlabel",i1);
-		var showPin=trimString(str.substring(i1,i2))
-		o.showPin=(showPin.toLowerCase()=="true");
-		
-		i1=str.indexOf("pinlabel:")+9;
-		i2=str.indexOf(", righttolefttext", i1);
-		o.pinicon=trimString(str.substring(i1,i2))
-		
-		//Use a newer version of the spreadsheet
-		i1=str.indexOf("righttolefttext:")+16;
-		var isRTL=trimString(str.substring(i1));
-		o.isRTL=(isRTL.toLowerCase()=="true");
-*/
 		i1=str.indexOf("starttime:")+10;
 		i2=str.indexOf(", endtime",i1);
 		o.starttimeString=trimString(str.substring(i1,i2))
@@ -181,8 +155,8 @@ function parseSpreadsheetLine(str) {
 
 //Trimming string
 function trimString(str) {
-		return str.replace(/^\s+|\s+$/g, '');
-	};
+	return str.replace(/^\s+|\s+$/g, '');
+};
 
 //
 function parseTimeStr(aStr) {
@@ -290,18 +264,14 @@ function parseTimeStr(aStr) {
 					label: "Google Spreadsheet URL",
 					group:"advanced",
 					"default":""
-					//,tooltip: "0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c"
 				},
-				/*
-				sheetNumber: {
+				spreadsheetWorksheetName: {
 					elem: "input",
 					type:"text",
-					label: "Sheet Number (optional)",
+					label: "Worksheet ID (example: Sheet1)",
 					group:"advanced",
-					"default":""
-					//,tooltip: "0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c"
+					"default":"Sheet1"
 				},
-				*/
 				top: {
 					elem: "input",
 					type: "number",
@@ -473,25 +443,31 @@ function parseTimeStr(aStr) {
 				if (keyVal == null) {
 					keyVal="";
 				}
-				//https://docs.google.com/spreadsheet/ccc?key=0AiJKIpWZPRwSdFphbEI5UjJVdTRIc2RQQ1pXT2owN3c&usp=drive_web#gid=0
-				//experiment with gid=0
-				//publish all sheets but try to access that one.
-				var loc = "https://spreadsheets.google.com/feeds/list/" + keyVal + "/od6/public/values?alt=json-in-script&callback=jsonp";
-				//console.log("request spreadsheet from " + loc);
-				
-				loadSpreadsheet(loc,function(lsData) {
-					subtitlesDataFromSpreadsheet=lsData;
-
-					console.log("===========================================")
-					console.log(subtitlesDataFromSpreadsheet);
-					loadedSpreadsheet=subtitlesDataFromSpreadsheet;
-
-					spreadsheetLoaded=true;
-					//title v. subtitle
-					options.text="Subtitle: "+loadedSpreadsheet[0].subtitle; //This just gives the timeline layer a better title.
-				})
-
-
+				//0ArATI2avgxwzdEdkUl9hdDNMUVR5eHlxcXl4ZG5KeUE
+				//https://docs.google.com/spreadsheet/pub?key=0ArATI2avgxwzdEdkUl9hdDNMUVR5eHlxcXl4ZG5KeUE&output=html
+				var sheetListURL="http://spreadsheets.google.com/feeds/worksheets/"+ keyVal + "/public/basic?alt=json-in-script";
+				var sheetName="Sheet1";
+				if ("spreadsheetWorksheetName" in options) {
+					sheetName=options.spreadsheetWorksheetName;
+				}
+				//console.log("making the gwid call from setup");
+				getWorksheetIDFromSheetName(sheetListURL,sheetName,function(wsID) {
+					if (wsID ==  SHEET_NAME_NOT_FOUND) {
+						//console.log("sheet " + sSheetName + " not found"); 
+					} else {
+						//console.log("we found " + sSheetName + " with id " + wsID);
+						var loc = "https://spreadsheets.google.com/feeds/list/" + keyVal + "/" + wsID+"/public/values?alt=json-in-script&callback=jsonp";
+						loadSpreadsheet(loc,function(lsData) {
+							//mapDataFromSpreadsheet=lsData;
+							//placeMarkersWhenMapReady(mapDataFromSpreadsheet);
+							subtitlesDataFromSpreadsheet=lsData;
+							loadedSpreadsheet=subtitlesDataFromSpreadsheet;
+							spreadsheetLoaded=true;
+							//title v. subtitle
+							options.text="Subtitle: "+loadedSpreadsheet[0].subtitle; //This just gives the timeline layer a better title.
+						})
+					}
+				});
 			}
 		},
 

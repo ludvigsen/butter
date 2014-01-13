@@ -359,28 +359,28 @@ app.post( '/api/publish/:id',
 					authorTwitterHandle="",
 					authorUserID="";
 
-				if (typeof project.remixedFrom != 'undefined') {
+				if (typeof project.remixedFrom != "undefined" && project.remixedFrom != null ) {
 					remixedFromID=project.remixedFrom;
 				}
-				if (typeof project.remixedFromAuthorName != 'undefined') {
+				if (typeof project.remixedFromAuthorName != "undefined" && project.remixedFromAuthorName != null) {
 					remixedFromAuthorName=project.remixedFromAuthorName;
 				}
-				if (typeof project.remixedFromName != 'undefined') {
+				if (typeof project.remixedFromName != "undefined" && project.remixedFromName != null) {
 					remixedFromName=project.remixedFromName;
 				}
-				if (typeof project.remixedFromUserID != 'undefined') {
+				if (typeof project.remixedFromUserID != "undefined" && project.remixedFromUserID != null) {
 					remixedFromUserID=project.remixedFromUserID;
 				}
-				if (typeof profile.displayName != 'undefined') {
+				if (typeof profile.displayName != "undefined" && project.displayName != null) {
 					authorDisplayName=profile.displayName;
 				}
-				if (typeof profile.twitterHandle != 'undefined') {
+				if (typeof profile.twitterHandle != "undefined" && profile.twitterHandle != null) {
 					authorTwitterHandle=profile.twitterHandle;
 					if (authorTwitterHandle != "" && authorTwitterHandle.indexOf("@") == -1) {
 						authorTwitterHandle = "@" + authorTwitterHandle;
 					}
 				}
-				if (typeof profile.id != 'undefined') {
+				if (typeof profile.id != "undefined" && profile.id != null ) {
 					authorUserID=profile.id;
 				}
 

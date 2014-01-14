@@ -56,7 +56,6 @@
        {
         "type": "subtitles",
         "displayName": "Subtitles",
-        "optional": true,
         "icon": "{{baseDir}}templates/assets/plugins/subtitles/subtitles-icon.png"
       },
        {

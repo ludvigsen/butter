@@ -242,7 +242,7 @@
 				backgroundColor = options.backgroundColor || DEFAULT_BACKGROUND_COLOR,
 				context = this,
 				that=this;
-
+			
 			if (!target) {
 				target = this.media.parentNode;
 			}

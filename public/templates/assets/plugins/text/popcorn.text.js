@@ -382,7 +382,7 @@
 				options._transitionContainer.classList.remove("on");
 				options._transitionContainer.classList.add("off");
 			}
-		},
+		}, 
 
 		_teardown: function (options) {
 			if (options._target) {

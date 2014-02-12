@@ -4,6 +4,73 @@
 
 function init() {
 
+	/*
+	 * John Allen 2/10/2014
+	 * this code was added to check if a project used a youtube as a source 
+	 * and if it was an iPad. If both these conditions are meet go ahead 
+	 * and let the iPad view the project, if it's any other type of device
+	 * alert and then forward to the homepage.
+	*/
+	var initalizeBrowserDetection = {
+
+		checkIfIPadAndSingleSourceYouTube : function(){
+
+			// The popcornDataFn function is in the iframe that plays the 
+			// popcorn project. Its a function so lets turn it into
+			//  a string and check if the projects
+			// JSON has the a SINGLE instance of the string 'youtube'.
+			var stringToCheck = popcornDataFn.toString();
+			var regExStringToFind = /youtube/g;
+			var match;
+			var stringCount = 0;
+			var sourceIsYouTube = false;
+			
+			// check how many times 'youtube' is in the string were checking.
+			while ( match = regExStringToFind.exec(stringToCheck) ){
+				stringCount++
+			}
+
+			// if it's only in the string ONE TIME then the iPad can play it.
+			if(stringCount === 1){
+				sourceIsYouTube = true;
+			}
+
+			var isMobile = false;
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+				isMobile = true;
+			}
+
+			var isAccetedMobile = false; 
+			if( /iPad/i.test(navigator.userAgent) ) {
+				isAccetedMobile = true;
+			}
+
+			// its a regular browser so move ahead
+			if ( !isMobile ){
+				return true;// return we have a normal desktop browser
+			}
+			// were a mobile browser so lets check some more stuff
+			else {
+
+				// were a single youtube source project and an iPad, so were 
+				// cool lets go ahead and play it
+				if( isAccetedMobile && sourceIsYouTube ) {
+					return true;
+				}
+
+				// were NOT a youtube source and NOT an iPad so fail.
+				else{
+					alert('Were sorry! Your device and this project is not supported by Kettlecorn.');
+					window.location.href = 'http://kettlecorn.innovation-series.com';
+				}
+			}
+		}
+	}
+
+	initalizeBrowserDetection.checkIfIPadAndSingleSourceYouTube();
+
+
+
   var stateClasses = [
         "embed-playing",
         "embed-paused",
@@ -225,7 +292,123 @@ function init() {
     for ( i = 0, l = sizeOptions.length; i < l; i++ ) {
       sizeOptions[ i ].addEventListener( "click", sizeOptionFn, false );
     }
+//------------------------------------------------------------------------------------------------------
+    
+	// NEW Embed API code from latest and greatest embed.js 1/29/2014
 
+    popcorn.on( "ended", function() {
+      setStateClass( "embed-dialog-open" );
+      window.parent.postMessage({
+        type: "ended"
+      }, "*" );
+    });
+
+    popcorn.on( "pause", function() {
+      if ( hideInfoDiv ) {
+        setStateClass( "embed-dialog-open" );
+        hideInfoDiv = false;
+      } else {
+        setStateClass( "embed-paused" );
+      }
+      window.parent.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "pause"
+      }, "*" );
+    });
+
+    popcorn.on( "play", function() {
+      window.parent.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "play"
+      }, "*" );
+    });
+
+    if ( document.querySelector( ".embed" ).getAttribute( "data-state-waiting" ) ) {
+      popcorn.on( "sequencesReady", function() {
+        window.parent.postMessage({
+          type: "loadedmetadata"
+        }, "*" );
+      });
+    } else {
+      popcorn.on( "loadedmetadata", function() {
+        window.parent.postMessage({
+          type: "loadedmetadata"
+        }, "*" );
+      });
+    }
+
+    popcorn.on( "durationchange", function() {
+      window.parent.postMessage({
+        duration: popcorn.duration(),
+        type: "durationchange"
+      }, "*" );
+    });
+
+    popcorn.on( "timeupdate", function() {
+      window.parent.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "timeupdate"
+      }, "*" );
+    });
+
+    popcorn.on( "playing", function() {
+      hide( "#share-container" );
+      setStateClass( "embed-playing" );
+    });
+
+    function buildOptions( data, manifest ) {
+      var options = {};
+
+      for( var option in manifest ) {
+        if ( manifest.hasOwnProperty( option ) ) {
+          options[ option ] = data[ option ];
+        }
+      }
+
+      return options;
+    }
+
+    popcorn.on( "trackstart", function( e ) {
+      window.parent.postMessage({
+        plugin: e.plugin,
+        type: e.type,
+        options: buildOptions( e, e._natives.manifest.options )
+      }, "*" );
+    });
+
+    popcorn.on( "trackend", function( e ) {
+      window.parent.postMessage({
+        plugin: e.plugin,
+        type: e.type,
+        options: buildOptions( e, e._natives.manifest.options )
+      }, "*" );
+    });
+
+    messages = {
+      play: function( data ) {
+        popcorn.play( data.currentTime );
+      },
+      pause: function( data ) {
+        popcorn.pause( data.currentTime );
+      },
+      currentTime: function( data ) {
+        popcorn.currentTime( data.currentTime );
+      }
+    };
+
+    function onMessage( e ) {
+      var data = e.data,
+          type = data.type,
+          message = messages[ type ];
+      if ( message ) {
+        message( data );
+      }
+    }
+
+    window.addEventListener( "message", onMessage, false );
+
+
+    /*
     popcorn.on( "ended", function() {
       setStateClass( "embed-dialog-open" );
     });
@@ -326,7 +509,8 @@ function init() {
     }
 
     window.addEventListener( "message", onMessage, false );
-
+    */
+//-------------------------------------------------------------------------------------------------------------
     function onCanPlay() {
       if ( config.autoplay ) {
         popcorn.play();

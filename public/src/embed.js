@@ -60,8 +60,8 @@ function init() {
 
 				// were NOT a youtube source and NOT an iPad so fail.
 				else{
-					alert('Were sorry! Your device and this project is not supported by Kettlecorn.');
-					window.location.href = 'http://kettlecorn.innovation-series.com';
+					//alert('Were sorry! Your device and this project is not supported by Kettlecorn.');
+					window.location.href = 'http://kettlecorn-edit.innovation-series.com/unsupporteddevice.html';
 				}
 			}
 		}

@@ -27,7 +27,7 @@
       },
       {
         "type": "tv2article",
-        "icon": "{{baseDir}}templates/assets/plugins/text/text-icon.png"
+        "icon": "{{baseDir}}external/tv2popcorn/plugins/tv2article/tv2logo.png"
       },
       {
         "type": "popup",

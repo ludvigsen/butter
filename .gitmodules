@@ -1,3 +1,6 @@
 [submodule "public/external/popcorn-js"]
 	path = public/external/popcorn-js
 	url = git://github.com/ludvigsen/popcorn-js.git
+[submodule "public/external/tv2popcorn"]
+	path = public/external/tv2popcorn
+	url = git@github.com:ludvigsen/tv2popcorn.git

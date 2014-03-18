@@ -21,6 +21,7 @@ requirejs.config({
 
     // Plugins
     "popcorn.googlemap": "../templates/assets/plugins/googlemap/popcorn.googlemap",
+    "popcorn.tv2article": "../external/tv2popcorn/plugins/tv2article/popcorn.tv2article",
     "popcorn.image": "../templates/assets/plugins/image/popcorn.image",
     "popcorn.loopPlugin": "../templates/assets/plugins/loopPlugin/popcorn.loopPlugin",
     "popcorn.pausePlugin": "../templates/assets/plugins/pausePlugin/popcorn.pausePlugin",
@@ -55,6 +56,7 @@ requirejs.config({
 
     // Plugins
     "popcorn.googlemap": [ "popcorn.core" ],
+    "popcorn.tv2article": [ "popcorn.core" ],
     "popcorn.image": [ "popcorn.core" ],
     "popcorn.loopPlugin": [ "popcorn.core" ],
     "popcorn.pausePlugin": [ "popcorn.core" ],
@@ -74,6 +76,7 @@ define([
   "popcorn.vimeo",
   "popcorn.youtube",
   "popcorn.googlemap",
+  "popcorn.tv2article",
   "popcorn.image",
   "popcorn.loopPlugin",
   "popcorn.pausePlugin",

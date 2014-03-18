@@ -1,7 +1,7 @@
 {
   "name": "default-config",
   "baseDir": "../",
-  "crashReporter": true,
+  "crashReporter": false,
   "cssRenderClientSide": false,
   "snapshotHTMLOnReady": false,
   "scrapePage": true,
@@ -23,6 +23,10 @@
     "plugins": [
       {
         "type": "text",
+        "icon": "{{baseDir}}templates/assets/plugins/text/text-icon.png"
+      },
+      {
+        "type": "tv2article",
         "icon": "{{baseDir}}templates/assets/plugins/text/text-icon.png"
       },
       {

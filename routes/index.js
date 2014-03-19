@@ -197,6 +197,7 @@ module.exports = function routesCtor( app, Project, Profile, filter, sanitizer,
   app.post( '/api/project/:id?',
     filter.isLoggedIn, filter.isStorageAvailable,
     function( req, res ) {
+        console.log("########APP POSTING !!!!");
 
     var projectData = req.body;
 

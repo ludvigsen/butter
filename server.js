@@ -473,18 +473,18 @@ app.get( '/dashboard', filter.isStorageAvailable, function( req, res ) {
 });
 
 app.get('/gallery',filter.isStorageAvailable, function(req, res) {
-    res.redirect(301, "http://oddi.bbg.gov/showcase");
+    //res.redirect(301, "http://oddi.bbg.gov/showcase");
     //if you're interested it seeing how the gallery was originally built, look at old versions of this function in github
 });
 
-app.all(/.*/, function(req, res, next) {
-  var host = req.header("host");
-  if (host.match(/^kettlecorn-edit\..*/i) || host.match(/^dev-kettlecorn-edit\..*/i)) {
-    next();
-  } else {
-    res.redirect(301, "http://kettlecorn-edit.innovation-series.com");
-  }
-});
+//app.all(/.*/, function(req, res, next) {
+  //var host = req.header("host");
+  //if (host.match(/^kettlecorn-edit\..*/i) || host.match(/^dev-kettlecorn-edit\..*/i)) {
+    //next();
+  //} else {
+    //res.redirect(301, "http://kettlecorn-edit.innovation-series.com");
+  //}
+//});
 
 app.listen( config.PORT, function() {
   console.log( 'HTTP Server started on ' + APP_HOSTNAME );

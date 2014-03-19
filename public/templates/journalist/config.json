@@ -4,6 +4,7 @@
   "baseDir": "../../",
   "savedDataUrl": "saved-data.json",
   "editor": {
+    "tv2article": "{{baseDir}}external/tv2popcorn/editors/tv2article/tv2article-editor.js",
     "googlemap": "{{baseDir}}templates/assets/editors/googlemap/googlemap-editor.js",
     "popup": "{{baseDir}}templates/assets/editors/popup/popup-editor.js",
     "promo": "{{baseDir}}templates/assets/editors/promo/promo-editor.js",
@@ -19,6 +20,10 @@
   },
   "plugin": {
     "plugins": [
+      {
+        "type": "tv2article",
+        "icon": "{{baseDir}}external/tv2popcorn/plugins/tv2article/tv2logo.png"
+      },
       {
         "type": "text",
         "icon": "{{baseDir}}templates/assets/plugins/text/text-icon.png"
